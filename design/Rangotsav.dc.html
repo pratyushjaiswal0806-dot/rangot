@@ -61,7 +61,7 @@ input[type=range]{accent-color:#B0246A}
 
 <nav aria-label="Sections" style="position:fixed;top:0;left:0;right:0;z-index:85;transform:{{ navTf }};transition:transform .45s cubic-bezier(.2,.8,.2,1);background:#FBF3E4;border-bottom:3px solid #1B1410;box-shadow:0 4px 0 rgba(27,20,16,.14);padding-top:env(safe-area-inset-top)">
   <div style="max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:5px 10px 5px 12px">
-    <a href="#swagat" onClick="{{ goTop }}" aria-label="Rangotsav, back to top" style="flex:none;min-height:44px;display:flex;align-items:center;gap:8px;text-decoration:none;color:#1B1410">
+    <a href="#swagat" onClick="{{ goTop }}" aria-label="Rangotsav, back to top" style="flex:none;min-height:44px;min-width:44px;justify-content:center;display:flex;align-items:center;gap:8px;text-decoration:none;color:#1B1410">
       <span aria-hidden="true" style="width:32px;height:32px;border-radius:50%;background:#1B1410;border:2px solid #FFC21A;display:grid;place-items:center;font-family:Sarpanch,sans-serif;font-weight:900;font-size:16px;color:#FFC21A">P</span>
       <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Yatra One',serif;font-size:22px;line-height:1;color:#CC3B22">Rangotsav</span></sc-if>
     </a>
@@ -570,6 +570,14 @@ cloth.stamp(block, tilt ±3°)</pre>
     </div>
     <div style="min-height:0;background:#F6E7C8;color:#1B1410;border-top:{{ trayBT }};border-left:{{ trayBL }};padding:{{ trayPad }};display:flex;flex-direction:column;gap:{{ trayGap }};max-height:{{ trayMH }};overflow-y:auto;animation:{{ trayAnim }} .45s cubic-bezier(.2,.8,.2,1) both">
       <sc-if value="{{ narrow }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleTray }}" aria-expanded="{{ trayExpanded }}" aria-label="{{ trayLabel }}" style="align-self:center;width:120px;height:40px;flex:none;border:0;background:transparent;cursor:pointer;display:grid;place-items:center"><span aria-hidden="true" style="width:56px;height:6px;border-radius:999px;background:#1B1410"></span></button></sc-if>
+        <div style="display:flex;gap:12px;order:{{ actOrder }}">
+          <button onClick="{{ rUndo }}" disabled="{{ rUndoOff }}" aria-label="Undo" title="Undo" style="flex:none;width:52px;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;cursor:pointer;display:grid;place-items:center;opacity:{{ rUndoOp }};transition:opacity .2s" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M9 5 4.5 9.5 9 14" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 9.5h9.5a5 5 0 0 1 0 10H11" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round"></path></svg></button>
+          <button onClick="{{ rClear }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Sweep floor</button>
+          <button onClick="{{ rSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
+            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
+            Share
+          </button>
+        </div>
       <sc-if value="{{ trayOpen }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:6px">
           <span style="font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase">Symmetry axes</span>
@@ -590,14 +598,6 @@ cloth.stamp(block, tilt ±3°)</pre>
           </label>
           <button onClick="{{ toggleGrid }}" aria-pressed="{{ gridPressed }}" style="min-height:48px;padding:0 14px;border:3px solid #1B1410;background:{{ gridBg }};box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ gridLabel }}</button>
         </div>
-        <div style="display:flex;gap:12px">
-          <button onClick="{{ rUndo }}" disabled="{{ rUndoOff }}" aria-label="Undo" title="Undo" style="flex:none;width:52px;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;cursor:pointer;display:grid;place-items:center;opacity:{{ rUndoOp }};transition:opacity .2s" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M9 5 4.5 9.5 9 14" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 9.5h9.5a5 5 0 0 1 0 10H11" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round"></path></svg></button>
-          <button onClick="{{ rClear }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Sweep floor</button>
-          <button onClick="{{ rSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
-            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
-            Share
-          </button>
-        </div>
       </sc-if>
     </div>
   </div>
@@ -615,6 +615,13 @@ cloth.stamp(block, tilt ±3°)</pre>
     </div>
     <div style="min-height:0;background:#F6E7C8;color:#1B1410;border-top:{{ trayBT }};border-left:{{ trayBL }};padding:{{ trayPad }};display:flex;flex-direction:column;gap:{{ trayGap }};max-height:{{ trayMH }};overflow-y:auto;animation:{{ trayAnim }} .45s cubic-bezier(.2,.8,.2,1) both">
       <sc-if value="{{ narrow }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleTray }}" aria-expanded="{{ trayExpanded }}" aria-label="{{ trayLabel }}" style="align-self:center;width:120px;height:40px;flex:none;border:0;background:transparent;cursor:pointer;display:grid;place-items:center"><span aria-hidden="true" style="width:56px;height:6px;border-radius:999px;background:#1B1410"></span></button></sc-if>
+        <div style="display:flex;gap:12px;order:{{ actOrder }}">
+          <button onClick="{{ kClear }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Sweep floor</button>
+          <button onClick="{{ kSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
+            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
+            Share
+          </button>
+        </div>
       <sc-if value="{{ trayOpen }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:6px">
           <span style="font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase">Start from</span>
@@ -633,13 +640,6 @@ cloth.stamp(block, tilt ±3°)</pre>
           </div>
           <button onClick="{{ toggleKDots }}" aria-pressed="{{ kDotsPressed }}" style="min-height:48px;padding:0 14px;border:3px solid #1B1410;background:{{ kDotsBg }};box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ kDotsLabel }}</button>
         </div>
-        <div style="display:flex;gap:12px">
-          <button onClick="{{ kClear }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Sweep floor</button>
-          <button onClick="{{ kSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
-            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
-            Share
-          </button>
-        </div>
       </sc-if>
     </div>
   </div>
@@ -657,6 +657,14 @@ cloth.stamp(block, tilt ±3°)</pre>
     </div>
     <div style="min-height:0;background:#F6E7C8;color:#1B1410;border-top:{{ trayBT }};border-left:{{ trayBL }};padding:{{ trayPad }};display:flex;flex-direction:column;gap:{{ trayGap }};max-height:{{ trayMH }};overflow-y:auto;animation:{{ trayAnim }} .45s cubic-bezier(.2,.8,.2,1) both">
       <sc-if value="{{ narrow }}" hint-placeholder-val="{{ true }}"><button onClick="{{ toggleTray }}" aria-expanded="{{ trayExpanded }}" aria-label="{{ trayLabel }}" style="align-self:center;width:120px;height:40px;flex:none;border:0;background:transparent;cursor:pointer;display:grid;place-items:center"><span aria-hidden="true" style="width:56px;height:6px;border-radius:999px;background:#1B1410"></span></button></sc-if>
+        <div style="display:flex;gap:12px;order:{{ actOrder }}">
+          <button onClick="{{ bUndo }}" disabled="{{ bUndoOff }}" aria-label="Undo" title="Undo" style="flex:none;width:52px;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;cursor:pointer;display:grid;place-items:center;opacity:{{ bUndoOp }};transition:opacity .2s" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M9 5 4.5 9.5 9 14" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 9.5h9.5a5 5 0 0 1 0 10H11" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round"></path></svg></button>
+          <button onClick="{{ bWash }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Fresh cloth</button>
+          <button onClick="{{ bSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
+            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
+            Share
+          </button>
+        </div>
       <sc-if value="{{ trayOpen }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:6px">
           <span style="font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase">Carved block</span>
@@ -677,14 +685,6 @@ cloth.stamp(block, tilt ±3°)</pre>
           </label>
           <button onClick="{{ toggleRepeat }}" aria-pressed="{{ repeatPressed }}" style="min-height:48px;padding:0 14px;border:3px solid #1B1410;background:{{ repeatBg }};box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ repeatLabel }}</button>
         </div>
-        <div style="display:flex;gap:12px">
-          <button onClick="{{ bUndo }}" disabled="{{ bUndoOff }}" aria-label="Undo" title="Undo" style="flex:none;width:52px;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;cursor:pointer;display:grid;place-items:center;opacity:{{ bUndoOp }};transition:opacity .2s" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M9 5 4.5 9.5 9 14" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 9.5h9.5a5 5 0 0 1 0 10H11" fill="none" stroke="#1B1410" stroke-width="2.6" stroke-linecap="round"></path></svg></button>
-          <button onClick="{{ bWash }}" style="flex:1;min-height:52px;border:3px solid #1B1410;background:#FBF3E4;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">Fresh cloth</button>
-          <button onClick="{{ bSave }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" style="flex:1.4;min-height:52px;border:3px solid #1B1410;background:#FFC21A;box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:15px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px" style-active="transform:translate(3px,3px);box-shadow:0 0 0 #1B1410">
-            <svg aria-hidden="true" viewBox="0 0 24 24" style="width:22px;height:22px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
-            Share
-          </button>
-        </div>
       </sc-if>
     </div>
   </div>
@@ -698,6 +698,9 @@ cloth.stamp(block, tilt ±3°)</pre>
 const INK='#1B1410';
 const C={ivory:'#FBF3E4',parch:'#F6E7C8',marigold:'#FFC21A',saffron:'#E8761E',turmeric:'#DE9B1C',vermilion:'#CC3B22',magenta:'#B0246A',ruby:'#7A0E3A',green:'#2F6B3B',leaf:'#4F8A3C',indigo:'#2D4C7C',terracotta:'#B4542A',floor:'#3B2117'};
 const TAU=Math.PI*2;
+// Phone tool sheets: the drawing stage is at least as tall as the screen is wide (+28px fit
+// padding) so square canvases fill the width; capped so the control tray keeps room.
+const NARROW_STAGE='min(100vw + 28px, 62dvh)';
 const RCOLS=[['Rice white',C.ivory],['Marigold',C.marigold],['Turmeric',C.turmeric],['Saffron',C.saffron],['Vermilion','#D8452A'],['Magenta','#C93A82'],['Leaf green',C.leaf],['Indigo','#4D6FA3']];
 const KCOLS=[['Rice white',C.ivory],['Marigold',C.marigold],['Vermilion','#E0532E'],['Magenta','#D2448A']];
 const INKS=[['Indigo',C.indigo],['Madder red',C.vermilion],['Magenta',C.magenta],['Forest green',C.green],['Kohl black',INK],['Turmeric',C.turmeric]];
@@ -961,7 +964,7 @@ class Component extends DCLogic {
     if(ps.tool!==s.tool){const lock=s.tool?'hidden':'';document.documentElement.style.overflow=lock;document.body.style.overflow=lock;if(s.tool)setTimeout(()=>this.closeBtn&&this.closeBtn.focus(),60);else{this.observeReveal();this.lastOpener&&this.lastOpener.focus&&this.lastOpener.focus()}}
     if(ps.plateName!==s.plateName||ps.plateFmt!==s.plateFmt)this.drawPlateNow();
     if(s.tool==='kolam'&&(ps.kColor!==s.kColor||ps.kShowDots!==s.kShowDots))this.kPaint(1);
-    if(ps.wide!==s.wide&&s.tool)requestAnimationFrame(()=>this.refitTool());
+    if((ps.wide!==s.wide||ps.trayOpen!==s.trayOpen)&&s.tool)requestAnimationFrame(()=>this.refitTool());
     if(ps.active!==s.active&&this.navRow){const a=this.navRow.querySelector('[aria-current="true"]');if(a)this.navRow.scrollTo({left:a.offsetLeft-this.navRow.clientWidth/2+a.offsetWidth/2,behavior:this.reduced?'auto':'smooth'})}
   }
   observeReveal(){if(!this.io)return;document.querySelectorAll('[data-reveal]').forEach(el=>{if(el.style.getPropertyValue('--rv')!=='running')this.io.observe(el)})}
@@ -983,7 +986,7 @@ class Component extends DCLogic {
   refitTool(){const t=this.state.tool,fit=st=>Math.max(220,Math.floor(Math.min(st.width-28,st.height-28)));
     if(t==='rangoli'&&this.rc){const side=fit(this.rc.parentElement.parentElement.getBoundingClientRect());if(Math.abs(side-this.rSide)<8)return;const tmp=this.copyCv(this.rc);this.initRangoli();this.rCtx.drawImage(tmp,0,0,this.rSide,this.rSide)}
     else if(t==='kolam'&&this.kc){const side=fit(this.kc.parentElement.getBoundingClientRect());if(Math.abs(side-this.kSide)<8)return;this.initKolam()}
-    else if(t==='block'&&this.bc){const st=this.bc.parentElement.getBoundingClientRect();if(Math.abs(st.width-24-this.bW)<8&&Math.abs(st.height-24-this.bH)<8)return;const tmp=this.copyCv(this.bc),ow=this.bW,oh=this.bH;this.initBlock();this.bCtx.drawImage(tmp,0,0,ow,oh)}}
+    else if(t==='block'&&this.bc){const st=this.bc.parentElement.getBoundingClientRect();if(Math.abs(st.width-24-this.bW)<8&&Math.abs(st.height-60-this.bH)<8)return;const tmp=this.copyCv(this.bc),ow=this.bW,oh=this.bH;this.initBlock();this.bCtx.drawImage(tmp,0,0,ow,oh)}}
   countVal(s=this.state){return s.apiCount!=null?s.apiCount+s.pending:428+s.mine}
   countUp(){if(this.reduced)return;const N=26;let i=0;const step=()=>{i++;if(i>=N||this.dead){this.cT=0;this.setState({countAnim:null});return}const e=1-Math.pow(1-i/N,3);this.setState({countAnim:Math.round(this.countVal()*e)});this.cT=setTimeout(step,55)};this.cT=setTimeout(step,55)}
   setupTilt(){
@@ -1043,7 +1046,7 @@ class Component extends DCLogic {
 
   // Block print
   setBlockCanvas=el=>{this.bc=el;if(el)requestAnimationFrame(()=>this.initBlock())};
-  initBlock(){const el=this.bc;if(!el)return;const r=el.parentElement.getBoundingClientRect();const w=Math.max(200,Math.floor(r.width-24)),h=Math.max(200,Math.floor(r.height-24));const d=Math.min(2,window.devicePixelRatio||1);el.style.width=w+'px';el.style.height=h+'px';el.width=Math.round(w*d);el.height=Math.round(h*d);const x=el.getContext('2d');x.setTransform(d,0,0,d,0,0);this.bCtx=x;this.bW=w;this.bH=h;paintFabric(x,w,h);this.bHist=[];if(this.state.bCanUndo)this.setState({bCanUndo:false})}
+  initBlock(){const el=this.bc;if(!el)return;const r=el.parentElement.getBoundingClientRect();const w=Math.max(200,Math.floor(r.width-24)),h=Math.max(200,Math.floor(r.height-60));const d=Math.min(2,window.devicePixelRatio||1);el.style.width=w+'px';el.style.height=h+'px';el.width=Math.round(w*d);el.height=Math.round(h*d);const x=el.getContext('2d');x.setTransform(d,0,0,d,0,0);this.bCtx=x;this.bW=w;this.bH=h;paintFabric(x,w,h);this.bHist=[];if(this.state.bCanUndo)this.setState({bCanUndo:false})}
   stampVar(type,color,size){this.vc=this.vc||{};const key=type+color+size;if(!this.vc[key])this.vc[key]=[0,1,2].map(()=>makeStamp(type,color,size));const a=this.vc[key];return a[Math.floor(Math.random()*a.length)]}
   stampAt(px,py){const {block,ink,bSize}=this.state,v=this.stampVar(block,ink,bSize),x=this.bCtx;if(!x)return;x.save();x.globalCompositeOperation='multiply';x.globalAlpha=.84+Math.random()*.14;x.translate(px,py);x.rotate((Math.random()-.5)*.09);x.drawImage(v,-bSize*.6,-bSize*.6,bSize*1.2,bSize*1.2);x.restore()}
   bTap=e=>{e.preventDefault();this.bSnap();this.buzz(12);const r=this.bc.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
@@ -1085,7 +1088,7 @@ class Component extends DCLogic {
 
   renderVals(){
     const s=this.state,p=this.props,g=this.greet(),pal=PALS[s.tdPal];
-    const amb=p.ambient||'Festive',nPet=this.reduced||amb==='Off'?0:amb==='Gentle'?(this.isPhone?3:6):(this.isPhone?7:14);
+    const amb=p.ambient||'Festive',nPet=this.reduced||amb==='Off'?0:amb==='Gentle'?(this.isPhone?2:6):(this.isPhone?4:14);
     const word=(s.tdWord||'').toUpperCase().slice(0,10)||'MELA',len=word.length,t=s.tdTilt,o=s.tdOff;
     const press=on=>({bg:on?C.marigold:C.ivory,shadow:on?'0 0 0 #1B1410':'3px 3px 0 #1B1410',tf:on?'translate(3px,3px)':'none',pressed:on?'true':'false'});
     const swatch=(on)=>({shadow:on?'0 0 0 3px #F6E7C8, 0 0 0 6px #1B1410':'3px 3px 0 #1B1410',tf:on?'translateY(-3px) scale(1.06)':'none',pressed:on?'true':'false'});
@@ -1135,8 +1138,8 @@ class Component extends DCLogic {
       inkOpts:INKS.map(([l,c])=>({label:l,color:c,...swatch(s.ink===c),pick:()=>this.setState({ink:c})})),
       toast:s.toast,hasToast:!!s.toast,
       wide:s.wide,narrow:!s.wide,
-      sheetCols:s.wide?'minmax(0,1fr) 400px':'minmax(0,1fr)',sheetRows:s.wide?'60px minmax(0,1fr)':'60px minmax(0,1fr) auto',
-      trayBT:s.wide?'0':'4px solid #1B1410',trayBL:s.wide?'4px solid #1B1410':'0',trayGap:s.wide?'20px':'12px',trayMH:s.wide?'none':'56vh',trayAnim:s.wide?'trayIn':'trayUp',
+      sheetCols:s.wide?'minmax(0,1fr) 400px':'minmax(0,1fr)',sheetRows:s.wide?'60px minmax(0,1fr)':'60px minmax('+NARROW_STAGE+',1fr) auto',
+      trayBT:s.wide?'0':'4px solid #1B1410',trayBL:s.wide?'4px solid #1B1410':'0',trayGap:s.wide?'20px':'12px',trayMH:s.wide?'none':'calc(100dvh - 60px - '+NARROW_STAGE+')',trayAnim:s.wide?'trayIn':'trayUp',actOrder:s.wide?1:0,
       trayPad:s.wide?'22px 24px calc(22px + env(safe-area-inset-bottom))':'0 16px calc(14px + env(safe-area-inset-bottom))',
       bUndo:this.bUndo,bUndoOff:!s.bCanUndo,bUndoOp:s.bCanUndo?1:.4,
       setNavRow:this.setNavRow,navTf:s.navOn&&!s.tool?'translateY(0)':'translateY(-115%)',

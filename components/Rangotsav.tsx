@@ -9,6 +9,9 @@ import makersData from '../data/makers.json';
 const INK='#1B1410';
 const C={ivory:'#FBF3E4',parch:'#F6E7C8',marigold:'#FFC21A',saffron:'#E8761E',turmeric:'#DE9B1C',vermilion:'#CC3B22',magenta:'#B0246A',ruby:'#7A0E3A',green:'#2F6B3B',leaf:'#4F8A3C',indigo:'#2D4C7C',terracotta:'#B4542A',floor:'#3B2117'};
 const TAU=Math.PI*2;
+// Phone tool sheets: the drawing stage is at least as tall as the screen is wide (+28px fit
+// padding) so square canvases fill the width; capped so the control tray keeps room.
+const NARROW_STAGE='min(100vw + 28px, 62dvh)';
 const RCOLS=[['Rice white',C.ivory],['Marigold',C.marigold],['Turmeric',C.turmeric],['Saffron',C.saffron],['Vermilion','#D8452A'],['Magenta','#C93A82'],['Leaf green',C.leaf],['Indigo','#4D6FA3']];
 const KCOLS=[['Rice white',C.ivory],['Marigold',C.marigold],['Vermilion','#E0532E'],['Magenta','#D2448A']];
 const INKS=[['Indigo',C.indigo],['Madder red',C.vermilion],['Magenta',C.magenta],['Forest green',C.green],['Kohl black',INK],['Turmeric',C.turmeric]];
@@ -299,7 +302,7 @@ export default class Rangotsav extends React.Component {
     if(ps.tool!==s.tool){const lock=s.tool?'hidden':'';document.documentElement.style.overflow=lock;document.body.style.overflow=lock;if(s.tool)setTimeout(()=>this.closeBtn&&this.closeBtn.focus(),60);else{this.observeReveal();this.lastOpener&&this.lastOpener.focus&&this.lastOpener.focus()}}
     if(ps.plateName!==s.plateName||ps.plateFmt!==s.plateFmt)this.drawPlateNow();
     if(s.tool==='kolam'&&(ps.kColor!==s.kColor||ps.kShowDots!==s.kShowDots))this.kPaint(1);
-    if(ps.wide!==s.wide&&s.tool)requestAnimationFrame(()=>this.refitTool());
+    if((ps.wide!==s.wide||ps.trayOpen!==s.trayOpen)&&s.tool)requestAnimationFrame(()=>this.refitTool());
     if(ps.active!==s.active&&this.navRow){const a=this.navRow.querySelector('[aria-current="true"]');if(a)this.navRow.scrollTo({left:a.offsetLeft-this.navRow.clientWidth/2+a.offsetWidth/2,behavior:this.reduced?'auto':'smooth'})}
   }
   observeReveal(){if(!this.io)return;document.querySelectorAll('[data-reveal]').forEach(el=>{if(el.style.getPropertyValue('--rv')!=='running')this.io.observe(el)})}
@@ -321,7 +324,7 @@ export default class Rangotsav extends React.Component {
   refitTool(){const t=this.state.tool,fit=st=>Math.max(220,Math.floor(Math.min(st.width-28,st.height-28)));
     if(t==='rangoli'&&this.rc){const side=fit(this.rc.parentElement.parentElement.getBoundingClientRect());if(Math.abs(side-this.rSide)<8)return;const tmp=this.copyCv(this.rc);this.initRangoli();this.rCtx.drawImage(tmp,0,0,this.rSide,this.rSide)}
     else if(t==='kolam'&&this.kc){const side=fit(this.kc.parentElement.getBoundingClientRect());if(Math.abs(side-this.kSide)<8)return;this.initKolam()}
-    else if(t==='block'&&this.bc){const st=this.bc.parentElement.getBoundingClientRect();if(Math.abs(st.width-24-this.bW)<8&&Math.abs(st.height-24-this.bH)<8)return;const tmp=this.copyCv(this.bc),ow=this.bW,oh=this.bH;this.initBlock();this.bCtx.drawImage(tmp,0,0,ow,oh)}}
+    else if(t==='block'&&this.bc){const st=this.bc.parentElement.getBoundingClientRect();if(Math.abs(st.width-24-this.bW)<8&&Math.abs(st.height-60-this.bH)<8)return;const tmp=this.copyCv(this.bc),ow=this.bW,oh=this.bH;this.initBlock();this.bCtx.drawImage(tmp,0,0,ow,oh)}}
   countVal(s=this.state){return s.apiCount!=null?s.apiCount+s.pending:428+s.mine}
   countUp(){if(this.reduced)return;const N=26;let i=0;const step=()=>{i++;if(i>=N||this.dead){this.cT=0;this.setState({countAnim:null});return}const e=1-Math.pow(1-i/N,3);this.setState({countAnim:Math.round(this.countVal()*e)});this.cT=setTimeout(step,55)};this.cT=setTimeout(step,55)}
   setupTilt(){
@@ -386,7 +389,7 @@ export default class Rangotsav extends React.Component {
 
   // Block print
   setBlockCanvas=el=>{this.bc=el;if(el)requestAnimationFrame(()=>this.initBlock())};
-  initBlock(){const el=this.bc;if(!el)return;const r=el.parentElement.getBoundingClientRect();const w=Math.max(200,Math.floor(r.width-24)),h=Math.max(200,Math.floor(r.height-24));const d=Math.min(2,window.devicePixelRatio||1);el.style.width=w+'px';el.style.height=h+'px';el.width=Math.round(w*d);el.height=Math.round(h*d);const x=el.getContext('2d');x.setTransform(d,0,0,d,0,0);this.bCtx=x;this.bW=w;this.bH=h;paintFabric(x,w,h);this.bHist=[];if(this.state.bCanUndo)this.setState({bCanUndo:false})}
+  initBlock(){const el=this.bc;if(!el)return;const r=el.parentElement.getBoundingClientRect();const w=Math.max(200,Math.floor(r.width-24)),h=Math.max(200,Math.floor(r.height-60));const d=Math.min(2,window.devicePixelRatio||1);el.style.width=w+'px';el.style.height=h+'px';el.width=Math.round(w*d);el.height=Math.round(h*d);const x=el.getContext('2d');x.setTransform(d,0,0,d,0,0);this.bCtx=x;this.bW=w;this.bH=h;paintFabric(x,w,h);this.bHist=[];if(this.state.bCanUndo)this.setState({bCanUndo:false})}
   stampVar(type,color,size){this.vc=this.vc||{};const key=type+color+size;if(!this.vc[key])this.vc[key]=[0,1,2].map(()=>makeStamp(type,color,size));const a=this.vc[key];return a[Math.floor(Math.random()*a.length)]}
   stampAt(px,py){const {block,ink,bSize}=this.state,v=this.stampVar(block,ink,bSize),x=this.bCtx;if(!x)return;x.save();x.globalCompositeOperation='multiply';x.globalAlpha=.84+Math.random()*.14;x.translate(px,py);x.rotate((Math.random()-.5)*.09);x.drawImage(v,-bSize*.6,-bSize*.6,bSize*1.2,bSize*1.2);x.restore()}
   bTap=e=>{e.preventDefault();this.bSnap();this.buzz(12);const r=this.bc.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
@@ -430,7 +433,7 @@ export default class Rangotsav extends React.Component {
 
   renderVals(){
     const s=this.state,p=this.props,g=this.greet(),pal=PALS[s.tdPal];
-    const amb=p.ambient||'Festive',nPet=!s.ready||this.reduced||amb==='Off'?0:amb==='Gentle'?(this.isPhone?3:6):(this.isPhone?7:14);
+    const amb=p.ambient||'Festive',nPet=!s.ready||this.reduced||amb==='Off'?0:amb==='Gentle'?(this.isPhone?2:6):(this.isPhone?4:14);
     const word=(s.tdWord||'').toUpperCase().slice(0,10)||'MELA',len=word.length,t=s.tdTilt,o=s.tdOff;
     const press=on=>({bg:on?C.marigold:C.ivory,shadow:on?'0 0 0 #1B1410':'3px 3px 0 #1B1410',tf:on?'translate(3px,3px)':'none',pressed:on?'true':'false'});
     const swatch=(on)=>({shadow:on?'0 0 0 3px #F6E7C8, 0 0 0 6px #1B1410':'3px 3px 0 #1B1410',tf:on?'translateY(-3px) scale(1.06)':'none',pressed:on?'true':'false'});
@@ -480,8 +483,8 @@ export default class Rangotsav extends React.Component {
       inkOpts:INKS.map(([l,c])=>({label:l,color:c,...swatch(s.ink===c),pick:()=>this.setState({ink:c})})),
       toast:s.toast,hasToast:!!s.toast,
       wide:s.wide,narrow:!s.wide,
-      sheetCols:s.wide?'minmax(0,1fr) 400px':'minmax(0,1fr)',sheetRows:s.wide?'60px minmax(0,1fr)':'60px minmax(0,1fr) auto',
-      trayBT:s.wide?'0':'4px solid #1B1410',trayBL:s.wide?'4px solid #1B1410':'0',trayGap:s.wide?'20px':'12px',trayMH:s.wide?'none':'56vh',trayAnim:s.wide?'trayIn':'trayUp',
+      sheetCols:s.wide?'minmax(0,1fr) 400px':'minmax(0,1fr)',sheetRows:s.wide?'60px minmax(0,1fr)':'60px minmax('+NARROW_STAGE+',1fr) auto',
+      trayBT:s.wide?'0':'4px solid #1B1410',trayBL:s.wide?'4px solid #1B1410':'0',trayGap:s.wide?'20px':'12px',trayMH:s.wide?'none':'calc(100dvh - 60px - '+NARROW_STAGE+')',trayAnim:s.wide?'trayIn':'trayUp',actOrder:s.wide?1:0,
       trayPad:s.wide?'22px 24px calc(22px + env(safe-area-inset-bottom))':'0 16px calc(14px + env(safe-area-inset-bottom))',
       bUndo:this.bUndo,bUndoOff:!s.bCanUndo,bUndoOp:s.bCanUndo?1:.4,
       setNavRow:this.setNavRow,navTf:s.navOn&&!s.tool?'translateY(0)':'translateY(-115%)',
