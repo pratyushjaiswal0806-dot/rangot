@@ -1,0 +1,211 @@
+/* Hand-written styles for the components added after the prototype (share sheet, share pages,
+   Naam Kolam, greetings, Pulli, My Courtyard). Same language as the design: ivory paper, 3-4px ink
+   borders, hard offset shadows, Yatra One / Sarpanch / Mukta. */
+:root {
+  --ink: #1B1410; --ivory: #FBF3E4; --parch: #F6E7C8; --marigold: #FFC21A; --saffron: #E8761E;
+  --vermilion: #CC3B22; --magenta: #B0246A; --ruby: #7A0E3A; --green: #2F6B3B; --indigo: #2D4C7C;
+  --floor: #3B2117;
+}
+.rg-btn {
+  appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 10px 18px; border: 3px solid var(--ink); border-radius: 12px;
+  background: var(--ivory); color: var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  font: 800 16px/1.1 Sarpanch, sans-serif; letter-spacing: .04em; text-transform: uppercase;
+  cursor: pointer; text-decoration: none; transition: transform .08s, box-shadow .08s;
+}
+.rg-btn:hover { background: #fff7e3; }
+.rg-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+.rg-btn:focus-visible, .rg-input:focus-visible, .rg-chip:focus-visible { outline: 3px solid var(--saffron); outline-offset: 3px; }
+.rg-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.rg-btn--primary { background: var(--marigold); }
+.rg-btn--primary:hover { background: #ffd04a; }
+.rg-btn--dark { background: var(--ink); color: var(--marigold); box-shadow: 3px 3px 0 var(--marigold); }
+.rg-btn--wa { background: #25D366; }
+.rg-btn--block { width: 100%; }
+.rg-input {
+  width: 100%; min-height: 48px; padding: 10px 14px; border: 3px solid var(--ink); border-radius: 12px;
+  background: #fff; color: var(--ink); font: 600 18px/1.2 Mukta, sans-serif; box-shadow: inset 2px 2px 0 rgba(27,20,16,.12);
+}
+.rg-label { display: block; margin: 0 0 6px; font: 800 13px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.rg-chip {
+  appearance: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 12px;
+  border: 3px solid var(--ink); border-radius: 999px; background: var(--ivory); color: var(--ink);
+  font: 700 15px/1 Mukta, sans-serif; cursor: pointer; box-shadow: 2px 2px 0 var(--ink);
+}
+.rg-chip[aria-pressed="true"] { background: var(--marigold); box-shadow: 0 0 0 var(--ink); transform: translate(2px, 2px); }
+.rg-sw { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink); flex: none; }
+.rg-h { margin: 0; font: 400 clamp(30px, 7vw, 44px)/1.05 'Yatra One', serif; color: var(--ruby); }
+.rg-p { margin: 0; font: 500 17px/1.45 Mukta, sans-serif; }
+.rg-small { font: 600 14px/1.4 Mukta, sans-serif; opacity: .8; }
+
+/* ---------- share sheet ---------- */
+.rg-scrim { position: fixed; inset: 0; z-index: 130; background: rgba(27,20,16,.62); display: grid; place-items: end center; animation: rgFade .18s ease-out; }
+@media (min-width: 900px) { .rg-scrim { place-items: center; } }
+.rg-sheet {
+  width: min(100%, 880px); max-height: min(100dvh, 920px); overflow: auto; overscroll-behavior: contain;
+  background: var(--parch); color: var(--ink); border: 4px solid var(--ink); border-bottom: 0;
+  border-radius: 22px 22px 0 0; padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  animation: rgUp .26s cubic-bezier(.2,.9,.3,1.1);
+}
+@media (min-width: 900px) { .rg-sheet { border-bottom: 4px solid var(--ink); border-radius: 22px; padding: 24px; box-shadow: 8px 8px 0 var(--ink); } }
+.rg-sheet > * { min-width: 0; }
+.rg-sheet__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.rg-sheet__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+@media (min-width: 700px) { .rg-sheet__grid { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); align-items: start; } }
+.rg-preview { width: 100%; max-width: min(300px, 26dvh); margin: 0 auto; aspect-ratio: 9 / 16; border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; background: var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+.rg-preview canvas, .rg-preview img, .rg-preview video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.rg-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.rg-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rg-x { appearance: none; width: 44px; height: 44px; border: 3px solid var(--ink); border-radius: 50%; background: var(--ivory); color: var(--ink); font: 800 20px/1 Sarpanch, sans-serif; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); flex: none; }
+.rg-steps { margin: 0; padding: 14px; list-style: none; counter-reset: s; display: grid; gap: 10px; background: var(--ivory); border: 3px dashed var(--ink); border-radius: 14px; }
+.rg-steps li { counter-increment: s; display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; font: 600 15px/1.4 Mukta, sans-serif; }
+.rg-steps li::before { content: counter(s); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--ruby); color: var(--marigold); font: 800 15px/1 Sarpanch, sans-serif; }
+.rg-copy { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.rg-copy code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 8px 10px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; font: 700 14px/1.2 Mukta, sans-serif; }
+.rg-status { min-height: 1.4em; font: 700 14px/1.4 Mukta, sans-serif; color: var(--ruby); }
+
+@keyframes rgFade { from { opacity: 0 } }
+@keyframes rgUp { from { transform: translateY(40px); opacity: 0 } }
+@keyframes rgPop { 0% { transform: scale(.85) rotate(-3deg); opacity: 0 } 70% { transform: scale(1.03) rotate(1deg) } }
+@media (prefers-reduced-motion: reduce) { .rg-scrim, .rg-sheet { animation: none; } }
+
+/* ---------- share pages (/r/[id]) ---------- */
+.rg-page {
+  min-height: 100dvh; background: var(--ruby); color: var(--ivory); display: flex; flex-direction: column;
+  background-image: repeating-linear-gradient(45deg, rgba(255,194,26,.06) 0 18px, transparent 18px 54px);
+}
+.rg-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 4px solid var(--ink); background: var(--ink); }
+.rg-logo { font: 400 28px/1 'Yatra One', serif; color: var(--marigold); text-decoration: none; }
+.rg-shared { flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 24px 16px 40px; display: grid; gap: 28px; align-items: start; }
+@media (min-width: 900px) { .rg-shared { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); padding-top: 48px; gap: 48px; } }
+.rg-shared__art { display: flex; flex-direction: column; align-items: center; }
+.rg-frame { width: min(100%, 560px); border: 4px solid var(--ink); background: var(--ivory); padding: 8px; box-shadow: 10px 10px 0 var(--ink); animation: rgPop .5s cubic-bezier(.3,1.4,.5,1) both; }
+.rg-frame--tall { width: min(100%, 340px); }
+.rg-frame canvas { display: block; width: 100%; height: auto; }
+.rg-shared__copy { display: grid; gap: 16px; }
+.rg-kicker { margin: 0; font: 800 14px/1.3 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--marigold); }
+.rg-title { margin: 0; font: 400 clamp(40px, 9vw, 72px)/1.02 'Yatra One', serif; color: var(--ivory); -webkit-text-stroke: 1.5px var(--ink); text-shadow: 4px 4px 0 var(--ink); overflow-wrap: anywhere; }
+.rg-reading { font-size: 20px; font-weight: 700; }
+.rg-ctas { display: grid; gap: 10px; }
+.rg-fact { padding: 14px 16px; background: var(--ivory); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+.rg-fact ul { margin: 6px 0 0; padding-left: 20px; display: grid; gap: 6px; font: 500 16px/1.45 Mukta, sans-serif; }
+.rg-promo { display: grid; gap: 4px; padding: 14px 16px; border: 3px dashed var(--marigold); border-radius: 14px; color: var(--ivory); text-decoration: none; font: 600 16px/1.35 Mukta, sans-serif; }
+.rg-promo b { font: 400 22px/1.15 'Yatra One', serif; color: var(--marigold); }
+.rg-promo:hover { background: rgba(255,194,26,.08); }
+.rg-foot { padding: 18px 16px calc(18px + env(safe-area-inset-bottom)); text-align: center; background: var(--ink); color: var(--parch); font: 700 14px/1.4 Mukta, sans-serif; }
+.rg-foot a { color: var(--marigold); }
+
+/* a tiny diya used on buttons and in the greeting row */
+.rg-mini-diya { position: relative; display: inline-block; width: 22px; height: 18px; flex: none; }
+.rg-mini-diya::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 10px; background: #B4542A; border: 2px solid var(--ink); border-radius: 0 0 12px 12px; }
+.rg-mini-diya::after { content: ''; position: absolute; left: 7px; bottom: 9px; width: 8px; height: 11px; background: var(--marigold); border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%; opacity: 0; transform-origin: 50% 100%; }
+.rg-mini-diya.is-lit::after { opacity: 1; animation: rgFlicker 1.6s ease-in-out infinite; box-shadow: 0 0 12px 3px rgba(255,194,26,.6); }
+@keyframes rgFlicker { 50% { transform: scale(.88, 1.08) rotate(-3deg); } }
+
+/* ---------- greeting ---------- */
+.rg-greet { position: relative; min-height: 100dvh; overflow: hidden; background: radial-gradient(ellipse at 50% 30%, #3a1d14 0%, var(--ink) 65%); color: var(--ivory); display: flex; flex-direction: column; align-items: center; padding: 28px 16px 120px; }
+.rg-greet__inner, .rg-envelope { position: relative; z-index: 1; width: min(100%, 520px); display: grid; gap: 16px; justify-items: center; text-align: center; animation: rgUp .5s ease-out both; }
+.rg-envelope { margin: auto 0; padding: 28px 18px; border: 4px solid var(--accent, var(--marigold)); border-radius: 22px; background: rgba(27,20,16,.7); }
+.rg-envelope__btn { min-height: 60px; font-size: 20px; padding: 12px 28px; }
+.rg-greet__h { margin: 4px 0 0; font: 400 clamp(42px, 11vw, 76px)/1.08 'Yatra One', 'Baloo Tamma 2', 'Noto Sans Tamil', serif; color: var(--accent, var(--marigold)); text-shadow: 0 0 28px rgba(255,194,26,.35), 4px 4px 0 #000; }
+.rg-greet__h:lang(kn), .rg-greet__msg:lang(kn) { font-family: 'Baloo Tamma 2', sans-serif; font-weight: 700; }
+.rg-greet__h:lang(ta) { font-family: 'Noto Sans Tamil', 'Latha', sans-serif; font-weight: 800; font-size: clamp(32px, 8vw, 54px); }
+.rg-greet__art { width: min(100%, 360px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 5px solid var(--accent, var(--marigold)); box-shadow: 0 0 60px rgba(255,194,26,.35); }
+.rg-greet__art canvas { width: 100%; height: 100%; display: block; object-fit: cover; }
+.rg-greet__msg { margin: 0; font: 600 22px/1.45 Mukta, sans-serif; }
+.rg-greet__from { margin: 0; font: 400 28px/1.1 'Yatra One', serif; color: var(--marigold); }
+.rg-greet .rg-ctas { width: 100%; }
+.rg-greet .rg-diyaback { width: 100%; }
+.rg-greet__diyas { position: absolute; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; gap: clamp(10px, 4vw, 30px); }
+.rg-greet__diyas .rg-mini-diya { transform: scale(1.5); }
+.rg-greet__diyas .rg-mini-diya::after { animation: rgLight .6s ease-out forwards, rgFlicker 1.6s ease-in-out 1s infinite; }
+@keyframes rgLight { from { opacity: 0; transform: scale(.2); } to { opacity: 1; box-shadow: 0 0 14px 4px rgba(255,194,26,.6); } }
+.rg-greet__petals i { position: absolute; top: -30px; width: 12px; height: 16px; border-radius: 50% 50% 50% 0; background: var(--marigold); opacity: .8; animation: rgFall linear infinite; }
+.rg-greet__petals i:nth-child(3n) { background: var(--saffron); }
+.rg-greet__petals i:nth-child(4n) { background: var(--magenta); }
+@keyframes rgFall { to { transform: translate(40px, 110vh) rotate(540deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .rg-frame, .rg-greet__inner, .rg-envelope { animation: none; }
+  .rg-greet__petals { display: none; }
+  .rg-mini-diya.is-lit::after, .rg-greet__diyas .rg-mini-diya::after { animation: none; opacity: 1; }
+}
+
+/* ---------- main-page islands ---------- */
+.rg-naam-canvas { display: block; width: 100%; height: auto; }
+.rg-fs { margin: 0; padding: 0; border: 0; min-width: 0; }
+.rg-chip--wide { width: 100%; justify-content: flex-start; text-align: left; border-radius: 14px; line-height: 1.35; padding: 10px 14px; }
+.rg-chip[disabled] { cursor: not-allowed; }
+
+/* hero festival badge */
+.rg-fest {
+  appearance: none; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px 8px 12px;
+  border: 2px solid var(--ink); border-radius: 999px; background: #4A0A26; color: var(--ivory); cursor: pointer;
+  font: 700 15px/1.2 Mukta, sans-serif; box-shadow: 3px 3px 0 var(--ink); animation: rgUp .6s ease-out .6s both;
+}
+.rg-fest b { color: var(--accent, var(--marigold)); font-weight: 800; }
+.rg-fest__cta { opacity: .9; text-decoration: underline; text-underline-offset: 3px; }
+.rg-fest:hover { background: #5c0d30; }
+
+/* greeting maker preview */
+.rg-gprev {
+  position: sticky; top: 80px; display: grid; gap: 14px; justify-items: center; text-align: center; padding: 30px 20px 26px;
+  background: radial-gradient(ellipse at 50% 25%, #3a1d14, var(--ink) 70%); color: var(--ivory);
+  border: 4px solid var(--accent, var(--marigold)); border-radius: 22px; box-shadow: 8px 8px 0 var(--ink);
+}
+.rg-gprev__h { font: 400 clamp(36px, 9vw, 58px)/1.08 'Yatra One', 'Baloo Tamma 2', serif; color: var(--accent, var(--marigold)); text-shadow: 0 0 24px rgba(255,194,26,.35); }
+.rg-gprev__h:lang(kn), .rg-gprev__m:lang(kn) { font-family: 'Baloo Tamma 2', sans-serif; font-weight: 700; }
+.rg-gprev__h:lang(ta) { font-family: 'Noto Sans Tamil', 'Latha', sans-serif; font-weight: 800; font-size: clamp(28px, 7vw, 40px); }
+.rg-gprev__m { font: 600 19px/1.45 Mukta, sans-serif; max-width: 34ch; }
+.rg-gprev__from { font: 400 26px/1 'Yatra One', serif; color: var(--marigold); }
+.rg-gprev__diyas { display: flex; gap: 14px; margin-top: 4px; }
+@media (max-width: 760px) { .rg-gprev { position: static; } }
+.rg-diyafor { width: min(100%, 520px); margin: 18px auto 0; text-align: left; }
+
+/* full-screen tool sheet (Mehendi), same frame as the generated tool sheets */
+.rg-tool {
+  position: fixed; inset: 0; z-index: 100; display: grid; background: #2A1710; color: var(--ivory); overscroll-behavior: contain;
+  grid-template-columns: minmax(0, 1fr); grid-template-rows: 60px minmax(min(100vw + 28px, 62dvh), 1fr) auto;
+}
+@media (min-width: 900px) { .rg-tool { grid-template-columns: minmax(0, 1fr) 400px; grid-template-rows: 60px minmax(0, 1fr); } }
+.rg-tool__bar { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 0 12px; background: var(--ink); border-bottom: 4px solid var(--marigold); }
+.rg-tool__title { flex: 1; font: 400 24px/1 'Yatra One', serif; color: var(--marigold); }
+.rg-tool__bar .rg-btn { min-height: 42px; }
+.rg-tool__stage { position: relative; display: grid; place-items: center; min-height: 0; overflow: hidden; }
+.rg-tool__hint { position: absolute; bottom: 10px; left: 0; right: 0; margin: 0; text-align: center; font: 700 14px/1.3 Mukta, sans-serif; color: var(--marigold); pointer-events: none; }
+.rg-tool__tray {
+  display: grid; gap: 14px; align-content: start; overflow: auto; padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  background: var(--parch); color: var(--ink); border-top: 4px solid var(--ink); max-height: calc(100dvh - 60px - min(100vw + 28px, 62dvh));
+}
+@media (min-width: 900px) { .rg-tool__tray { border-top: 0; border-left: 4px solid var(--ink); max-height: none; padding: 22px 24px; } }
+.rg-tool__fact { margin: 0; padding: 10px 12px; border: 2px dashed var(--ink); border-radius: 10px; background: var(--ivory); font: 500 15px/1.45 Mukta, sans-serif; }
+
+/* My Courtyard */
+.rg-me { display: grid; gap: 20px; }
+.rg-stamps { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 10px; }
+.rg-stamp { display: grid; gap: 6px; justify-items: center; padding: 12px 6px; border: 3px dashed rgba(27,20,16,.35); border-radius: 50%; aspect-ratio: 1; align-content: center; text-align: center; font: 700 12px/1.15 Mukta, sans-serif; color: rgba(27,20,16,.45); }
+.rg-stamp b { font: 400 30px/1 'Yatra One', serif; }
+.rg-stamp.is-got { border: 3px solid var(--ruby); color: var(--ruby); background: rgba(255,194,26,.25); transform: rotate(-6deg); }
+.rg-badges { display: grid; gap: 8px; }
+.rg-badge { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 3px solid var(--ink); background: var(--ivory); opacity: .55; }
+.rg-badge.is-got { opacity: 1; background: var(--marigold); box-shadow: 3px 3px 0 var(--ink); }
+.rg-badge b { font: 800 15px/1.1 Sarpanch, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+.rg-made { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.rg-made a { display: flex; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 2px solid var(--ink); background: #fff; color: var(--ink); text-decoration: none; font: 700 15px/1.3 Mukta, sans-serif; }
+.rg-made a:hover { background: var(--marigold); }
+
+/* Pulli */
+.rg-pulli { flex: 1; width: 100%; max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; display: grid; gap: 22px; }
+.rg-pulli__head { display: grid; gap: 10px; }
+.rg-pulli__boards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 560px) { .rg-pulli__boards { gap: 10px; } }
+.rg-pulli__boards figure { margin: 0; display: grid; gap: 6px; }
+.rg-pulli__cv { display: block; width: 100%; aspect-ratio: 1; border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink); }
+.rg-pulli__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.rg-pulli__done { display: grid; gap: 14px; justify-items: center; text-align: center; padding: 20px 16px; border: 4px solid var(--marigold); border-radius: 18px; background: rgba(27,20,16,.45); }
+.rg-pulli__done .rg-actions { width: min(100%, 420px); }
+.rg-pulli__share { margin: 0; font: 400 22px/1.25 system-ui, sans-serif; letter-spacing: 2px; white-space: pre-wrap; }
+.rg-pulli__stats { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; font: 600 14px/1.2 Mukta, sans-serif; }
+.rg-pulli__stats b { display: block; font: 400 30px/1 'Yatra One', serif; color: var(--marigold); }
+.rg-pulli__history { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; justify-content: center; }
+.rg-pulli__history li { display: grid; grid-template-columns: repeat(7, 10px); gap: 2px; padding: 6px; background: var(--floor); border: 2px solid var(--ink); }
+.rg-pulli__history i { width: 10px; height: 10px; border-radius: 50%; background: rgba(251,243,228,.15); }

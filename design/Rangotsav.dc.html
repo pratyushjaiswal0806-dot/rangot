@@ -166,6 +166,7 @@ input[type=range]{accent-color:#B0246A}
         <span aria-hidden="true" style="display:inline-block;transform:rotate(-2deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .15s both">R</span><span aria-hidden="true" style="display:inline-block;transform:rotate(1.5deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .21s both">A</span><span aria-hidden="true" style="display:inline-block;transform:rotate(-1deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .27s both">N</span><span aria-hidden="true" style="display:inline-block;transform:rotate(2deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .33s both">G</span><span aria-hidden="true" style="display:inline-block;transform:rotate(-1.5deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .39s both">O</span><span aria-hidden="true" style="display:inline-block;transform:rotate(1deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .45s both">T</span><span aria-hidden="true" style="display:inline-block;transform:rotate(-2deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .51s both">S</span><span aria-hidden="true" style="display:inline-block;transform:rotate(1.5deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .57s both">A</span><span aria-hidden="true" style="display:inline-block;transform:rotate(-1deg);animation:letterIn .9s cubic-bezier(.3,1.5,.5,1) .63s both">V</span>
       </h1>
     </div>
+    <x-island name="FestivalBadge" props="{{ festBadge }}"></x-island>
     <p style="margin:0;color:#FBF3E4;font-size:clamp(17px,4.6vw,20px);font-weight:600;max-width:30ch;text-wrap:pretty">Indian art forms, come alive in code. Come play.</p>
     <p style="margin:0;display:flex;align-items:center;gap:10px;color:#FBF3E4;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase">
       <span aria-hidden="true" style="width:30px;height:30px;border-radius:50%;background:#1B1410;border:2px solid #FFC21A;display:grid;place-items:center;font-family:Sarpanch,sans-serif;font-weight:900;font-size:15px;color:#FFC21A;letter-spacing:0">P</span>
@@ -174,7 +175,7 @@ input[type=range]{accent-color:#B0246A}
     <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:6px">
       <button onClick="{{ startPlaying }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" onFocus="{{ bloomOn }}" onBlur="{{ bloomOff }}" style="min-height:54px;padding:0 22px 0 16px;display:inline-flex;align-items:center;gap:10px;background:#FFC21A;color:#1B1410;border:3px solid #1B1410;border-radius:0;box-shadow:5px 5px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:17px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translate(-2px,-2px);box-shadow:7px 7px 0 #1B1410" style-active="transform:translate(5px,5px);box-shadow:0 0 0 #1B1410">
         <svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#CC3B22" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FBF3E4" stroke="#1B1410" stroke-width="1.5"></circle></svg>
-        Start Playing
+        Weave your name
       </button>
       <button onClick="{{ openRangoli }}" onPointerEnter="{{ bloomOn }}" onPointerLeave="{{ bloomOff }}" onFocus="{{ bloomOn }}" onBlur="{{ bloomOff }}" style="min-height:54px;padding:0 22px 0 16px;display:inline-flex;align-items:center;gap:10px;background:#FBF3E4;color:#1B1410;border:3px solid #1B1410;border-radius:0;box-shadow:5px 5px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:800;font-size:17px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translate(-2px,-2px);box-shadow:7px 7px 0 #1B1410" style-active="transform:translate(5px,5px);box-shadow:0 0 0 #1B1410">
         <svg aria-hidden="true" viewBox="0 0 24 24" style="width:24px;height:24px;flex:none;overflow:visible"><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#B0246A" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * -72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#B0246A" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 144deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#B0246A" stroke="#1B1410" stroke-width="1.5"></ellipse></g><g style="transform-origin:12px 12px;transform:rotate(calc((.22 + var(--b,0) * .78) * 72deg));transition:transform .35s cubic-bezier(.3,1.5,.5,1)"><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#B0246A" stroke="#1B1410" stroke-width="1.5"></ellipse></g><ellipse cx="12" cy="5.6" rx="3.4" ry="5.4" fill="#B0246A" stroke="#1B1410" stroke-width="1.5"></ellipse><circle cx="12" cy="12" r="3.2" fill="#FFC21A" stroke="#1B1410" stroke-width="1.5"></circle></svg>
@@ -221,6 +222,12 @@ input[type=range]{accent-color:#B0246A}
 </section>
 
 <div aria-hidden="true" style="line-height:0;padding:0 0 8px"><svg width="100%" height="44" style="display:block"><defs><pattern id="kd1" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M0 22 C8 3 36 3 44 22 C36 41 8 41 0 22 Z" fill="none" stroke="#1B1410" stroke-width="2.5"></path><circle cx="22" cy="22" r="3.6" fill="#B0246A"></circle><circle cx="0" cy="22" r="2.6" fill="#E8761E"></circle><circle cx="44" cy="22" r="2.6" fill="#E8761E"></circle></pattern></defs><rect width="100%" height="44" fill="url(#kd1)"></rect></svg></div>
+
+<section id="naam" data-screen-label="02b Naam Kolam" style="scroll-margin-top:60px;max-width:1160px;margin:0 auto;padding:48px 20px 72px">
+  <x-island name="NaamKolam" props="{{ naam }}"></x-island>
+</section>
+
+<div aria-hidden="true" style="line-height:0;padding:0 0 8px"><svg width="100%" height="44" style="display:block"><defs><pattern id="kd3" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M0 22 C8 3 36 3 44 22 C36 41 8 41 0 22 Z" fill="none" stroke="#1B1410" stroke-width="2.5"></path><circle cx="22" cy="22" r="3.6" fill="#2D4C7C"></circle><circle cx="0" cy="22" r="2.6" fill="#E8761E"></circle><circle cx="44" cy="22" r="2.6" fill="#E8761E"></circle></pattern></defs><rect width="100%" height="44" fill="url(#kd3)"></rect></svg></div>
 
 <section id="courtyard" data-screen-label="03 Courtyard" style="scroll-margin-top:60px;max-width:1160px;margin:0 auto;padding:48px 20px 72px;display:flex;flex-direction:column;gap:36px">
   <div style="display:flex;flex-direction:column;gap:10px">
@@ -276,6 +283,7 @@ input[type=range]{accent-color:#B0246A}
         Start weaving
       </button>
     </article>
+    <x-island name="Mehendi" props="{{ mehendi }}"></x-island>
   </div>
 </section>
 
@@ -463,6 +471,10 @@ cloth.stamp(block, tilt ±3°)</pre>
   </div>
 </section>
 
+<section id="greet" data-screen-label="06b Greetings" style="scroll-margin-top:60px;max-width:1160px;margin:0 auto;padding:48px 20px 80px">
+  <x-island name="GreetingMaker" props="{{ greet }}"></x-island>
+</section>
+
 <section id="diya" data-screen-label="07 Light a Diya" style="scroll-margin-top:60px;position:relative;background:#7A0E3A;color:#FBF3E4;overflow:hidden">
   <div aria-hidden="true" style="line-height:0"><svg width="100%" height="52" style="display:block"><defs><pattern id="gs2" width="140" height="52" patternUnits="userSpaceOnUse"><rect width="140" height="4" fill="#1B1410"></rect><path d="M0 6 Q70 50 140 6" fill="none" stroke="#4F8A3C" stroke-width="2.5"></path><circle cx="14" cy="13.9" r="7" fill="#FFC21A" stroke="#1B1410" stroke-width="2"></circle><circle cx="28" cy="20.1" r="7" fill="#E8761E" stroke="#1B1410" stroke-width="2"></circle><circle cx="42" cy="24.5" r="7" fill="#FFC21A" stroke="#1B1410" stroke-width="2"></circle><circle cx="56" cy="27.1" r="7" fill="#E8761E" stroke="#1B1410" stroke-width="2"></circle><circle cx="70" cy="28" r="7" fill="#FFC21A" stroke="#1B1410" stroke-width="2"></circle><circle cx="84" cy="27.1" r="7" fill="#E8761E" stroke="#1B1410" stroke-width="2"></circle><circle cx="98" cy="24.5" r="7" fill="#FFC21A" stroke="#1B1410" stroke-width="2"></circle><circle cx="112" cy="20.1" r="7" fill="#E8761E" stroke="#1B1410" stroke-width="2"></circle><circle cx="126" cy="13.9" r="7" fill="#FFC21A" stroke="#1B1410" stroke-width="2"></circle><path d="M70 36 C76 42 75 48 70 52 C65 48 64 42 70 36 Z" fill="#4F8A3C" stroke="#1B1410" stroke-width="1.5"></path></pattern></defs><rect width="100%" height="52" fill="url(#gs2)"></rect></svg></div>
   <div style="max-width:860px;margin:0 auto;padding:44px 20px 40px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center">
@@ -515,6 +527,7 @@ cloth.stamp(block, tilt ±3°)</pre>
       <span style="font-family:Sarpanch,sans-serif;font-weight:700;font-size:16px;letter-spacing:.14em;text-transform:uppercase">diyas lit so far</span>
     </div>
     <p style="margin:0;font-size:17px;line-height:1.55;max-width:40ch;text-wrap:pretty;min-height:3.1em">{{ diyaMsg }}</p>
+    <x-island name="DiyaFor" props="{{ diyaFor }}"></x-island>
   </div>
   <div aria-hidden="true" style="display:flex;justify-content:space-evenly;align-items:flex-end;padding:30px 8px 0;overflow:hidden">
     <sc-for list="{{ rowDiyas }}" as="d" hint-placeholder-count="11">
@@ -591,9 +604,16 @@ cloth.stamp(block, tilt ±3°)</pre>
             <sc-for list="{{ swatches }}" as="s" hint-placeholder-count="8"><button onClick="{{ s.pick }}" aria-pressed="{{ s.pressed }}" aria-label="{{ s.label }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:3px solid #1B1410;background:{{ s.color }};box-shadow:{{ s.shadow }};transform:{{ s.tf }};cursor:pointer;transition:transform .15s cubic-bezier(.3,1.5,.5,1),box-shadow .15s"></button></sc-for>
           </div>
         </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase">Brush</span>
+          <div role="group" aria-label="Brush" style="display:flex;gap:10px;flex-wrap:wrap">
+            <sc-for list="{{ rBrushes }}" as="o" hint-placeholder-count="4"><button onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1;min-width:72px;min-height:48px;border:3px solid #1B1410;background:{{ o.bg }};box-shadow:{{ o.shadow }};transform:{{ o.tf }};font-family:Sarpanch,sans-serif;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .15s">{{ o.label }}</button></sc-for>
+          </div>
+        </div>
+        <x-island name="CultureStrip" props="{{ cultR }}"></x-island>
         <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
           <label style="flex:1;min-width:160px;display:flex;flex-direction:column">
-            <span style="display:flex;justify-content:space-between;font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase"><span>Brush</span><span>{{ rSize }}px</span></span>
+            <span style="display:flex;justify-content:space-between;font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase"><span>Size</span><span>{{ rSize }}px</span></span>
             <input type="range" min="2" max="24" value="{{ rSize }}" onChange="{{ onRSize }}" style="width:100%;height:44px;margin:0">
           </label>
           <button onClick="{{ toggleGrid }}" aria-pressed="{{ gridPressed }}" style="min-height:48px;padding:0 14px;border:3px solid #1B1410;background:{{ gridBg }};box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ gridLabel }}</button>
@@ -638,6 +658,7 @@ cloth.stamp(block, tilt ±3°)</pre>
               <sc-for list="{{ kColors }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.pick }}" aria-pressed="{{ s.pressed }}" aria-label="{{ s.label }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:3px solid #1B1410;background:{{ s.color }};box-shadow:{{ s.shadow }};transform:{{ s.tf }};cursor:pointer;transition:transform .15s cubic-bezier(.3,1.5,.5,1),box-shadow .15s"></button></sc-for>
             </div>
           </div>
+        <x-island name="CultureStrip" props="{{ cultK }}"></x-island>
           <button onClick="{{ toggleKDots }}" aria-pressed="{{ kDotsPressed }}" style="min-height:48px;padding:0 14px;border:3px solid #1B1410;background:{{ kDotsBg }};box-shadow:3px 3px 0 #1B1410;font-family:Sarpanch,sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">{{ kDotsLabel }}</button>
         </div>
       </sc-if>
@@ -678,6 +699,7 @@ cloth.stamp(block, tilt ±3°)</pre>
             <sc-for list="{{ inkOpts }}" as="s" hint-placeholder-count="6"><button onClick="{{ s.pick }}" aria-pressed="{{ s.pressed }}" aria-label="{{ s.label }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:3px solid #1B1410;background:{{ s.color }};box-shadow:{{ s.shadow }};transform:{{ s.tf }};cursor:pointer;transition:transform .15s cubic-bezier(.3,1.5,.5,1),box-shadow .15s"></button></sc-for>
           </div>
         </div>
+        <x-island name="CultureStrip" props="{{ cultB }}"></x-island>
         <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
           <label style="flex:1;min-width:160px;display:flex;flex-direction:column">
             <span style="display:flex;justify-content:space-between;font-family:Sarpanch,sans-serif;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase"><span>Block size</span><span>{{ bSize }}px</span></span>

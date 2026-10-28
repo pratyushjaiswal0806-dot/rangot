@@ -1,0 +1,36 @@
+{
+  "weaves": [
+    { "name": "Lotus Weave", "line": "The lotus rises clean out of muddy water." },
+    { "name": "Temple Bell", "line": "Rung once, heard by the whole street." },
+    { "name": "Peacock Loop", "line": "Shows its colours when the clouds come." },
+    { "name": "Marigold Knot", "line": "Strung over every doorway that matters." },
+    { "name": "Conch Spiral", "line": "Begins every good thing with a sound." },
+    { "name": "Mango Leaf", "line": "Tied above the door for luck." },
+    { "name": "Elephant Path", "line": "Slow, steady, never forgets a friend." },
+    { "name": "Moon Step", "line": "Quietly lights the courtyard at night." },
+    { "name": "Sun Wheel", "line": "Up before everyone, warm to all." },
+    { "name": "River Braid", "line": "Finds a way around every rock." },
+    { "name": "Tulsi Chain", "line": "Grows in the centre of the home." },
+    { "name": "Kite String", "line": "Flies highest on Sankranti mornings." }
+  ],
+  "traits": [
+    "Patient", "Loyal", "Curious", "Warm", "Fearless", "Funny", "Generous", "Calm", "Bold", "Gentle",
+    "Clever", "Kind", "Steady", "Bright", "Playful", "Thoughtful", "Brave", "Creative", "Honest", "Cheerful",
+    "Sharp", "Graceful", "Spirited", "Dreamy"
+  ],
+  "twists": [
+    "secretly dramatic", "always hungry", "first on the dance floor at sangeet", "the one who remembers birthdays",
+    "a chai-over-coffee person", "late but worth it", "the family's unofficial DJ", "too good at antakshari",
+    "the friend with snacks in their bag", "a little too competitive at carrom", "the planner of every trip",
+    "the one who cries at movies", "secretly the best cook", "the loudest at cricket matches",
+    "the keeper of all the group's secrets", "fluent in voice notes"
+  ],
+  "colors": [
+    { "bg": "#7A0E3A", "line": "#FFC21A", "name": "Ruby & marigold" },
+    { "bg": "#3B2117", "line": "#FBF3E4", "name": "Rice on earth" },
+    { "bg": "#2D4C7C", "line": "#FFC21A", "name": "Marigold on indigo" },
+    { "bg": "#2F6B3B", "line": "#FBF3E4", "name": "Rice on leaf" },
+    { "bg": "#B0246A", "line": "#FFC21A", "name": "Marigold on magenta" },
+    { "bg": "#1B1410", "line": "#E8761E", "name": "Saffron at night" }
+  ]
+}

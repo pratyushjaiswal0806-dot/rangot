@@ -1,0 +1,74 @@
+{
+  "rangoli": {
+    "title": "Rangoli",
+    "facts": [
+      "Rangoli is drawn at the doorstep to welcome guests, and goddess Lakshmi at Diwali.",
+      "Every region has its own name for it: kolam in Tamil Nadu, muggu in Andhra and Telangana, alpana in Bengal, mandana in Rajasthan, rangavalli in Karnataka.",
+      "Traditional rangoli uses rice flour, coloured powder and flower petals, all things you can sweep away and draw again tomorrow."
+    ]
+  },
+  "kolam": {
+    "title": "Kolam",
+    "facts": [
+      "In Tamil Nadu, kolam is drawn every morning at the threshold, often before sunrise.",
+      "The dots are called pulli. A sikku kolam loops one line around them without ever lifting the hand.",
+      "Kolam is drawn with rice flour, which also feeds ants and birds: a small daily act of sharing."
+    ]
+  },
+  "block": {
+    "title": "Block printing",
+    "facts": [
+      "Sanganer and Bagru, near Jaipur, have printed cloth by hand with carved wooden blocks for centuries.",
+      "Each colour needs its own block, pressed by hand, so no two prints are exactly alike.",
+      "Bagru printers use dabu, a mud-resist paste, to keep parts of the cloth from taking the dye."
+    ]
+  },
+  "plate": {
+    "title": "Truck art",
+    "facts": [
+      "\"HORN OK PLEASE\" is painted on the backs of trucks across India. Where the OK came from is still debated.",
+      "Truck painters add eyes, nazar battu and sayings like \"Buri nazar wale tera muh kala\" to keep the evil eye away.",
+      "Truck art is hand-painted with brushes, often in a single sitting, in roadside workshops."
+    ]
+  },
+  "poster": {
+    "title": "Hand-painted signs",
+    "facts": [
+      "Before vinyl printing, every shop board and cinema poster in India was painted by hand.",
+      "Sign painters drop-shadow their letters in a second colour so they read from across the street.",
+      "Many painters were self-taught apprentices who learned lettering by copying their ustad's boards."
+    ]
+  },
+  "mehendi": {
+    "title": "Mehendi",
+    "facts": [
+      "Mehendi paste is made from the dried, powdered leaves of the henna plant.",
+      "It goes on for weddings and festivals like Karva Chauth, Teej and Eid.",
+      "The stain starts orange and darkens over a day or two. Everyone has a theory for making it darker."
+    ]
+  },
+  "naam": {
+    "title": "Kolam and you",
+    "facts": [
+      "Kolam patterns are often passed down from mother to daughter, each family with its own favourites.",
+      "Big kolams during the month of Margazhi can cover the whole street in front of a house.",
+      "A kolam with one unbroken line is said to stand for the endless cycle of life."
+    ]
+  },
+  "diya": {
+    "title": "Diya",
+    "facts": [
+      "Deepavali means \"row of lamps\": deepa (lamp) and avali (row).",
+      "A diya is a small clay lamp with a cotton wick and oil or ghee.",
+      "Diyas line doorsteps, windows and balconies so that no corner of the home stays dark."
+    ]
+  },
+  "greeting": {
+    "title": "Festival greetings",
+    "facts": [
+      "Festivals in India are celebrated by visiting family, sharing sweets and drawing at the doorstep.",
+      "Elders give blessings, and younger people touch their feet in respect.",
+      "On Bhai Dooj, siblings exchange blessings and gifts."
+    ]
+  }
+}
