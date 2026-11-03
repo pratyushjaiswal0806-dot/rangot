@@ -1,0 +1,37 @@
+/* /words: the glossary. Ivory word cards (their own colours, so they read the same at night), a
+   sticky A–Z bar under the site header, and a flash on the card a link lands on (:target). */
+.letters {
+  position: sticky; top: calc(60px + env(safe-area-inset-top)); z-index: 5; margin: 28px -16px 0; padding: 10px 16px;
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; background: #FBF3E4; border-bottom: 3px solid #1B1410;
+}
+.letters::-webkit-scrollbar { display: none; }
+.letters a {
+  flex: none; min-width: 44px; min-height: 44px; display: grid; place-items: center; border: 2px solid #1B1410; border-radius: 50%; background: #F6E7C8;
+  color: #1B1410; text-decoration: none; font: 800 17px/1 Sarpanch, sans-serif; transition: transform .2s var(--ease-pop), background .2s;
+}
+.letters a:hover { background: #FFC21A; transform: translateY(-3px) rotate(-6deg); color: #1B1410; }
+:where(html[data-theme='night']) .letters { background: #150B1D; border-color: #FFC21A; }
+
+.groups { display: flex; flex-direction: column; gap: 36px; padding-top: 28px; }
+.group { scroll-margin-top: 130px; display: grid; gap: 16px; }
+.letter {
+  margin: 0; width: 64px; height: 64px; display: grid; place-items: center; background: var(--halftone), #D63A2A; color: #FFD23F; border: 3px solid #1B1410;
+  box-shadow: 4px 4px 0 #1B1410; rotate: -4deg; font: 700 38px/1 var(--display); text-shadow: .06em .06em 0 #6B0F12;
+}
+.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.card {
+  scroll-margin-top: 140px; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; color: #1B1410; background: #FFF8EA;
+  border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410; rotate: var(--tilt);
+  animation: pinDrop .6s var(--ease-out) both; animation-play-state: var(--rv, running);
+}
+.card:target { animation: pinDrop .6s var(--ease-out) both, wordFlash 2.2s ease-out .3s; }
+@keyframes wordFlash { 0%, 40% { box-shadow: 5px 5px 0 #1B1410, 0 0 0 6px #FFC21A; background: #FFE9A6; } }
+.term { font: 700 24px/1.1 var(--display); }
+.script { font-size: 22px; font-weight: 700; color: #B0246A; }
+.lang { font: 800 11px/1.2 Sarpanch, sans-serif; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.meaning { margin: 4px 0 0; font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+.toy {
+  align-self: flex-start; display: inline-flex; align-items: center; min-height: 40px; margin-top: 6px; padding: 6px 12px; border: 2px solid #1B1410; box-shadow: 2px 2px 0 #1B1410; background: var(--halftone), #FFC21A;
+  color: #1B1410 !important; text-decoration: none; font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase;
+}
+.toy:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #1B1410; }

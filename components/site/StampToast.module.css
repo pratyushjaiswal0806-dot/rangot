@@ -1,0 +1,23 @@
+.toast {
+  position: fixed; left: 50%; top: calc(72px + env(safe-area-inset-top)); z-index: 150; translate: -50% 0; display: flex; align-items: center; gap: 14px;
+  padding: 10px 18px 10px 10px; max-width: calc(100vw - 24px); background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; border-radius: 999px; box-shadow: 5px 5px 0 #1B1410;
+  animation: slide .45s cubic-bezier(.2, .9, .3, 1.2) both; pointer-events: none;
+}
+.unlock { background: #FFC21A; }
+.star { background: #FBF3E4; border-color: #7A0E3A; box-shadow: 5px 5px 0 #7A0E3A; }
+.star .stamp { background: #FFC21A; color: #7A0E3A; border-color: #7A0E3A; }
+.stamp {
+  flex: none; width: 58px; height: 58px; border-radius: 50%; border: 3px solid #7A0E3A; outline: 2px solid #7A0E3A; outline-offset: -8px; display: grid; place-items: center;
+  background: rgba(255, 194, 26, .3); color: #7A0E3A; animation: slam .55s cubic-bezier(.3, 1.6, .5, 1) .12s both;
+}
+.unlock .stamp { background: #7A0E3A; color: #FFC21A; }
+.stamp b { font: 700 28px/1 var(--display); }
+.text { display: flex; flex-direction: column; min-width: 0; }
+.text small { font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #B0246A; }
+.unlock .text small { color: #7A0E3A; }
+.text strong { font: 700 22px/1.1 var(--display); }
+.text em { font-style: normal; font-weight: 700; font-size: 14px; }
+.out { animation: slideOut .26s ease-in both; }
+@keyframes slideOut { to { opacity: 0; translate: -50% -20px; } }
+@keyframes slide { from { opacity: 0; translate: -50% -24px; } to { opacity: 1; translate: -50% 0; } }
+@keyframes slam { 0% { scale: 2.4; rotate: 18deg; opacity: 0; } 60% { scale: .92; rotate: -10deg; opacity: 1; } 100% { scale: 1; rotate: -8deg; } }

@@ -1,0 +1,166 @@
+/* The story under a toy: ivory paper after the dark toy, cut in with a sindoor zigzag. Its own
+   colours are set here (not inherited), so it reads the same in the night theme. Phone first:
+   one column with 16px gutters; the timeline is a rail that scrolls inside itself. */
+.kahani {
+  position: relative; scroll-margin-top: 0; color: #1B1410; background-color: #FBF3E4; view-timeline: --kahani block;
+  background-image: repeating-linear-gradient(0deg, rgba(27,20,16,.035) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(27,20,16,.028) 0 1px, transparent 1px 5px);
+}
+.kahani a { color: #1B1410; }
+.kahani a:hover { color: #B0246A; }
+/* the reading thread: a haldi kolam bar pinned to the top, filling as you read (scroll-driven
+   where the browser can; elsewhere, and with reduced motion, it's simply not there) */
+.thread { display: none; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .thread {
+      display: block; position: sticky; top: 0; z-index: 4; height: 9px; margin-bottom: -9px; transform-origin: 0 50%; pointer-events: none;
+      background: radial-gradient(circle at 6px 4.5px, #1B1410 1.7px, transparent 2.2px) 0 0 / 12px 9px repeat-x, #FFC21A; border-bottom: 2px solid #1B1410;
+      animation: threadFill linear both; animation-timeline: --kahani; animation-range: contain 0% contain 100%;
+    }
+  }
+}
+@keyframes threadFill { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+.edge { height: 18px; background: conic-gradient(from 135deg at 50% 0, #2A1710 90deg, transparent 0) 0 0 / 24px 18px repeat-x, #D63A2A; border-bottom: 3px solid #1B1410; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: clamp(32px, 7vw, 64px) 16px clamp(48px, 8vw, 88px); display: flex; flex-direction: column; gap: clamp(40px, 8vw, 72px); }
+
+.head { display: flex; flex-direction: column; gap: 22px; }
+.lead { margin: 0; max-width: 34ch; font: 700 clamp(21px, 4.4vw, 30px)/1.3 var(--display); text-wrap: pretty; }
+/* "▶ Play the Kahani": opens the picture book */
+.playBtn {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 14px; padding: 8px 18px 8px 8px; cursor: pointer; text-align: left;
+  background: var(--halftone), #FFC21A; color: #1B1410; border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410;
+  transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop);
+}
+.playBtn:hover { transform: translate(-2px, -2px) rotate(-.8deg); box-shadow: 7px 7px 0 #1B1410; }
+.playBtn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; transition-duration: 0s; }
+.playDisc { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #1B1410; color: #FFC21A; box-shadow: 0 0 0 4px #FBF3E4, 0 0 0 7px #1B1410; animation: playPulse 2.4s ease-in-out infinite; }
+.playDisc svg { margin-left: 4px; }
+@keyframes playPulse { 50% { box-shadow: 0 0 0 4px #FBF3E4, 0 0 0 7px #1B1410, 0 0 0 13px rgba(27, 20, 16, .15); } }
+.playText { display: flex; flex-direction: column; gap: 3px; }
+.playText b { font: 700 22px/1 var(--display); }
+.playText small { font: 800 11px/1.2 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .8; }
+
+/* the header's buttons: the picture book, and Sangeet (the story's music) beside it */
+.headBtns { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 14px 18px; }
+.music { display: flex; flex-direction: column; gap: 10px; max-width: 46ch; }
+.musicBtn {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; min-height: 60px; padding: 8px 18px 8px 12px; cursor: pointer; text-align: left;
+  background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410;
+  transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop), background .2s;
+}
+.musicBtn:hover { transform: translate(-2px, -2px) rotate(.8deg); box-shadow: 7px 7px 0 #1B1410; }
+.musicBtn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; transition-duration: 0s; }
+.musicBtn[aria-pressed='false'] { opacity: .8; }
+.musicBtn[data-playing] { background: var(--halftone), #7A0E3A; color: #FBF3E4; }
+.musicText { display: flex; flex-direction: column; gap: 3px; }
+.musicText b { font: 700 22px/1 var(--display); }
+.musicText small { font: 800 11px/1.2 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+/* four bars, dancing while the music plays (still, at a resting height, otherwise and with reduced motion) */
+.bars { flex: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 10px; background: #1B1410; box-shadow: 0 0 0 3px #FBF3E4, 0 0 0 6px #1B1410; }
+.bars i { width: 4px; height: 8px; border-radius: 2px; background: #FFC21A; transform-origin: bottom; }
+.bars i:nth-child(2) { height: 14px; } .bars i:nth-child(3) { height: 11px; } .bars i:nth-child(4) { height: 6px; }
+.musicBtn[aria-pressed='false'] .bars i { height: 3px; background: #9C8A72; }
+.musicBtn[data-playing] .bars i { animation: eqBar .9s ease-in-out infinite alternate; }
+.musicBtn[data-playing] .bars i:nth-child(2) { animation-duration: .6s; animation-delay: -.2s; }
+.musicBtn[data-playing] .bars i:nth-child(3) { animation-duration: .75s; animation-delay: -.5s; }
+.musicBtn[data-playing] .bars i:nth-child(4) { animation-duration: .5s; animation-delay: -.1s; }
+@keyframes eqBar { from { scale: 1 .35; } to { scale: 1 1.3; } }
+.nowPlaying { margin: 0; font-size: 15px; line-height: 1.5; animation: fadeUp .5s var(--ease-out) both; }
+.nowPlaying b { font-family: var(--display); }
+.nowPlaying span { display: block; font: 800 11px/1.4 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 4px; }
+@keyframes fadeUp { from { opacity: 0; translate: 0 6px; } }
+
+/* ---- chapters ---- */
+.chapters { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+@media (min-width: 760px) { .chapters { grid-template-columns: 1fr 1fr; gap: 28px; } .chapter:first-child, .chapter:last-child:nth-child(even) { grid-column: 1 / -1; } }
+.chapter {
+  position: relative; display: flow-root; padding: 18px; background: #FFF8EA;
+  border: 3px solid #1B1410; box-shadow: 6px 6px 0 #1B1410; rotate: var(--tilt);
+  /* pinned up like a poster as it scrolls in (the second of a pair lands a beat later) */
+  animation: pinDrop .7s var(--ease-out) calc(var(--ci, 0) * 120ms) both; animation-play-state: var(--rv, running);
+}
+.chapter::before {
+  content: ''; position: absolute; z-index: 1; top: -10px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #FF8A7A, #D63A2A 60%); border: 3px solid #1B1410; box-shadow: 2px 2px 0 #1B1410;
+  animation: stampIn .4s var(--ease-pop) calc(var(--ci, 0) * 120ms + .5s) both; animation-play-state: var(--rv, running);
+}
+/* phones: the picture sits beside the heading and the text wraps under it; wider: a column of its own */
+.art { float: left; width: 76px; margin: 0 14px 6px 0; aspect-ratio: 1; border: 3px solid #1B1410; background: var(--halftone), #F6E7C8; display: grid; place-items: center; }
+@media (min-width: 760px) {
+  .chapter { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 18px; align-items: start; padding: 22px; }
+  .chapter:first-child { grid-template-columns: 150px minmax(0, 1fr); }
+  .art { float: none; width: auto; margin: 0; }
+}
+.art svg { width: 90%; height: 90%; }
+.text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+@media (max-width: 759px) { .text { display: block; } .text > * + * { margin-top: 6px; } .kicker { display: block; } }
+.kicker { font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #B0246A; }
+.title { margin: 0; font: 700 clamp(22px, 5vw, 28px)/1.1 var(--display); text-wrap: balance; }
+.body { margin: 0; font-size: 17px; line-height: 1.6; text-wrap: pretty; }
+
+/* ---- the toy's hands-on explainer ---- */
+.play {
+  position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; gap: 20px; padding: clamp(20px, 5vw, 36px) clamp(16px, 4vw, 36px);
+  background: var(--halftone), #2A1710; color: #FBF3E4; border: 3px solid #1B1410; box-shadow: 8px 8px 0 #D63A2A;
+}
+.play > svg { position: absolute; z-index: -1; right: -18%; top: -30%; width: min(90%, 620px); color: rgba(255, 194, 26, .08); animation: spin 240s linear infinite; }
+.play a { color: #FFC21A; }
+.playHead { display: flex; flex-direction: column; gap: 8px; }
+.playHead .partKicker { color: #FFC21A; }
+.playIntro { margin: 0; max-width: 56ch; font-size: 17px; line-height: 1.55; }
+
+/* ---- parts ---- */
+.part { display: flex; flex-direction: column; gap: 18px; min-width: 0; scroll-margin-top: 24px; }
+.partHead { display: flex; flex-direction: column; gap: 6px; }
+.partKicker { font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6B0F12; }
+.partTitle { font-size: clamp(32px, 8vw, 52px); }
+.note { margin: -6px 0 0; font-size: 16px; }
+
+/* ---- timeline: a dotted pulli line with cards hanging from it ---- */
+.timeline {
+  list-style: none; margin: 0 -16px; padding: 22px 16px 12px; display: grid; grid-auto-flow: column; grid-auto-columns: min(250px, 74vw); gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; overscroll-behavior-x: contain;
+  background: radial-gradient(circle, #1B1410 2.2px, transparent 2.8px) 0 6px / 14px 12px repeat-x;
+}
+@media (min-width: 1112px) { .timeline { margin: 0; padding-inline: 0; } }
+.moment {
+  position: relative; scroll-snap-align: start; display: flex; flex-direction: column; gap: 8px; padding: 16px; background: #FFF8EA; border: 3px solid #1B1410; box-shadow: 4px 4px 0 #1B1410;
+  /* each card swings in from its pin on the rail */
+  transform-origin: 25px -12px; animation: swingIn .8s var(--ease-pop) calc(var(--mi, 0) * 90ms) both; animation-play-state: var(--rv, running);
+}
+/* and sways a little as the rail scrolls past (a card coming in tilts one way, one leaving the other) */
+@supports (animation-timeline: view(inline)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .moment { animation: swingIn .8s var(--ease-pop) calc(var(--mi, 0) * 90ms) both, railSway linear both; animation-timeline: auto, view(inline); animation-play-state: var(--rv, running), running; }
+  }
+}
+@keyframes railSway { from { rotate: 3deg } 50% { rotate: 0deg } to { rotate: -3deg } }
+.moment::before { content: ""; position: absolute; left: 18px; top: -19px; width: 14px; height: 14px; border-radius: 50%; background: #FFC21A; border: 3px solid #1B1410; }
+.moment p { margin: 0; font-size: 15px; line-height: 1.5; }
+.when { align-self: flex-start; padding: 4px 8px; background: #A8261B; color: #FBF3E4; border: 2px solid #1B1410; font: 800 12px/1.1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.momentTitle { font: 700 20px/1.15 var(--display); }
+
+/* ---- words ---- */
+.words { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.words button { text-decoration: none; }
+.wordChip { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 14px; background: #FFF8EA; border: 3px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; font: 700 18px/1.2 var(--display); }
+.wordChip span { font: 700 16px/1 Mukta, sans-serif; color: #B0246A; }
+
+/* ---- end: sources and the next toy ---- */
+.end { display: grid; gap: 28px; padding-top: 28px; border-top: 3px dashed rgba(27, 20, 16, .35); }
+@media (min-width: 760px) { .end { grid-template-columns: 1fr 1fr; align-items: start; } }
+.sources ul { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
+.after { display: flex; flex-direction: column; gap: 14px; }
+.again { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font: 800 14px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.next {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 16px; padding: 16px; text-decoration: none; background: var(--halftone), var(--floor); color: var(--on) !important;
+  border: 3px solid #1B1410; box-shadow: 6px 6px 0 #1B1410; transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop);
+}
+.next:hover { transform: translate(-2px, -2px) rotate(-.6deg); box-shadow: 8px 8px 0 #1B1410; }
+.nextArt { display: block; width: 96px; aspect-ratio: 1; overflow: hidden; border: 3px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; transition: transform .3s var(--ease-pop); }
+.next:hover .nextArt { transform: rotate(-4deg) scale(1.05); }
+.nextArt canvas { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nextText { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.nextText span { font: 800 12px/1 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.nextText b { font: 700 30px/1.05 var(--display); }
+.nextText small { font-size: 16px; }

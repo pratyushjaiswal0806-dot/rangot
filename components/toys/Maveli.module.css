@@ -1,0 +1,12 @@
+/* Maveli's walk across the bottom of the stage: in from the left, a pause and a wave, out right. */
+.walk { position: absolute; left: 0; bottom: 6px; width: 110px; pointer-events: none; z-index: 4; animation: mvWalk 5.6s linear both; }
+.king { display: block; width: 100%; height: auto; filter: drop-shadow(0 0 4px rgba(255, 194, 26, .55)); animation: mvBob .45s ease-in-out infinite alternate; }
+.umbrella { transform-box: view-box; transform-origin: 60px 80px; animation: mvTwirl 1.2s ease-in-out infinite alternate; }
+.legL, .legR { transform-box: view-box; animation: mvStep .45s ease-in-out infinite alternate; }
+.legL { transform-origin: 48px 156px; } .legR { transform-origin: 72px 156px; animation-direction: alternate-reverse; }
+.wave { transform-box: view-box; transform-origin: 84px 104px; animation: mvWave 5.6s ease-in-out both; }
+@keyframes mvWalk { 0% { translate: -120px 0; opacity: 0 } 6% { opacity: 1 } 38%, 62% { translate: calc(var(--stage-w, 320px) / 2 - 55px) 0 } 94% { opacity: 1 } 100% { translate: calc(var(--stage-w, 320px) + 20px) 0; opacity: 0 } }
+@keyframes mvBob { to { translate: 0 -3px } }
+@keyframes mvTwirl { from { rotate: -6deg } to { rotate: 6deg } }
+@keyframes mvStep { from { rotate: -14deg } to { rotate: 14deg } }
+@keyframes mvWave { 0%, 40%, 62%, 100% { rotate: 0deg } 45%, 55% { rotate: -40deg } 50% { rotate: -10deg } }

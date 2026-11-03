@@ -1,19 +1,32 @@
 'use client';
-// My Courtyard: a festival passport (one stamp per art form tried), badges, and links to
-// everything you've shared. All of it lives in this browser.
+// My Courtyard: a festival passport (one stamp per art form tried), unlocks, badges, and links
+// to everything you've shared. All of it lives in this browser.
 import { useEffect, useState } from 'react';
-import { STAMPS, badges, load, onProgress } from '../lib/progress';
+import { STAMPS, UNLOCKS, badges, isUnlocked, load, onProgress } from '../lib/progress';
+import ShareSheet, { type ShareRequest } from './ShareSheet';
+import { drawCertificate } from '../lib/art/certificate';
+import { savedName } from '../lib/share';
 import { pulliStats } from '../lib/pulli';
 import { LABEL } from '../lib/recipe';
+import { CHALLENGES, challengesFor } from '../lib/challenges';
+import { Stars } from './toys/Challenges';
+import { TOYS } from '../lib/toys';
 
 export default function MyCourtyard({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [st, setSt] = useState(() => (typeof window === 'undefined' ? null : load()));
+  const [cert, setCert] = useState<ShareRequest | null>(null);
   useEffect(() => { setSt(load()); return onProgress(() => setSt(load())); }, []);
   useEffect(() => { if (open) setSt(load()); }, [open]);
-  if (!open || !st) return null;
+  const sheet = <ShareSheet req={cert} onClose={() => setCert(null)} />;
+  if (!open || !st) return sheet;
+  const shareCert = () => {
+    const n = savedName();
+    setCert({ recipe: null, art: drawCertificate(n), asIs: true, filename: 'kalakaar-certificate', heading: 'Your Kalakaar certificate', kicker: 'Festival passport', title: (m) => `${m || n || 'I'} tried every art form at Rangotsav`, cta: 'Get yours', prompt: `Collect all ${STAMPS.length} stamps 🪔 #Rangotsav` });
+  };
   const streak = pulliStats().streak;
   const got = STAMPS.filter((s) => st.stamps[s.id]).length;
   return (
+    <>
     <div className="rg-scrim" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} onKeyDown={(e) => { e.stopPropagation(); if (e.key === 'Escape') onClose(); }}>
       <div className="rg-sheet" role="dialog" aria-modal="true" aria-label="My Courtyard">
         <div className="rg-sheet__head">
@@ -25,10 +38,34 @@ export default function MyCourtyard({ open, onClose }: { open: boolean; onClose:
             <span className="rg-label">Festival passport · {got}/{STAMPS.length} stamps</span>
             <div className="rg-stamps">
               {STAMPS.map((s) => (
-                <div key={s.id} className={'rg-stamp' + (st.stamps[s.id] ? ' is-got' : '')} aria-label={`${s.label}: ${st.stamps[s.id] ? 'done' : 'not yet'}`}>
+                <div key={s.id} role="img" className={'rg-stamp' + (st.stamps[s.id] ? ' is-got' : '')} aria-label={`${s.label}: ${st.stamps[s.id] ? 'done' : 'not yet'}`}>
                   <b aria-hidden="true">{s.glyph}</b>{s.label}
                 </div>
               ))}
+            </div>
+          </section>
+          <section>
+            <span className="rg-label">Chunauti · ★ {st.challenges.length}/{CHALLENGES.length}</span>
+            <div className="rg-row">
+              {TOYS.map((t) => {
+                const k = challengesFor(t.id).filter((c) => st.challenges.includes(c.id)).length;
+                return <span key={t.id} className="rg-chip" style={{ cursor: 'default' }} aria-label={`${t.title}: ${k} of 3 challenges`}>{t.title} <b style={{ color: '#B0246A' }}><Stars got={k} of={3} /></b></span>;
+              })}
+            </div>
+          </section>
+          <section>
+            <span className="rg-label">Unlocks</span>
+            <div className="rg-badges">
+              {UNLOCKS.map((u) => {
+                const got = isUnlocked(u.id, st);
+                return (
+                  <div key={u.id} className={'rg-badge' + (got ? ' is-got' : '')}>
+                    <span aria-hidden="true" style={{ fontSize: 20 }}>{got ? '★' : '🔒'}</span>
+                    <span style={{ flex: 1 }}><b>{u.label}</b><br /><span className="rg-small">{got ? `Unlocked · in ${u.toy}` : u.how}</span></span>
+                    {got && u.id === 'kalakaar' && <button className="rg-chip" onClick={shareCert}>Share certificate</button>}
+                  </div>
+                );
+              })}
             </div>
           </section>
           <section>
@@ -54,5 +91,7 @@ export default function MyCourtyard({ open, onClose }: { open: boolean; onClose:
         </div>
       </div>
     </div>
+    {sheet}
+    </>
   );
 }

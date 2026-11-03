@@ -1,0 +1,25 @@
+/* India as a grid of state tiles; lit tiles are buttons, the card shows the selected place. */
+.wrap { display: grid; gap: 18px; align-items: start; }
+@media (min-width: 760px) { .wrap { grid-template-columns: minmax(0, 440px) minmax(0, 1fr); gap: 28px; } }
+.map { display: grid; gap: 4px; width: 100%; max-width: 440px; aspect-ratio: 8 / 7; }
+.tile {
+  display: grid; place-items: center; min-width: 0; padding: 0; border: 2px solid rgba(27, 20, 16, .25); border-radius: 6px; background: rgba(27, 20, 16, .06);
+  font: 800 clamp(11px, 3.4vw, 13px)/1 Sarpanch, sans-serif; letter-spacing: .02em; color: rgba(27, 20, 16, .45);
+}
+.on {
+  border: 2px solid #1B1410; background: var(--accent); color: #1B1410; box-shadow: 2px 2px 0 #1B1410; cursor: pointer; transition: transform .15s, box-shadow .15s;
+  /* lit one after another, like diyas, when the map scrolls in */
+  animation: diyaOn .55s var(--ease-pop) calc(.15s + var(--li, 0) * 75ms) both; animation-play-state: var(--rv, running);
+}
+.on:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 #1B1410; }
+.on[aria-pressed='true'] { background: #A8261B; color: #FBF3E4; transform: translate(2px, 2px); box-shadow: 0 0 0 #1B1410; animation: tileFlicker 1.3s ease-in-out infinite; }
+@keyframes diyaOn { from { scale: .3; opacity: 0; filter: brightness(2) } 55% { scale: 1.18; opacity: 1; filter: brightness(1.4) drop-shadow(0 0 6px #FFC21A) } }
+@keyframes tileFlicker { 0%, 100% { outline: 0 solid rgba(255, 194, 26, 0); filter: none } 50% { outline: 3px solid rgba(255, 194, 26, .75); filter: drop-shadow(0 0 5px rgba(255, 194, 26, .8)) } }
+.card { perspective: 800px; padding: 16px 18px; background: #FFF8EA; border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410; min-height: 150px; }
+/* each new place flips over into the card */
+.flip { display: flex; flex-direction: column; gap: 6px; transform-origin: 50% 0; animation: flipIn .45s var(--ease-out) both; }
+.where { font: 800 12px/1 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6B0F12; }
+.title { font: 700 28px/1.05 var(--display); }
+.script { display: flex; align-items: baseline; gap: 10px; font-size: 24px; font-weight: 700; color: #B0246A; }
+.script small { font: 800 11px/1 Sarpanch, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #1B1410; opacity: .7; }
+.body { margin: 0; font-size: 17px; line-height: 1.55; }

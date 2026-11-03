@@ -5,9 +5,10 @@ import { creationKey, getCreation, limited, noStore, ONE_YEAR, redis } from '../
 // "Light a diya back": a counter per share link, so the sender can come back and see who lit one.
 const key = (id: string) => creationKey(id) + ':diyas';
 
-export async function GET(_req: Request, ctx: RouteContext<'/api/creations/[id]/diya'>) {
+export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-  if (!redis || !ID_RE.test(id)) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
+  if (!ID_RE.test(id)) return NextResponse.json({ error: 'bad id' }, { status: 400, headers: noStore });
+  if (!redis) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
   try {
     return NextResponse.json({ count: Number((await redis.get<number>(key(id))) ?? 0) }, { headers: noStore });
   } catch {
@@ -15,9 +16,10 @@ export async function GET(_req: Request, ctx: RouteContext<'/api/creations/[id]/
   }
 }
 
-export async function POST(req: Request, ctx: RouteContext<'/api/creations/[id]/diya'>) {
+export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-  if (!redis || !ID_RE.test(id)) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
+  if (!ID_RE.test(id)) return NextResponse.json({ error: 'bad id' }, { status: 400, headers: noStore });
+  if (!redis) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
   try {
     if (await limited(req, 'diya-back', 10)) return NextResponse.json({ error: 'slow down' }, { status: 429, headers: noStore });
     if (!(await getCreation(id))) return NextResponse.json({ error: 'not found' }, { status: 404, headers: noStore });

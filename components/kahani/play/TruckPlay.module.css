@@ -1,0 +1,12 @@
+/* Numbered spots over the truck art: a round badge that pulses until you've opened it. */
+.spot {
+  position: absolute; translate: -50% -50%; width: 30px; height: 30px; padding: 0; border-radius: 50%;
+  border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; font: 800 14px/1 Sarpanch, sans-serif; cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(255, 194, 26, .8); animation: spotPulse 2s ease-out infinite;
+}
+/* a bigger target than it looks */
+.spot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; }
+.seen { background: #2F6B3B; color: #FBF3E4; animation: none; }
+.spot[aria-pressed='true'] { background: #FFC21A; color: #1B1410; scale: 1.15; animation: none; }
+@keyframes spotPulse { 70% { box-shadow: 0 0 0 10px rgba(255, 194, 26, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 194, 26, 0); } }
+@media (prefers-reduced-motion: reduce) { .spot { animation: none; } }

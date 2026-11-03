@@ -1,0 +1,18 @@
+.wrap { position: relative; line-height: 0; container-type: size; }
+.intro {
+  position: absolute; inset: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 22px; text-align: center; line-height: 1.35;
+  background: rgba(27, 20, 16, .82); color: #FBF3E4;
+}
+.intro b { font: 700 clamp(22px, 5.5vw, 30px)/1.15 var(--display); color: #FFC21A; }
+.intro span { font-size: 15px; font-weight: 600; max-width: 34ch; }
+.intro button { width: min(100%, 280px); flex: none; }
+.intro em { font-style: normal; font-weight: 700; color: #FFC21A; font-size: 14px; }
+/* small phones: the stage is short, so the card tightens up to fit inside it */
+@container (max-height: 370px) {
+  .intro { gap: 9px; padding: 12px 14px; }
+  .intro b { font-size: 19px; }
+  .intro span { font-size: 13px; line-height: 1.3; }
+  .intro button { min-height: 44px; font-size: 13px; }
+}
+.video { position: fixed; left: -10px; top: -10px; width: 2px; height: 2px; opacity: 0; pointer-events: none; }
+.note { margin: 0; font-size: 14px; font-weight: 600; opacity: .8; }

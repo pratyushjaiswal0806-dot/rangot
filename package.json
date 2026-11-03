@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "gen": "node scripts/build-view.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@fontsource/baloo-tamma-2": "5.3.0",
+    "@fontsource/mukta": "5.3.0",
+    "@fontsource/palanquin-dark": "5.3.0",
+    "@fontsource/sarpanch": "5.3.0",
+    "@fontsource/yatra-one": "5.3.0",
     "@upstash/redis": "1.39.0",
     "@vercel/analytics": "2.0.1",
     "next": "^16.4.3",
@@ -19,7 +23,6 @@
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "parse5": "^8.0.1",
     "typescript": "^7.0.2"
   }
 }

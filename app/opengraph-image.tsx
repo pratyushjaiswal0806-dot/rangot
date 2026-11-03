@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { kolamPathD } from '../lib/art/kolam';
 import { naamKolam } from '../lib/art/naam';
 
-export const alt = 'Rangotsav: weave your name into a kolam, draw rangoli, send festival greetings';
+export const alt = 'Rangotsav: weave your name into a kolam, draw rangoli, light a diya';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 

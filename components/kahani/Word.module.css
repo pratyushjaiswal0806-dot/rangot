@@ -1,0 +1,22 @@
+/* A tappable glossary word and its meaning card. */
+.word {
+  display: inline; padding: 0; margin: 0; border: 0; font: inherit; color: inherit; cursor: pointer;
+  text-decoration: underline dotted 2px; text-decoration-color: #D63A2A; text-underline-offset: 4px;
+  /* a haldi highlighter swept under the word once its chapter scrolls in, so it's clear it can be tapped */
+  background: linear-gradient(rgba(255, 194, 26, .38), rgba(255, 194, 26, .38)) no-repeat 0 88% / 100% 34%;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  animation: wordSweep .7s var(--ease-out) .55s both; animation-play-state: var(--rv, running);
+}
+@keyframes wordSweep { from { background-size: 0% 34% } }
+.word:hover, .word[aria-expanded='true'] { background-size: 100% 100%; background-image: linear-gradient(rgba(255, 194, 26, .45), rgba(255, 194, 26, .45)); }
+.card {
+  position: absolute; z-index: 140; width: min(300px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 6px; padding: 14px 16px;
+  background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410; text-align: left;
+  font: 400 15px/1.45 Mukta, sans-serif; letter-spacing: 0; text-transform: none; animation: pop .22s ease-out;
+}
+.head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+.head b { font: 700 21px/1.1 var(--display); }
+.script { font-size: 19px; font-weight: 700; color: #B0246A; }
+.lang { font: 800 11px/1 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6B0F12; }
+.links { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 2px; font-weight: 800; font-size: 14px; }
+.links a { color: #1B1410; }

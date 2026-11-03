@@ -70,5 +70,68 @@
       "Elders give blessings, and younger people touch their feet in respect.",
       "On Bhai Dooj, siblings exchange blessings and gifts."
     ]
+  },
+  "pookalam": {
+    "title": "Pookalam",
+    "facts": [
+      "Pookalam is the flower carpet laid at the doorstep for Onam, Kerala's harvest festival.",
+      "It grows over the ten days of Onam: a small ring of flowers on Atham, the first day, and a bigger carpet each day until Thiruvonam.",
+      "Thumba, a tiny white flower, is a must in many homes. It is said to be King Mahabali's favourite.",
+      "Only loose petals are used, never dyed powder, so a pookalam fades and wilts and is laid fresh again."
+    ]
+  },
+  "bandhani": {
+    "title": "Bandhani",
+    "facts": [
+      "Bandhani comes from bandhan, to tie. The cloth is pinched up and tied with thread, often thousands of tiny knots, before it is dyed.",
+      "It is made in Gujarat and Rajasthan. Jamnagar and the towns of Kutch are famous for it.",
+      "Dyeing goes from light to dark: yellow first, then red or green, then maroon or black. Each round of knots keeps the colour before it.",
+      "Patterns are named for their knots: ekdali is a single dot, trikunti three, chaubundi four.",
+      "A bandhani odhni or chaniya choli is a Navratri favourite for garba nights."
+    ]
+  },
+  "phuljhadi": {
+    "title": "Phuljhadi",
+    "facts": [
+      "Phuljhadi means a shower of flowers: phool is a flower, and a jhadi is a shower.",
+      "Diwali falls on amavasya, the new-moon night, so the lamps have the dark sky to themselves.",
+      "A sparkler's branching sparks are tiny bits of burning iron. A little carbon in the iron makes them burst into stars.",
+      "Strontium burns red, barium green and copper blue-green. Blue is the hardest firework colour to make.",
+      "Most of India's fireworks are made in and around Sivakasi in Tamil Nadu.",
+      "Real sparklers burn at over 1,000°C. Hold one at arm's length and drop the hot wire into a bucket of water."
+    ]
+  },
+  "kathputli": {
+    "title": "Kathputli",
+    "facts": [
+      "Kathputli means a doll (putli) made of wood (kath).",
+      "Most kathputlis have no legs. A long skirt sweeps the floor, so they can glide and spin.",
+      "The puppeteer speaks through a reed whistle called the boli, and someone out front repeats each line in plain words.",
+      "The best-loved kathputli play tells the story of Amar Singh Rathore of Nagaur.",
+      "India has string, rod, glove and shadow puppets. Andhra's leather puppets are painted on both sides and throw coloured shadows.",
+      "World Puppetry Day is 21 March."
+    ]
+  },
+  "warli": {
+    "title": "Warli",
+    "facts": [
+      "Warli painters use only white: rice paste and water with a little gum, on a red-brown wall.",
+      "The brush is a bamboo stick, chewed at the end until it is soft.",
+      "Everything starts from three shapes: the circle (sun and moon), the triangle (mountains and trees) and the square.",
+      "In the tarpa dance, dancers link arms and wind round the tarpa player in a spiral.",
+      "Jivya Soma Mashe of Dahanu took Warli painting from walls to the world. He received the Padma Shri in 2011.",
+      "Warli painting has had a Geographical Indication tag since 2014."
+    ]
+  },
+  "patang": {
+    "title": "Patang",
+    "facts": [
+      "Uttarayan means the sun's journey north. Gujarat flies kites on Makar Sankranti, around 14 January.",
+      "Kai po che means roughly “I have cut it!”: the shout when your kite cuts another.",
+      "A patang is paper on two strips of bamboo: a straight spine and a bow bent across the top.",
+      "The kanna, a little bridle of thread, decides how a kite flies.",
+      "Glass-coated manja hurts birds. In 2017 the National Green Tribunal banned it, along with nylon string.",
+      "On Uttarayan night, paper lanterns called tukkal rise on kite strings."
+    ]
   }
 }

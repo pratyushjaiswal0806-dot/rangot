@@ -1,6 +1,8 @@
 'use client';
 // The daily Pulli puzzle. Left: today's woven line (no dots). Right: your board; the line
-// weaves around your dots live as you tap. Six checks to match it exactly.
+// weaves around your dots live as you tap. Six checks to match it exactly. A miss shakes the
+// board; a win makes it glow, gets a cheer and Cheenti comes for breakfast; once today's puzzle
+// is over she naps until tomorrow's. The streak's flame grows with the streak.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { C } from '../lib/art/palette';
 import { drawKolam, kolamSegs } from '../lib/art/kolam';
@@ -8,6 +10,11 @@ import { istDay } from '../lib/festivals';
 import { GRID, TRIES, evaluate, key, loadToday, msToNext, puzzleNumber, pulliStats, recordResult, saveToday, shareText, target, type Dot, type Mark } from '../lib/pulli';
 import { copy, whatsapp } from '../lib/share';
 import { stamp } from '../lib/progress';
+import Cheenti from './site/Cheenti';
+import { say, tipFor } from '../lib/cheenti';
+import { done as earned } from '../lib/challenges';
+import { cheer } from '../lib/toast';
+import { shake } from '../lib/motion';
 import { track } from '../lib/track';
 
 const MARK: Record<Mark, string> = { hit: '#2F6B3B', near: '#DE9B1C', miss: '#8a7f73' };
@@ -42,6 +49,7 @@ export default function Pulli() {
   const [global, setGlobal] = useState<{ played: number; solved: number } | null>(null);
   const [msg, setMsg] = useState('');
   const [left, setLeft] = useState('');
+  const [glow, setGlow] = useState(false);
 
   useEffect(() => {
     const d = istDay();
@@ -54,7 +62,8 @@ export default function Pulli() {
     const tick = () => { const ms = msToNext(); setLeft(`${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`); };
     tick();
     const iv = setInterval(tick, 30000);
-    return () => clearInterval(iv);
+    const tip = setTimeout(() => { if (!t.done) say(tipFor('pulli'), { once: 'tip:pulli', pose: 'point', ms: 6500 }); }, 2000);
+    return () => { clearInterval(iv); clearTimeout(tip); };
   }, []);
 
   const tgt = useMemo(() => (day ? target(day) : []), [day]);
@@ -98,24 +107,34 @@ export default function Pulli() {
     saveToday({ day, guesses: next, done, won: ev.won });
     if (done) {
       setOver({ won: ev.won });
-      setStats(recordResult(day, ev.won, next.length));
+      const st = recordResult(day, ev.won, next.length);
+      setStats(st);
       stamp('pulli');
       track('pulli_solved', { won: ev.won, tries: next.length });
       fetch('/api/pulli', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ day, tries: ev.won ? next.length : 0 }) }).catch(() => {});
+      if (ev.won) {
+        setGlow(true);
+        cheer('शाबाश!', 'Shabaash!');
+        earned('pulli-solve');
+        if (next.length <= 3) earned('pulli-three');
+        if (st.streak >= 3) earned('pulli-streak');
+        setTimeout(() => say('Breakfast time! Today’s kolam was delicious.', { pose: 'eat', ms: 4200 }), 1900);
+      }
     } else {
       setMsg(`${ev.marks.filter((m) => m === 'hit').length} right, ${ev.missing} still missing.`);
+      shake(bRef.current, 5, 320);
     }
   }, [day, over, dots, guesses, tgt]);
 
-  if (!day) return <main className="rg-page" />;
+  if (!day) return <div className="rg-page" id="toy" />;
   const url = `${location.origin}/pulli`;
   const text = shareText(day, guesses, !!over?.won, tgt, url);
 
   return (
-    <main className="rg-page">
+    <div className="rg-page" id="toy">
       <header className="rg-top">
         <a href="/" className="rg-logo">Rangotsav</a>
-        <span className="rg-chip" style={{ pointerEvents: 'none' }}>Streak {stats.streak} 🔥</span>
+        <span className="rg-chip" style={{ pointerEvents: 'none' }}>Streak {stats.streak} <span aria-hidden="true" className="rg-flame" style={{ ['--k' as string]: Math.min(2, 1 + stats.streak * 0.12) }}>🔥</span></span>
       </header>
       <section className="rg-pulli">
         <div className="rg-pulli__head">
@@ -131,7 +150,7 @@ export default function Pulli() {
           </figure>
           <figure>
             <figcaption className="rg-label" style={{ color: 'var(--marigold)' }}>Your dots · {dots.length}/{tgt.length}</figcaption>
-            <canvas ref={bRef} className="rg-pulli__cv" style={{ cursor: over ? 'default' : 'pointer', touchAction: 'manipulation' }} onPointerDown={tap} role="img" aria-label={`Your board, ${dots.length} dots placed. Tap a cell to add or remove a dot.`} />
+            <canvas ref={bRef} className={`rg-pulli__cv${glow ? ' is-won' : ''}`} style={{ cursor: over ? 'default' : 'pointer', touchAction: 'manipulation' }} onPointerDown={tap} role="img" aria-label={`Your board, ${dots.length} dots placed. Tap a cell to add or remove a dot.`} />
           </figure>
         </div>
         {!over ? (
@@ -154,8 +173,11 @@ export default function Pulli() {
               <span><b>{stats.streak}</b> streak</span><span><b>{stats.best}</b> best</span>
             </div>
             {global && global.played > 0 && <p className="rg-p">{global.solved.toLocaleString('en-IN')} of {global.played.toLocaleString('en-IN')} players solved today&apos;s Pulli.</p>}
-            <p className="rg-p">Next Pulli in <b>{left}</b>.</p>
-            <a className="rg-btn rg-btn--block" href="/?tool=kolam">Weave a kolam of your own →</a>
+            <div className="rg-pulli__nap">
+              <span className="rg-pulli__ant"><Cheenti pose="sleep" /></span>
+              <p className="rg-p">Kal milte hain! Next Pulli in <b>{left}</b>.</p>
+            </div>
+            <a className="rg-btn rg-btn--block" href="/kolam">Weave a kolam of your own →</a>
           </div>
         )}
         {guesses.length > 0 && (
@@ -172,7 +194,6 @@ export default function Pulli() {
           </ol>
         )}
       </section>
-      <footer className="rg-foot">A Pegasus · RVITM project · <a href="/">rangotsav</a></footer>
-    </main>
+    </div>
   );
 }
