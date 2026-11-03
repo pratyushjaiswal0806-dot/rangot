@@ -1,0 +1,33 @@
+.diya { scroll-margin-top: 60px; position: relative; color: #FBF3E4; overflow: hidden; background: linear-gradient(180deg, #160A24 0%, #2A0B2E 30%, #4A0A30 62%, #7A0E3A 100%); }
+.diya > :not(canvas) { position: relative; z-index: 1; }
+.inner { max-width: 860px; margin: 0 auto; padding: 44px 20px 40px; display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.lead { margin: 0; font-size: 18px; line-height: 1.6; max-width: 44ch; text-wrap: pretty; }
+
+.big { position: relative; width: min(68vw, 260px); aspect-ratio: 1; border: 0; padding: 0; background: transparent; cursor: pointer; display: block; transition: transform .15s; }
+.big:active { transform: scale(.95); }
+.halo { position: absolute; left: 50%; aspect-ratio: 1; border-radius: 50%; animation: glow 2s ease-in-out infinite; }
+.flameWrap { position: absolute; left: 50%; bottom: 50%; width: 26%; aspect-ratio: 1; margin-left: -13%; animation: pop .5s cubic-bezier(.3, 1.5, .5, 1) both; }
+.flicker { width: 100%; height: 100%; transform-origin: 50% 100%; animation: flicker 1.4s ease-in-out infinite; }
+.flame { position: absolute; inset: 0; background: #FFC21A; border: 3px solid #1B1410; border-radius: 50% 0 50% 50%; transform: rotate(-45deg); }
+.flame div { position: absolute; inset: 30%; background: #E8761E; border-radius: 50% 0 50% 50%; }
+.tap {
+  position: absolute; left: 50%; bottom: 66%; translate: -50% 0; padding: 6px 12px; border: 2px solid #1B1410; background: #FBF3E4; color: #1B1410;
+  font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .12em; white-space: nowrap; box-shadow: 3px 3px 0 #1B1410; animation: nudge 1.6s ease-in-out infinite;
+}
+.sparks { position: absolute; left: 50%; top: 38%; width: 0; height: 0; }
+.sparks div { position: absolute; border-radius: 50%; animation: spark .7s ease-out forwards; }
+.wick { position: absolute; left: 50%; bottom: 44%; width: 6px; height: 9%; margin-left: -3px; background: #1B1410; }
+.rim { position: absolute; left: 4%; right: 4%; bottom: 38%; height: 13%; background: #6E2A14; border: 4px solid #1B1410; border-radius: 50%; }
+.bowl { position: absolute; left: 8%; right: 8%; bottom: 14%; height: 30%; background: #B4542A; border: 4px solid #1B1410; border-top: 0; border-radius: 0 0 50% 50% / 0 0 100% 100%; display: flex; justify-content: center; align-items: flex-start; gap: 10px; padding-top: 7%; }
+.bowl span { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #1B1410; }
+.foot { position: absolute; left: 36%; right: 36%; bottom: 7%; height: 9%; background: #B4542A; border: 4px solid #1B1410; border-top: 0; }
+
+.counter { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.count { font-family: var(--display); font-weight: 700; font-size: clamp(56px, 16vw, 112px); line-height: 1; color: #FFC21A; -webkit-text-stroke: 1.5px #1B1410; text-shadow: 5px 5px 0 #3A0519; }
+.countLabel { font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 16px; letter-spacing: .14em; text-transform: uppercase; }
+.msg { margin: 0; font-size: 17px; line-height: 1.55; max-width: 40ch; text-wrap: pretty; min-height: 3.1em; }
+
+.skyline { height: 150px; pointer-events: none; }
+.fw { margin: 8px 0 0; font-size: 14px; font-weight: 700; color: #F6E7C8; opacity: .85; max-width: 46ch; }
+.shareMine { margin-top: -8px; min-height: 44px; padding: 0 16px; border: 2px solid #FFC21A; border-radius: 999px; background: rgba(255, 194, 26, .12); color: #FFC21A; font: 800 14px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.shareMine:hover { background: rgba(255, 194, 26, .24); }

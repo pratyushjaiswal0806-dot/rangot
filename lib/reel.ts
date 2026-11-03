@@ -4,6 +4,7 @@
 import { createPlayer } from './art/player';
 import { artBox, H, storyBackground, storyFrame, storyText, W, type StoryTemplate, type StoryText } from './art/story';
 import { INK } from './art/palette';
+import { dholakInto, drone, tarpaInto } from './sfx';
 import type { Recipe } from './recipe';
 
 const TYPES = ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm'];
@@ -12,30 +13,6 @@ export function reelType(): string | null {
   return TYPES.find((t) => MediaRecorder.isTypeSupported(t)) ?? null;
 }
 
-function drone(a: AudioContext, out: AudioNode, dur: number) {
-  const t0 = a.currentTime;
-  const master = a.createGain();
-  master.gain.setValueAtTime(0, t0);
-  master.gain.linearRampToValueAtTime(0.16, t0 + 1.2);
-  master.gain.setValueAtTime(0.16, t0 + dur - 1.2);
-  master.gain.linearRampToValueAtTime(0, t0 + dur);
-  master.connect(out);
-  // Pa, Sa, Sa, low Sa: the four tanpura strings, plucked in a slow cycle.
-  const notes = [220, 293.66, 293.66, 146.83];
-  for (let k = 0; k * 0.9 < dur; k++) {
-    const f = notes[k % 4], t = t0 + k * 0.9;
-    for (const [m, v] of [[1, 0.5], [2, 0.18], [3, 0.1], [4, 0.06]] as const) {
-      const o = a.createOscillator(), g = a.createGain();
-      o.type = 'sine';
-      o.frequency.value = f * m * (1 + (m - 1) * 0.0015);
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(v, t + 0.04);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 3.2);
-      o.connect(g); g.connect(master);
-      o.start(t); o.stop(t + 3.3);
-    }
-  }
-}
 function ting(a: AudioContext, out: AudioNode, at: number) {
   for (const [f, v] of [[880, 0.12], [1320, 0.07], [2640, 0.025]]) {
     const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + at;
@@ -62,12 +39,16 @@ export async function recordReel(recipe: Recipe, t: StoryTemplate, text: StoryTe
 
   const player = createPlayer(recipe, 900);
   const box = artBox(t, player.canvas.width, player.canvas.height);
-  const intro = 500, play = Math.min(5500, Math.max(2500, player.duration)), hold = 2600;
+  // a puppet show plays at its real speed, to its dholak; everything else fits in 5.5 s over a drone
+  const show = recipe.type === 'kathputli';
+  const intro = 500, play = Math.min(show ? 13000 : 5500, Math.max(2500, player.duration)), hold = 2600;
   const total = intro + play + hold;
 
   const ac = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
   const dest = ac.createMediaStreamDestination();
-  drone(ac, dest, total / 1000);
+  if (show) dholakInto(ac, dest, (intro + play) / 1000);
+  else if (recipe.type === 'warli') tarpaInto(ac, dest, total / 1000, recipe.data.s / 10, recipe.data.r ? 1 : 0);
+  else drone(ac, dest, total / 1000);
   ting(ac, dest, (intro + play) / 1000);
   const stream = new MediaStream([...cv.captureStream(30).getVideoTracks(), ...dest.stream.getAudioTracks()]);
   const rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 6_000_000 });

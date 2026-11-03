@@ -1,25 +1,13 @@
 'use client';
 // A festival greeting someone sent you: tap to open, diyas light one by one, their art replays,
-// then "light a diya back" and "send your own".
+// then "light a diya back" and "light one for someone".
 import { useEffect, useState } from 'react';
 import Replay from './Replay';
 import DiyaBack from './DiyaBack';
 import { festivalById, greetingText, messageText } from '../lib/festivals';
 import type { Recipe, GreetingData } from '../lib/recipe';
 import { track } from '../lib/track';
-
-function ting() {
-  try {
-    const A = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const a = new A(), t = a.currentTime;
-    for (const [f, v] of [[880, 0.1], [1320, 0.06], [2640, 0.02]]) {
-      const o = a.createOscillator(), g = a.createGain();
-      o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
-      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + 1.9);
-    }
-    setTimeout(() => a.close().catch(() => {}), 2200);
-  } catch {}
-}
+import { ting } from '../lib/sfx';
 
 export default function Greeting({ recipe, id }: { recipe: Recipe & { type: 'greeting' }; id: string }) {
   const d: GreetingData = recipe.data;
@@ -53,7 +41,7 @@ export default function Greeting({ recipe, id }: { recipe: Recipe & { type: 'gre
           <p className="rg-greet__from">— {by || 'someone who thought of you'}</p>
           <DiyaBack id={id} by={by} dark />
           <div className="rg-ctas">
-            <a className="rg-btn rg-btn--primary rg-btn--block" href="/?tool=greeting" onClick={() => track('make_own', { tool: 'greeting', from: 'link' })}>Send your own greeting →</a>
+            <a className="rg-btn rg-btn--primary rg-btn--block" href="/#diya" onClick={() => track('make_own', { tool: 'greeting', from: 'link' })}>Light a diya for someone →</a>
             <a className="rg-btn rg-btn--dark rg-btn--block" href="/">Play at Rangotsav</a>
           </div>
           {f.key !== 'anyday' && <p className="rg-small" style={{ color: 'var(--parch)', textAlign: 'center' }}>{f.story}</p>}

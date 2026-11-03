@@ -1,0 +1,4 @@
+/* the REC badge over the stage while a show is being recorded */
+.rec { position: absolute; top: 12%; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 7px; padding: 5px 10px; background: #1B1410; color: #FBF3E4; border: 2px solid #FBF3E4; font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .14em; line-height: 1; pointer-events: none; }
+.rec i { width: 10px; height: 10px; border-radius: 50%; background: #FF3B30; animation: recBlink 1s steps(1) infinite; }
+@keyframes recBlink { 50% { opacity: .15 } }

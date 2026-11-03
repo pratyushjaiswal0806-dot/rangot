@@ -38,3 +38,13 @@ export const getCreation = cache(async (id: string): Promise<Recipe | null> => {
     return null;
   }
 });
+
+// ---------- the Mela wall: recent picture-only creations, newest first ----------
+export const WALL = 'rangotsav:wall';
+export const WALL_HIDDEN = 'rangotsav:wall:hidden';
+export const WALL_MAX = 300;
+export const wallDay = (day: string) => `rangotsav:wall:day:${day}`;
+export const wallReports = (id: string) => `rangotsav:wall:rep:${id}`;
+// No free-text types (names, words, messages) on a public wall.
+export const WALL_TYPES = ['rangoli', 'kolam', 'block', 'mehendi', 'pookalam', 'bandhani', 'kathputli', 'warli', 'patang'] as const;
+export const onWall = (t: string): t is (typeof WALL_TYPES)[number] => (WALL_TYPES as readonly string[]).includes(t);

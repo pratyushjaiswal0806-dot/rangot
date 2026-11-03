@@ -1,0 +1,84 @@
+/* Cheenti's poses and loops. Limbs hang straight down at 0deg and turn about their shoulder (set
+   inline as transform-origin in SVG user units); positive angles lift the left limbs outwards,
+   negative ones the right. The pose classes set static angles; loops sit on top of them and are
+   switched off with reduced motion by the global rule, leaving the pose. */
+.ant { display: block; overflow: visible; width: 100%; height: auto; }
+.ant g, .ant ellipse, .ant path { transition: transform .35s var(--ease-pop, cubic-bezier(.3, 1.5, .5, 1)); }
+.body { transform-origin: 50px 118px; }
+.shut, .open, .zzz { display: none; }
+
+/* everyone blinks and twitches now and then */
+.eyes { animation: chBlink 4.2s infinite; }
+.antL { animation: chTwitchL 3.6s ease-in-out infinite; }
+.antR { animation: chTwitchR 3.6s ease-in-out .4s infinite; }
+@keyframes chBlink { 0%, 93%, 100% { transform: scaleY(1) } 96% { transform: scaleY(.12) } }
+@keyframes chTwitchL { 0%, 70%, 100% { transform: rotate(0) } 78% { transform: rotate(-12deg) } 86% { transform: rotate(4deg) } }
+@keyframes chTwitchR { 0%, 70%, 100% { transform: rotate(0) } 78% { transform: rotate(12deg) } 86% { transform: rotate(-4deg) } }
+
+/* idle: arms relaxed, a slow breath */
+.idle .body { animation: chBreathe 3.2s ease-in-out infinite; }
+.idle .armUL { transform: rotate(14deg); } .idle .armUR { transform: rotate(-14deg); }
+@keyframes chBreathe { 50% { transform: scale(1.02, .98) } }
+
+/* wave: right arm up and waving */
+.wave .armUL { transform: rotate(12deg); }
+.wave .armUR { transform: rotate(-140deg); animation: chWave .5s ease-in-out infinite alternate; }
+.wave .head { transform: rotate(-5deg); }
+@keyframes chWave { from { transform: rotate(-150deg) } to { transform: rotate(-108deg) } }
+
+/* cheer: all four arms up, jumping */
+.cheer .armUL { transform: rotate(150deg); } .cheer .armUR { transform: rotate(-150deg); }
+.cheer .armLL { transform: rotate(105deg); } .cheer .armLR { transform: rotate(-105deg); }
+.cheer .mouth { display: none; } .cheer .open { display: inline; }
+.cheer .body { animation: chJump .52s cubic-bezier(.3, .7, .4, 1) infinite; }
+.cheer .armUL, .cheer .armUR { animation: chShake .26s ease-in-out infinite alternate; }
+@keyframes chJump { 0%, 100% { transform: translateY(0) scale(1.06, .94) } 15% { transform: translateY(0) scale(1) } 50% { transform: translateY(-14px) scale(.97, 1.04) } 85% { transform: translateY(0) scale(1) } }
+@keyframes chShake { from { rotate: -8deg } to { rotate: 8deg } }
+
+/* eat: the grain up at her mouth, munching */
+.eat .armLL { transform: rotate(60deg); } .eat .armLR { transform: rotate(-60deg); }
+.eat .armUL { transform: rotate(98deg) translate(3px, 0); } .eat .armUR { transform: rotate(-98deg) translate(-3px, 0); }
+.eat .grain { transform: translate(0, -27px); animation: chMunch .34s ease-in-out infinite alternate; }
+.eat .mouth { display: none; } .eat .open { display: inline; animation: chChew .34s ease-in-out infinite alternate; }
+@keyframes chMunch { from { transform: translate(0, -27px) rotate(-6deg) } to { transform: translate(0, -26px) rotate(6deg) scale(.92) } }
+@keyframes chChew { from { transform: scaleY(1) } to { transform: scaleY(.3) } }
+
+/* peek: just looking, eyes to one side */
+.peek .pupils { transform: translate(2.4px, -.6px); }
+.peek .armUL { transform: rotate(30deg); } .peek .armUR { transform: rotate(-30deg); }
+.peek .head { animation: chTilt 2.6s ease-in-out infinite; }
+@keyframes chTilt { 0%, 100% { transform: rotate(-6deg) } 50% { transform: rotate(5deg) } }
+
+/* point: right arm out to the right, antennae perked */
+.point .armUR { transform: rotate(-96deg); animation: chPoint .9s ease-in-out infinite; }
+.point .armUL { transform: rotate(18deg); }
+.point .pupils { transform: translate(2px, 0); }
+@keyframes chPoint { 0%, 100% { transform: rotate(-96deg) } 50% { transform: rotate(-90deg) translate(0, 1.5px) } }
+
+/* walk: legs swing, body bobs */
+.walk .legL { animation: chStep .42s ease-in-out infinite alternate; }
+.walk .legR { animation: chStep .42s ease-in-out infinite alternate-reverse; }
+.walk .armUL { animation: chStep .42s ease-in-out infinite alternate-reverse; }
+.walk .armUR { animation: chStep .42s ease-in-out infinite alternate; }
+.walk .body { animation: chBob .21s ease-in-out infinite alternate; }
+@keyframes chStep { from { transform: rotate(-18deg) } to { transform: rotate(18deg) } }
+@keyframes chBob { to { transform: translateY(-2px) } }
+
+/* talk: mouth opening and closing, a little nod */
+.talk .mouth { display: none; } .talk .open { display: inline; animation: chTalk .22s ease-in-out infinite alternate; }
+.talk .head { animation: chNod 1.1s ease-in-out infinite; }
+.talk .armUR { transform: rotate(-60deg); animation: chGesture 1.1s ease-in-out infinite; }
+.talk .armUL { transform: rotate(14deg); }
+@keyframes chTalk { from { transform: scale(1, .35) } to { transform: scale(1, 1) } }
+@keyframes chNod { 0%, 100% { transform: rotate(0) } 50% { transform: rotate(4deg) } }
+@keyframes chGesture { 0%, 100% { transform: rotate(-60deg) } 50% { transform: rotate(-82deg) } }
+
+/* sleep: eyes shut, zzz floating up */
+.sleep .eyes, .sleep .mouth { display: none; } .sleep .shut { display: inline; }
+.sleep .zzz { display: inline; animation: chZzz 2.4s ease-in-out infinite; }
+.sleep .head { transform: rotate(10deg); }
+.sleep .antL, .sleep .antR { animation: none; transform: rotate(18deg); }
+.sleep .body { animation: chBreathe 3.6s ease-in-out infinite; }
+@keyframes chZzz { 0% { opacity: 0; transform: translate(-4px, 6px) } 30%, 70% { opacity: 1 } 100% { opacity: 0; transform: translate(4px, -6px) } }
+
+@media (prefers-reduced-motion: reduce) { .ant g, .ant ellipse, .ant path { transition: none; } }

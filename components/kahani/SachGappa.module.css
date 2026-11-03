@@ -1,0 +1,40 @@
+/* Fact or tall tale: each card has two faces stacked in one grid cell; answering turns it over in
+   3D (reduced motion: transitions are off, so it just swaps faces). */
+.quiz { display: flex; flex-direction: column; gap: 16px; }
+.cards { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+@media (min-width: 760px) { .cards { grid-template-columns: 1fr 1fr; } }
+.card { perspective: 1000px; }
+.inner { display: grid; height: 100%; transform-style: preserve-3d; transition: transform .6s var(--ease-out); }
+.turned .inner { transform: rotateY(180deg); }
+.front, .back {
+  grid-area: 1 / 1; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; padding: 18px;
+  border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.front { background: #FFF8EA; }
+.back { position: relative; transform: rotateY(180deg); justify-content: flex-start; }
+.back.right { background: #DDEFD6; }
+.back.wrong { background: #F8D9D2; }
+.text { margin: 0; font: 700 20px/1.3 var(--display); }
+.small { margin: 0; padding-right: 86px; font: 700 15px/1.35 var(--display); opacity: .7; }
+.btns { display: flex; gap: 10px; }
+.btns button {
+  flex: 1; min-height: 52px; border: 3px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; cursor: pointer; color: #1B1410;
+  font: 800 16px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop), background-color .2s;
+}
+.btns button small { font: 700 11px/1 Mukta, sans-serif; letter-spacing: .04em; text-transform: none; opacity: .75; }
+.btns button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; transition-duration: 0s; }
+.sach, .gappa { background: #FBF3E4; }
+.sach:hover, .gappa:hover { background: #FFC21A; transform: translateY(-2px); }
+.why { margin: 0; font-size: 16px; line-height: 1.5; outline-offset: 4px; }
+/* the verdict, stamped on once the card has turned */
+.stamp {
+  position: absolute; top: 12px; right: 12px; padding: 4px 10px; border: 3px solid currentColor; border-radius: 6px; rotate: -10deg;
+  font: 800 15px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; background: rgba(255, 255, 255, .35);
+  animation: stampIn .45s var(--ease-pop) .5s both;
+}
+.isSach { color: #2F6B3B; }
+.isGappa { color: #A8261B; }
+.score { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; font-size: 18px; font-weight: 700; }
+.score b { font: 700 26px/1 var(--display); }
+.again { min-height: 44px; padding: 0 14px; border: 3px solid #1B1410; background: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; font: 800 13px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; color: #1B1410; }

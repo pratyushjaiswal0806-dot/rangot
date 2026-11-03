@@ -1,0 +1,13 @@
+/* The cheer: centred over everything (but under the stamp toasts), never catching taps. The card
+   slams in, holds, and fades out over the cheer's 1.7 s life. */
+.cheer { position: fixed; inset: 0; z-index: 145; display: grid; place-items: center; pointer-events: none; animation: chLife 1.7s linear both; }
+.rays {
+  position: absolute; left: 50%; top: 42%; width: min(150vw, 1100px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; opacity: .5;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 194, 26, .55) 0 6deg, transparent 6deg 15deg);
+  mask-image: radial-gradient(circle, #000 18%, transparent 62%); animation: chRays 1.7s var(--ease-out) both;
+}
+.card { position: relative; top: -8%; display: flex; align-items: flex-end; gap: 6px; max-width: calc(100vw - 24px); animation: stampIn .5s var(--ease-pop) both; }
+.word { min-width: 0; font-size: clamp(56px, 16vw, 132px); --ext: #3A0507; filter: drop-shadow(0 6px 0 rgba(27, 20, 16, .35)); }
+.ant { width: clamp(56px, 14vw, 96px); margin-bottom: -4px; filter: drop-shadow(0 0 4px rgba(255, 194, 26, .6)); }
+@keyframes chLife { 0%, 82% { opacity: 1 } 100% { opacity: 0 } }
+@keyframes chRays { from { opacity: 0; scale: .4; rotate: -20deg } 25% { opacity: .55 } to { opacity: .35; scale: 1; rotate: 12deg } }

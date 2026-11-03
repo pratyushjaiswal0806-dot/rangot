@@ -1,0 +1,61 @@
+.shelf { scroll-margin-top: 60px; max-width: 1160px; margin: 0 auto; padding: 40px 16px 72px; display: flex; flex-direction: column; gap: 28px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 22px; } }
+@media (min-width: 960px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.tile {
+  position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 10px 10px 14px; color: #1B1410; text-decoration: none;
+  background: #F6E7C8; border: 3px solid #1B1410; box-shadow: 6px 6px 0 #1B1410; outline: 2px dashed #1B1410; outline-offset: -8px;
+  transform: rotate(var(--tilt, 0deg)); transition: transform .35s cubic-bezier(.3, 1.5, .5, 1), box-shadow .35s;
+  /* dealt onto the table when the shelf scrolls into view (backwards fill: afterwards the tile is just itself) */
+  animation: dealIn .6s var(--ease-out) var(--deal, 0s) backwards; animation-play-state: var(--rv, running);
+}
+.tile:hover, .tile:focus-visible { transform: rotate(0deg) translate(-3px, -3px); box-shadow: 9px 9px 0 #1B1410; color: #1B1410; }
+/* on hover the title's letters do a little Mexican wave (each letter's own --d delay, from Desi) */
+.tile:hover :global(.desi-l), .tile:hover :global(.desi-in) { animation: letterWave .7s var(--ease-out) var(--d, 0s); }
+/* the Koi bhi wheel's highlight */
+.tile[data-hot] { transform: rotate(0deg) translate(-3px, -3px) scale(1.03); box-shadow: 9px 9px 0 #1B1410, 0 0 0 5px #FFC21A; transition-duration: .12s; z-index: 1; }
+.tile:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; transition-duration: .08s; }
+.big { grid-column: span 2; }
+@media (min-width: 640px) { .big { grid-row: span 2; } }
+.banner { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 14px; }
+@media (min-width: 640px) { .banner { grid-template-columns: 220px minmax(0, 1fr); gap: 24px; } }
+.banner .title { font-size: clamp(26px, 6vw, 40px); }
+.banner .blurb, .banner .names { display: block !important; }
+
+.art { position: relative; aspect-ratio: 1; border: 3px solid #1B1410; overflow: hidden; display: grid; place-items: center; }
+.cv { display: block; width: 100%; height: 100%; object-fit: cover; }
+.tag {
+  position: absolute; top: 18px; left: 18px; max-width: calc(100% - 64px); padding: 3px 10px; border: 2px solid #1B1410; border-radius: 999px; background: #FBF3E4;
+  font-weight: 800; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 2px 2px 0 #1B1410;
+}
+.stars { position: absolute; top: 50px; right: 14px; padding: 2px 6px; border: 2px solid #1B1410; border-radius: 999px; background: #FFC21A; color: #7A0E3A; font-size: 12px; line-height: 1.2; letter-spacing: .05em; box-shadow: 2px 2px 0 #1B1410; }
+.got { position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; border-radius: 50%; background: #2F6B3B; color: #FBF3E4; border: 2px solid #1B1410; display: grid; place-items: center; font-weight: 900; font-size: 15px; box-shadow: 2px 2px 0 #1B1410; }
+
+.meta { display: flex; flex-direction: column; gap: 2px; padding: 0 4px; }
+.title { font-size: clamp(21px, 5.4vw, 30px); line-height: 1.05; margin-bottom: 4px; gap: 0 .18em; }
+.big .title { font-size: clamp(28px, 8vw, 46px); }
+.names { display: flex; flex-wrap: wrap; gap: 0 6px; font-size: 13px; font-weight: 600; opacity: .85; }
+.blurb { font-size: 15px; line-height: 1.35; font-weight: 500; margin-top: 2px; }
+@media (max-width: 639px) { .tile:not(.big) .blurb, .tile:not(.big) .names { display: none; } }
+.big .blurb { font-size: 18px; }
+
+.go {
+  align-self: flex-start; margin-top: 12px; min-height: 52px; padding: 0 20px; display: inline-flex; align-items: center; background: #FFC21A; border: 3px solid #1B1410; box-shadow: 4px 4px 0 #1B1410;
+  font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 16px; letter-spacing: .1em; text-transform: uppercase; transition: transform .15s, box-shadow .15s;
+}
+.tile:hover .go { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #1B1410; }
+
+.koi {
+  align-self: flex-start; min-height: 56px; display: inline-flex; align-items: center; gap: 10px; padding: 6px 18px 6px 10px; cursor: pointer;
+  background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; box-shadow: 4px 4px 0 #1B1410; transition: transform .28s var(--ease-pop), box-shadow .28s var(--ease-pop);
+}
+.koi:hover { transform: translate(-2px, -2px) rotate(-1deg); box-shadow: 6px 6px 0 #1B1410; }
+.koi:hover .dice { animation: koiRoll .6s var(--ease-out); }
+.koi:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; transition-duration: 0s; }
+.koi b { font: 700 22px/1 var(--display); color: #A8261B; }
+.koi small { font: 800 12px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
+.dice { font-size: 28px; line-height: 1; display: inline-block; }
+@keyframes koiRoll { 50% { transform: rotate(200deg) scale(1.2) } 100% { transform: rotate(360deg) } }
+:where(html[data-theme='night']) .koi { background: #2A1710; color: #FBF3E4; border-color: #FFC21A; box-shadow: 4px 4px 0 #FFC21A; }
+:where(html[data-theme='night']) .koi b { color: #FFC21A; }

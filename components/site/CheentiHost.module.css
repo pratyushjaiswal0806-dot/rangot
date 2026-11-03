@@ -1,0 +1,20 @@
+/* Cheenti peeking in: she rises out of a clipped "pit" so she seems to climb up over the edge,
+   then the bubble pops out beside her. On dark floors she gets a soft haldi glow to stand out. */
+.host { position: fixed; z-index: 120; display: flex; align-items: flex-end; gap: 4px; pointer-events: none; }
+.pit { width: 66px; height: 84px; overflow: hidden; flex: none; }
+.ant { width: 66px; animation: chUp .5s var(--ease-pop) both; }
+.dark .ant { filter: drop-shadow(0 0 3px rgba(255, 194, 26, .65)); }
+.bubble {
+  position: relative; margin-bottom: 46px; display: flex; align-items: flex-start; gap: 8px; padding: 10px 8px 10px 14px; pointer-events: auto;
+  background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; border-radius: 16px 16px 16px 4px; box-shadow: 4px 4px 0 #1B1410;
+  font: 700 15px/1.35 Mukta, sans-serif; text-wrap: pretty; animation: stampIn .4s var(--ease-pop) .25s both; transform-origin: 0 100%;
+}
+.bubble::before { content: ''; position: absolute; left: -13px; bottom: 6px; border: 7px solid transparent; border-right: 9px solid #1B1410; border-bottom-color: transparent; }
+.x {
+  flex: none; width: 28px; height: 28px; margin: -3px -2px 0 0; display: grid; place-items: center; border: 2px solid #1B1410; border-radius: 50%;
+  background: #FFC21A; color: #1B1410; font: 800 13px/1 Sarpanch, sans-serif; cursor: pointer;
+}
+.out .ant { animation: chDown .35s ease-in both; }
+.out .bubble { animation: toastOut .25s ease-in both; }
+@keyframes chUp { from { transform: translateY(100%) } }
+@keyframes chDown { to { transform: translateY(100%) } }

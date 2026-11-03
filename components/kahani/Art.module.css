@@ -1,0 +1,109 @@
+/* Story pictures come alive (components/kahani/Art.tsx).
+   in* classes build the picture when its chapter scrolls in (--rv, set by RevealObserver; outside a
+   [data-reveal] they play at once, as in the picture book). lp* classes loop while the picture is
+   on screen (--live). Entrances animate the individual scale / translate / rotate / opacity
+   properties *from* hidden to the drawing's own state, so with reduced motion (animations are off
+   site-wide) the picture simply stands there, finished. Loops animate `transform`, which stacks on
+   top of those. Each element gets one animation list, so a part that builds and then loops puts
+   the loop on an inner element. Origins in the picture's own 120-unit space are set inline by
+   Art.tsx (transform-box: view-box). */
+
+.inPop, .inFade, .inRise, .inDrop, .inDraw, .inGrow, .inOpen, .inUnroll, .inSlide, .inSwing {
+  animation-duration: .55s; animation-timing-function: var(--ease-pop); animation-fill-mode: both;
+  animation-delay: calc(.12s + var(--i, 0) * 80ms); animation-play-state: var(--rv, running);
+  transform-box: fill-box; transform-origin: center;
+}
+.inPop { animation-name: aPop; }
+.inFade { animation-name: aFade; animation-timing-function: ease; animation-duration: .6s; }
+.inRise { animation-name: aRise; }
+.inDrop { animation-name: aDrop; }
+.inDraw { animation-name: kolamDraw; animation-duration: 1.3s; animation-timing-function: ease-in-out; stroke-dasharray: 1; }
+.inGrow { animation-name: aGrow; animation-timing-function: var(--ease-out); }
+.inOpen { animation-name: aOpen; }
+.inUnroll { animation-name: aUnroll; }
+.inSlide { animation-name: aSlide; animation-duration: .8s; animation-timing-function: var(--ease-out); }
+.inSwing { animation-name: aSwing; animation-duration: .9s; }
+@keyframes aPop { from { scale: 0; opacity: 0 } 60% { scale: 1.15; opacity: 1 } }
+@keyframes aFade { from { opacity: 0 } }
+@keyframes aRise { from { translate: 0 18px; opacity: 0 } }
+@keyframes aDrop { from { translate: 0 -24px; opacity: 0 } 70% { translate: 0 2px; opacity: 1 } }
+@keyframes aGrow { from { scale: 0 } }
+@keyframes aOpen { from { scale: 0 1 } }
+@keyframes aUnroll { from { scale: 1 0 } }
+@keyframes aSlide { from { translate: var(--from, -40px 0); opacity: 0 } }
+@keyframes aSwing { from { rotate: -28deg; opacity: 0 } 55% { rotate: 7deg; opacity: 1 } 80% { rotate: -2deg } }
+
+/* the doorway's doors rest open; they start shut and swing open */
+.door { scale: .14 1; animation: aDoor 1.1s var(--ease-out) .3s both; animation-play-state: var(--rv, running); }
+@keyframes aDoor { from, 30% { scale: 1 1 } }
+
+.lpSway, .lpBob, .lpTwinkle, .lpGlow, .lpFlicker, .lpSpin, .lpPulse, .lpBlink, .lpMarch, .lpLegs, .lpScatter, .lpFall,
+.lpFlow, .lpFlash, .lpLaunch, .lpPress, .lpRipple, .lpBoat, .lpBounce, .lpLook, .lpDrift, .lpFlutter, .lpWave, .lpJitter,
+.lpSparkle, .lpCrackle, .lpRedraw, .lpPage, .lpSweep, .lpFlare {
+  animation-duration: var(--t, 3s); animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+  animation-delay: calc(var(--wait, 1.1s) + var(--j, 0) * .23s); animation-play-state: var(--live, running);
+  transform-box: fill-box; transform-origin: center;
+}
+.lpSway { animation-name: lSway; }
+.lpBob { animation-name: lBob; }
+.lpTwinkle { animation-name: lTwinkle; }
+.lpGlow { animation-name: lGlow; }
+.lpFlicker { animation-name: lFlicker; }
+.lpSpin { animation-name: lSpin; animation-timing-function: linear; }
+.lpSpin.rev { animation-direction: reverse; }
+.lpPulse { animation-name: lPulse; }
+.lpBlink { animation-name: lBlink; }
+.lpMarch { animation-name: lMarch; animation-timing-function: linear; }
+.lpLegs { animation-name: lLegs; }
+.lpScatter { animation-name: lScatter; }
+.lpFall { animation-name: lFall; animation-timing-function: ease-in; }
+.lpFlow { animation-name: lFlow; animation-timing-function: linear; }
+.lpFlash { opacity: 0; animation-name: lFlash; animation-timing-function: ease-out; }
+.lpLaunch { animation-name: lLaunch; }
+.lpPress { animation-name: lPress; }
+.lpRipple { animation-name: lRipple; animation-timing-function: ease-out; }
+.lpBoat { animation-name: lBoat; }
+.lpBounce { animation-name: lBounce; }
+.lpLook { animation-name: lLook; }
+.lpDrift { animation-name: lDrift; }
+.lpFlutter { animation-name: lFlutter; }
+.lpWave { animation-name: lWave; }
+.lpJitter { animation-name: lJitter; animation-timing-function: steps(1, end); }
+.lpSparkle { animation-name: lSparkle; }
+.lpCrackle { animation-name: lCrackle; animation-timing-function: steps(1, end); }
+.lpRedraw { animation-name: lRedraw; stroke-dasharray: 1; }
+.lpPage { opacity: 0; animation-name: lPage; }
+.lpSweep { animation-name: lSweep; }
+.lpFlare { animation-name: lFlare; }
+
+@keyframes lSway { 0%, 100% { transform: none } 25% { transform: rotate(calc(var(--a, 4deg) * -1)) } 75% { transform: rotate(var(--a, 4deg)) } }
+@keyframes lBob { 0%, 100% { transform: none } 50% { transform: translateY(var(--y, -3px)) } }
+@keyframes lTwinkle { 0%, 100% { opacity: 1 } 50% { opacity: .25 } }
+@keyframes lGlow { 0%, 100% { opacity: .18 } 50% { opacity: .45 } }
+@keyframes lFlicker { 0%, 100% { transform: none } 25% { transform: scale(.9, 1.1) rotate(3deg) } 50% { transform: scale(1.06, .94) rotate(-2deg) } 75% { transform: scale(.95, 1.08) rotate(2deg) } }
+@keyframes lSpin { to { transform: rotate(360deg) } }
+@keyframes lPulse { 0%, 100% { transform: none } 50% { transform: scale(var(--s, 1.08)) } }
+@keyframes lBlink { 0%, 88%, 100% { transform: none } 93% { transform: scaleY(.08) } }
+@keyframes lMarch { 0% { transform: translateX(-14px); opacity: 0 } 12%, 88% { opacity: 1 } 100% { transform: translateX(16px); opacity: 0 } }
+@keyframes lLegs { 0%, 100% { transform: none } 50% { transform: scaleY(.55) } }
+@keyframes lScatter { 0%, 40% { transform: none; opacity: 1 } 70% { transform: translate(-8px, -5px); opacity: 0 } 71% { transform: none; opacity: 0 } 100% { opacity: 1 } }
+@keyframes lFall { 0% { transform: translateY(-6px); opacity: 0 } 15% { opacity: 1 } 75% { transform: translateY(8px); opacity: 1 } 100% { transform: translateY(12px); opacity: 0 } }
+@keyframes lFlow { to { transform: translateX(-48px) } }
+@keyframes lFlash { 0%, 86% { opacity: 0; transform: scale(.3) } 90% { opacity: .95; transform: scale(1.1) } 100% { opacity: 0; transform: scale(1.6) } }
+@keyframes lLaunch { 0%, 45% { transform: none; opacity: 1 } 70% { transform: translateY(-26px); opacity: 0 } 71% { transform: translateY(10px); opacity: 0 } 100% { transform: none; opacity: 1 } }
+@keyframes lPress { 0%, 100% { transform: none } 30% { transform: translateY(-9px) } 42% { transform: translateY(1px) scale(1.04, .92) } 52% { transform: none } }
+@keyframes lRipple { 0% { transform: scale(.6); opacity: .9 } 100% { transform: scale(1.4); opacity: 0 } }
+@keyframes lBoat { 0%, 100% { transform: none } 25% { transform: rotate(-3deg) translateY(-1px) } 75% { transform: rotate(2deg) translateY(1px) } }
+@keyframes lBounce { 0%, 100% { transform: none } 50% { transform: translateY(-1.5px) } }
+@keyframes lLook { 0%, 100% { transform: none } 30% { transform: translate(-2.5px, 0) } 65% { transform: translate(2.5px, .8px) } }
+@keyframes lDrift { 0%, 100% { transform: none } 50% { transform: translateX(10px) } }
+@keyframes lFlutter { 0%, 100% { transform: none } 50% { transform: skewY(1.6deg) } }
+@keyframes lWave { 0%, 100% { transform: none } 50% { transform: skewX(-2deg) } }
+@keyframes lJitter { 0%, 100% { transform: none } 33% { transform: translate(.8px, -.6px) } 66% { transform: translate(-.6px, .5px) } }
+@keyframes lSparkle { 0%, 100% { transform: none } 50% { transform: rotate(45deg) scale(1.3) } }
+@keyframes lCrackle { 0% { transform: none } 25% { transform: rotate(9deg) scale(1.06) } 50% { transform: rotate(-6deg) scale(.95) } 75% { transform: rotate(14deg) scale(1.03) } }
+@keyframes lRedraw { 0% { stroke-dashoffset: 1; opacity: 1 } 45%, 80% { stroke-dashoffset: 0; opacity: 1 } 100% { stroke-dashoffset: 0; opacity: 0 } }
+@keyframes lPage { 0%, 62% { transform: none; opacity: 0 } 64% { opacity: 1 } 82% { transform: scaleX(-1); opacity: 1 } 84%, 100% { transform: scaleX(-1); opacity: 0 } }
+@keyframes lSweep { 0%, 100% { transform: none } 30% { transform: rotate(-8deg) } 65% { transform: rotate(10deg) } }
+/* a kathputli's skirt flaring out as she swings */
+@keyframes lFlare { 0%, 100% { transform: none } 50% { transform: scaleX(1.16) } }

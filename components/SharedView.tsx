@@ -8,8 +8,10 @@ import culture from '../data/culture.json';
 import { LABEL, type Recipe } from '../lib/recipe';
 import { naamKolam, naamReading } from '../lib/art/naam';
 import { track } from '../lib/track';
+import { hrefFor } from '../lib/toys';
 
-const REMIX = new Set(['rangoli', 'kolam', 'block', 'poster', 'mehendi']);
+// Types with a toy to remix them in (old mehendi links still replay, but that toy is gone).
+const REMIX = new Set(['rangoli', 'kolam', 'block', 'poster', 'pookalam', 'bandhani', 'plate', 'phuljhadi', 'kathputli', 'warli', 'patang']);
 
 export default function SharedView({ recipe, id }: { recipe: Recipe; id: string }) {
   const rp = useRef<ReplayHandle>(null);
@@ -47,18 +49,18 @@ export default function SharedView({ recipe, id }: { recipe: Recipe; id: string 
           {forLine && <p className="rg-p" style={{ fontWeight: 700 }}>{forLine}</p>}
           {naam && <p className="rg-p rg-reading">{naam.traits}</p>}
           <div className="rg-ctas" data-done={done}>
-            <a className="rg-btn rg-btn--primary rg-btn--block" href={`/?tool=${recipe.type}`} onClick={() => track('make_own', { tool: recipe.type, from: 'link' })}>{make} →</a>
-            {REMIX.has(recipe.type) && <a className="rg-btn rg-btn--block" href={`/?remix=${id}`}>Remix this one</a>}
+            <a className="rg-btn rg-btn--primary rg-btn--block" href={hrefFor(recipe.type)} onClick={() => track('make_own', { tool: recipe.type, from: 'link' })}>{make} →</a>
+            {REMIX.has(recipe.type) && <a className="rg-btn rg-btn--block" href={`${hrefFor(recipe.type)}?remix=${id}`}>Remix this one</a>}
           </div>
           <DiyaBack id={id} by={by} dark />
           {facts && (
-            <aside className="rg-fact">
+            <div className="rg-fact">
               <span className="rg-label">Did you know · {facts.title}</span>
               <ul>{facts.facts.map((f) => <li key={f}>{f}</li>)}</ul>
-            </aside>
+            </div>
           )}
           {recipe.type !== 'naam' && (
-            <a className="rg-promo" href="/?tool=naam">
+            <a className="rg-promo" href="/naam">
               <b>What does your name look like as a kolam?</b>
               <span>Weave it in 5 seconds →</span>
             </a>

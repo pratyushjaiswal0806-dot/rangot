@@ -5,9 +5,17 @@ import { getCreation } from '../../../lib/store';
 import { LABEL, type Recipe } from '../../../lib/recipe';
 import { rangoliSvg } from '../../../lib/art/rangoli';
 import { kolamPathD } from '../../../lib/art/kolam';
+import { edgeMap, loopColor, sikkuPathD, SIKKU_GRID, weave } from '../../../lib/art/sikku';
 import { naamKolam, naamReading } from '../../../lib/art/naam';
 import { festivalById } from '../../../lib/festivals';
 import { PALS } from '../../../lib/art/palette';
+import { pookalamSvg } from '../../../lib/art/pookalam';
+import { bandhaniSvg } from '../../../lib/art/bandhani';
+import { phuljhadiSvg } from '../../../lib/art/phuljhadi';
+import { kathputliSvg, PUPPETS } from '../../../lib/art/kathputli';
+import { warliSvg } from '../../../lib/art/warli';
+import { patangSvg } from '../../../lib/art/patang';
+import { decodePts } from '../../../lib/recipe';
 
 export const alt = 'A creation from Rangotsav';
 export const size = { width: 1200, height: 630 };
@@ -24,11 +32,28 @@ function kolamSvg(dots: [number, number][], g: number, line: string, bg: string,
   const one = dots.length === 1 ? `<circle cx="${(dots[0][0] + 0.5) * s}" cy="${(dots[0][1] + 0.5) * s}" r="${s * 0.42}" fill="none" stroke="${line}" stroke-width="${Math.max(4, s * 0.07)}"/>` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><rect width="${S}" height="${S}" fill="${bg}"/>${grid}${one}<path d="${d}" fill="none" stroke="${line}" stroke-width="${Math.max(4, s * 0.07)}" stroke-linecap="round" stroke-linejoin="round"/>${pulli}</svg>`;
 }
+function sikkuSvg(k: Extract<Recipe, { type: 'kolam' }>['data'], S = 600) {
+  const g = SIKKU_GRID, s = S / g, w = weave(k.dots, edgeMap(k.m ?? []));
+  const grid = Array.from({ length: g * g }, (_, n) => `<circle cx="${((n % g) + 0.5) * s}" cy="${(Math.floor(n / g) + 0.5) * s}" r="2.4" fill="rgba(251,243,228,.2)"/>`).join('');
+  const lines = w.loops.map((l, n) => `<path d="${sikkuPathD(l, s)}" fill="none" stroke="${loopColor(k.c, n, k.r === 1)}" stroke-width="${(s * 0.07).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+  const pulli = k.d ? k.dots.map(([i, j]) => `<circle cx="${(i + 0.5) * s}" cy="${(j + 0.5) * s}" r="${(s * 0.065).toFixed(1)}" fill="${C.ivory}"/>`).join('') : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><rect width="${S}" height="${S}" fill="${C.floor}"/>${grid}${lines}${pulli}</svg>`;
+}
 const uri = (svg: string) => `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
 
 function art(r: Recipe): string | null {
   if (r.type === 'rangoli') return uri(rangoliSvg(r.data.strokes, 600));
-  if (r.type === 'kolam') return uri(kolamSvg(r.data.dots, 7, r.data.c, C.floor));
+  if (r.type === 'kolam') return uri(r.data.m ? sikkuSvg(r.data) : kolamSvg(r.data.dots, 7, r.data.c, C.floor));
+  if (r.type === 'pookalam') return uri(pookalamSvg(r.data.l, r.data.k));
+  if (r.type === 'bandhani') return uri(bandhaniSvg(r.data));
+  if (r.type === 'phuljhadi') return uri(phuljhadiSvg(r.data.strokes, 600));
+  if (r.type === 'kathputli') return uri(kathputliSvg(r.data.p, r.data.b, 600));
+  if (r.type === 'patang') return uri(patangSvg(r.data, r.data.n === 1, 600));
+  if (r.type === 'warli') {
+    const it = decodePts(r.data.i) ?? [], items: [number, number, number][] = [];
+    for (let k = 0; k + 2 < it.length; k += 3) items.push([it[k], it[k + 1], it[k + 2]]);
+    return uri(warliSvg(r.data.d, items, r.data.n === 1, 600));
+  }
   if (r.type === 'naam') { const n = naamKolam(r.data.n); return uri(kolamSvg(n.dots, n.g, n.color.line, n.color.bg)); }
   if (r.type === 'greeting' && r.data.art) return art(r.data.art);
   if (r.type === 'greeting') { const n = naamKolam(r.by || r.data.to || 'Rangotsav'); return uri(kolamSvg(n.dots, n.g, n.color.line, n.color.bg)); }
@@ -44,6 +69,18 @@ function words(r: Recipe) {
   if (r.type === 'naam') {
     const rd = naamReading(naamKolam(r.data.n));
     return { kicker: `${rd.stats} · ${rd.title}`, title: r.data.n, sub: 'What does your name look like?', bg: C.ruby, fg: C.marigold };
+  }
+  if (r.type === 'patang') {
+    const k = r.data.k;
+    return { kicker: k ? `Uttarayan · ${k} kite${k === 1 ? '' : 's'} cut` : 'Uttarayan · a kite in the sky', title: k ? 'Kai po che!' : by ? `${by}'s kite` : 'A patang flies', sub: 'Watch it fly, then design your own kite', bg: '#2D4C7C', fg: C.marigold };
+  }
+  if (r.type === 'warli') {
+    const n = r.data.d;
+    return { kicker: n ? `Warli · ${n} dancer${n === 1 ? '' : 's'} round the tarpa` : 'Warli · a painted village', title: by ? `${by}'s Warli wall` : 'A Warli wall', sub: 'Watch them dance, then paint your own village', bg: '#6E2A16', fg: C.ivory };
+  }
+  if (r.type === 'kathputli') {
+    const who = PUPPETS[r.data.p]?.name ?? 'A puppet';
+    return { kicker: 'Kathputli · a puppet show', title: by ? `${by}'s puppet show` : `${who} dances`, sub: 'Curtain up! Watch the show, then work the strings', bg: '#5A1A12', fg: C.marigold };
   }
   return { kicker: 'Made at Rangotsav', title: by ? `${by}'s ${LABEL[r.type]}` : `A ${LABEL[r.type]}`, sub: 'Watch it replay, then make yours', bg: C.ruby, fg: C.marigold };
 }

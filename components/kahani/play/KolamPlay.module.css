@@ -1,0 +1,23 @@
+/* Don't lift your finger: level buttons, the floor you trace on, and the message panel. */
+.play { display: flex; flex-direction: column; gap: 18px; }
+.levels { display: flex; flex-wrap: wrap; gap: 10px; }
+.levels button, .btns button {
+  min-height: 48px; padding: 0 14px; border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: 3px 3px 0 #120A07; cursor: pointer;
+  font: 800 14px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase;
+}
+.levels button[aria-pressed='true'] { background: #FFC21A; transform: translate(3px, 3px); box-shadow: 0 0 0 #120A07; }
+.btns button:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #120A07; }
+.btns .go { background: #FFC21A; }
+.body { display: grid; gap: 18px; align-items: start; }
+@media (min-width: 760px) { .body { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; } }
+.floor { display: block; width: 100%; max-width: 420px; aspect-ratio: 1; border: 4px solid #1B1410; box-shadow: 6px 6px 0 #120A07; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
+.pulse { animation: glow 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.glow { filter: drop-shadow(0 0 6px rgba(255, 210, 63, .8)); }
+.shake { animation: kpShake .35s ease-in-out; }
+@keyframes kpShake { 25% { translate: -6px 0 } 75% { translate: 6px 0 } }
+.info { display: flex; flex-direction: column; gap: 14px; }
+.msg { margin: 0; min-height: 2.6em; font: 700 22px/1.3 var(--display); color: #FFC21A; }
+.meter { height: 14px; border: 3px solid #1B1410; background: rgba(251, 243, 228, .15); }
+.meter i { display: block; height: 100%; background: #FBF3E4; transition: width .1s linear; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.tip { margin: 0; font-size: 16px; line-height: 1.55; opacity: .9; }

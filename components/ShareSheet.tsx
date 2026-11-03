@@ -9,6 +9,8 @@ import { copy, makeLink, prettyUrl, saveName, savedName, shareFile, siteUrl, toB
 import { reelType, recordReel } from '../lib/reel';
 import { track } from '../lib/track';
 import { shared } from '../lib/progress';
+import { chord } from '../lib/sfx';
+import { petalBurst } from '../lib/fx';
 import type { Recipe } from '../lib/recipe';
 
 export type ShareRequest = {
@@ -24,6 +26,9 @@ export type ShareRequest = {
   heading?: string;
 };
 
+// picture-only creations that can go on the public wall (see WALL_TYPES in lib/store.ts)
+const WALL_KINDS = new Set(['rangoli', 'kolam', 'block', 'mehendi', 'pookalam', 'bandhani', 'kathputli', 'warli', 'patang']);
+
 type Reel = { state: 'idle' } | { state: 'rec'; p: number } | { state: 'ready'; blob: Blob; ext: string; url: string };
 
 export default function ShareSheet({ req, onClose }: { req: ShareRequest | null; onClose: () => void }) {
@@ -33,6 +38,8 @@ export default function ShareSheet({ req, onClose }: { req: ShareRequest | null;
   const [after, setAfter] = useState(false);
   const [status, setStatus] = useState('');
   const [reel, setReel] = useState<Reel>({ state: 'idle' });
+  const [wall, setWall] = useState(false); // opt-in: the drawing goes on the public wall only if the maker ticks this
+  const posted = useRef<string | null>(null);
   const blob = useRef<Blob | null>(null);
   const preview = useRef<HTMLCanvasElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -90,7 +97,17 @@ export default function ShareSheet({ req, onClose }: { req: ShareRequest | null;
   const fail = !req.recipe ? '' : link === null ? 'Short links are off right now, so this shares the site link instead.' : '';
 
   // counts the share and files it under My Courtyard (with its link, when there is one)
-  const record = () => shared(link && req.recipe ? { url: link, type: req.recipe.type, title: req.title(n) } : null);
+  const record = () => {
+    shared(link && req.recipe ? { url: link, type: req.recipe.type, title: req.title(n) } : null);
+    // put it on the Mela wall (once per creation), unless the maker opted out
+    const id = link?.split('/r/')[1];
+    if (wall && id && req.recipe && WALL_KINDS.has(req.recipe.type) && posted.current !== id) {
+      posted.current = id;
+      fetch('/api/wall', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }).catch(() => {});
+    }
+    chord();
+    petalBurst(innerWidth / 2, innerHeight * 0.45);
+  };
   const shareImage = async () => {
     if (!blob.current) { setStatus('One second, still painting your card…'); return; }
     copy(`${CAPTION} ${url}`);
@@ -165,7 +182,7 @@ export default function ShareSheet({ req, onClose }: { req: ShareRequest | null;
             )}
             <div>
               <label className="rg-label" htmlFor="rg-share-name">Your name {req.asIs ? '(for the link)' : '(goes on the card)'}</label>
-              <input id="rg-share-name" className="rg-input" value={name} maxLength={24} placeholder="e.g. Pratyush" autoComplete="given-name"
+              <input id="rg-share-name" className="rg-input" value={name} maxLength={24} placeholder="e.g. Ananya" autoComplete="given-name"
                 onChange={(e) => setName(e.target.value)} onBlur={() => saveName(name.trim())} />
             </div>
             <div className="rg-actions">
@@ -181,6 +198,12 @@ export default function ShareSheet({ req, onClose }: { req: ShareRequest | null;
               <button className="rg-btn" onClick={copyLink} disabled={link === undefined && !!req.recipe}>{link === undefined && req.recipe ? 'Making link…' : 'Copy link'}</button>
               <button className="rg-btn rg-btn--wa" onClick={wa}>WhatsApp</button>
             </div>
+            {req.recipe && WALL_KINDS.has(req.recipe.type) && link && (
+              <label className="rg-wallopt">
+                <input type="checkbox" checked={wall} onChange={(e) => setWall(e.target.checked)} />
+                <span>Show it on today&apos;s <b>Mela wall</b> (just the drawing, never your name)</span>
+              </label>
+            )}
             <p className="rg-status" role="status" aria-live="polite">{status || fail}</p>
             {after && (
               <div>

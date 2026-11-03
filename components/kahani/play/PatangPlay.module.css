@@ -1,0 +1,8 @@
+/* Tie the kanna: a test kite in a breeze, with streaks of wind blowing past. */
+.stage { background: #6EC3EE; }
+.wind { stroke: rgba(255, 255, 255, .8); stroke-width: 3; stroke-linecap: round; animation: ppWind 1.8s linear infinite; }
+@keyframes ppWind { from { translate: 0 0; opacity: 0 } 15% { opacity: 1 } to { translate: 380px 0; opacity: 0 } }
+.ends { display: flex; justify-content: space-between; max-width: 420px; margin-top: -6px; font: 800 11px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.card { min-height: 128px; display: flex; flex-direction: column; gap: 8px; }
+.tally { margin: 0; font: 800 12px/1.3 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #FFC21A; }
+.tally b { font-size: 18px; }

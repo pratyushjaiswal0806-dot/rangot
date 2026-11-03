@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import ToyPage from '../../components/kahani/ToyPage';
 import Pulli from '../../components/Pulli';
 
 export const metadata: Metadata = {
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Pulli />;
+  return <ToyPage toy="pulli"><Pulli /></ToyPage>;
 }

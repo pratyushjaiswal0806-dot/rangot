@@ -1,0 +1,16 @@
+/* The shadow game: a lamp-lit cloth screen with a puppet's shadow on it, and a side view below. */
+.stage { background: #8A4A1E; }
+.screen { touch-action: none; cursor: grab; }
+.screen:active { cursor: grabbing; }
+/* an oil lamp is never quite steady */
+.flicker { animation: kpFlicker 2.6s ease-in-out infinite; }
+@keyframes kpFlicker { 0%, 100% { opacity: 1 } 30% { opacity: .9 } 45% { opacity: .97 } 70% { opacity: .88 } }
+/* the jointed forearm waves at the elbow */
+.wave { animation: kpWave .9s ease-in-out 2; }
+@keyframes kpWave { 0%, 100% { rotate: 0deg } 25% { rotate: -38deg } 75% { rotate: 22deg } }
+.side { display: block; width: 100%; max-width: 420px; margin-top: 10px; background: #6A4226; border: 3px solid #1B1410; }
+.tag { font: 800 7px Sarpanch, sans-serif; letter-spacing: .12em; fill: #FBF3E4; opacity: .7; }
+.ends { display: flex; justify-content: space-between; max-width: 420px; margin-top: -6px; font: 800 11px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.card { min-height: 150px; display: flex; flex-direction: column; gap: 8px; }
+.tally { margin: 0; font: 800 12px/1.3 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #FFC21A; }
+.tally b { font-size: 18px; }

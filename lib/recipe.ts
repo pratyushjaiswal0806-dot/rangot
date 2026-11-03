@@ -3,36 +3,66 @@
 // Shared by the client (recording) and the server (validation, OG images). No DOM here.
 
 export type Stroke = { c: string; s: number; n: number; b?: Brush; m?: 1; p: string };
-export type Brush = 'powder' | 'petal' | 'diya' | 'pookalam';
+export type Brush = 'powder' | 'petal' | 'diya' | 'pookalam' | 'peacock' | 'bindu' | 'vine' | 'keri' | 'kamal' | 'chakra';
 export type Stamp = { x: number; y: number; t: number; i: string; z: number; r?: 1 };
 export type Lang = 'en' | 'hi' | 'kn' | 'ta';
 
 export type RangoliData = { strokes: Stroke[] };
-export type KolamData = { dots: [number, number][]; c: string; d: boolean };
+// m (sikku kolams from the Kolam Weaver): walls and bridges between dots, see lib/art/sikku.ts.
+// Without m it's the older dot-loop weave (Pulli, early share links). r: each loop its own colour.
+export type KolamData = { dots: [number, number][]; c: string; d: boolean; m?: [number, number, 0 | 1, 1 | 2][]; r?: 1 };
 export type BlockData = { a: number; st: Stamp[] };
-export type PosterData = { w: string; t: number; o: number; p: number };
-export type PlateData = { n: string; f: 'wallpaper' | 'sticker' };
+// l: layout (banner, arch, stack, shake), b: backdrop (plain, sunburst, dots, stripes, bulbs),
+// n: 1 when it dances (Nachao)
+export type PosterData = { w: string; t: number; o: number; p: number; l?: number; b?: number; n?: 1 };
+// s: the line painted under the name, k: colour scheme
+export type PlateData = { n: string; f: 'wallpaper' | 'sticker'; s?: number; k?: number };
 export type NaamData = { n: string; for?: string };
 export type MehendiData = { strokes: Stroke[] };
 export type GreetingData = { f: string; to: string; m: number; x?: string; l: Lang; art?: Art };
+// Pookalam: l = layout, k = one character per cell ('.' empty, 'a'… a flower), see lib/art/pookalam.ts
+export type PookalamData = { l: number; k: string };
+// Bandhani: rounds of knots (points) tied before each dip in dye c; z = knot size 1–3
+export type BandhaniData = { z: number; r: { c: string; p: string }[] };
+// Phuljhadi light painting: rangoli-style strokes, but n is turns round the centre and m mirrors
+// each turn (n 1 without m is a single free stroke), see lib/art/phuljhadi.ts
+export type PhuljhadiData = { strokes: Stroke[] };
+// Kathputli show: p = puppet, b = backdrop, t = the control bar's path as (x, y, tilt) triples at
+// 30 a second, packed with encodePts; the replay runs the string physics again, see lib/art/kathputli.ts
+export type KathputliData = { p: number; b: number; t: string };
+// Warli: d dancers in the tarpa spiral, i = the village round them as (kind, x, y) triples packed
+// with encodePts, s = dance speed in tenths, n: 1 at night, r: 1 when it turns the other way (Palto)
+export type WarliData = { d: number; i: string; s: number; n?: 1; r?: 1 };
+// Patang: the kite's two colours (a, b), pattern p, tail t, how many kites it cut (k), n: 1 at night
+export type PatangData = { a: number; b: number; p: number; t: number; k: number; n?: 1 };
 
 type R<T extends string, D> = { v: 1; type: T; by?: string; data: D };
-export type Art = R<'rangoli', RangoliData> | R<'kolam', KolamData> | R<'naam', NaamData> | R<'mehendi', MehendiData>;
+export type Art = R<'rangoli', RangoliData> | R<'kolam', KolamData> | R<'naam', NaamData> | R<'mehendi', MehendiData> | R<'pookalam', PookalamData> | R<'bandhani', BandhaniData>;
 export type Recipe =
   | Art
   | R<'block', BlockData>
   | R<'poster', PosterData>
   | R<'plate', PlateData>
-  | R<'greeting', GreetingData>;
+  | R<'greeting', GreetingData>
+  | R<'phuljhadi', PhuljhadiData>
+  | R<'kathputli', KathputliData>
+  | R<'warli', WarliData>
+  | R<'patang', PatangData>;
 export type RecipeType = Recipe['type'];
 
 export const LABEL: Record<RecipeType, string> = {
   rangoli: 'rangoli', kolam: 'kolam', block: 'block print', poster: 'poster', plate: 'truck-art plate',
-  naam: 'Naam Kolam', mehendi: 'mehendi', greeting: 'greeting',
+  naam: 'Naam Kolam', mehendi: 'mehendi', greeting: 'greeting', pookalam: 'pookalam', bandhani: 'bandhani',
+  phuljhadi: 'light painting', kathputli: 'puppet show', warli: 'Warli painting', patang: 'kite',
 };
 
 export const MAX_BYTES = 48_000;
 export const MAX_POINTS = 15_000; // x,y pairs across all strokes
+export const BLOCK_COUNT = 8; // carved blocks in lib/art/block.ts
+export const POOKALAM_LAYOUTS = 3; // layouts in lib/art/pookalam.ts
+export const PUPPET_COUNT = 3, PUPPET_BACKDROPS = 3; // in lib/art/kathputli.ts
+export const SHOW_MAX = 330;
+export const WARLI_DANCERS = 48, WARLI_ITEMS = 60, WARLI_KINDS = 6; // in lib/art/warli.ts // control samples in a show: 11 seconds at 30 a second
 
 // ---------- points: flat [x0,y0,x1,y1,...] ints in [-1000, 1000], per-axis delta + zigzag varint + base64url ----------
 const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -100,7 +130,7 @@ const HEX = /^#[0-9A-Fa-f]{6}$/;
 const isObj = (x: unknown): x is Record<string, unknown> => !!x && typeof x === 'object' && !Array.isArray(x);
 const int = (x: unknown, lo: number, hi: number) => typeof x === 'number' && Number.isInteger(x) && x >= lo && x <= hi;
 const LANGS: Lang[] = ['en', 'hi', 'kn', 'ta'];
-const BRUSHES: Brush[] = ['powder', 'petal', 'diya', 'pookalam'];
+const BRUSHES: Brush[] = ['powder', 'petal', 'diya', 'pookalam', 'peacock', 'bindu', 'vine', 'keri', 'kamal', 'chakra'];
 
 function strokes(x: unknown, maxN: number): Stroke[] | null {
   if (!Array.isArray(x) || x.length > 2000) return null;
@@ -120,7 +150,7 @@ function strokes(x: unknown, maxN: number): Stroke[] | null {
 
 function art(x: unknown): Art | null {
   const r = validateRecipe(x);
-  return r && (r.type === 'rangoli' || r.type === 'kolam' || r.type === 'naam' || r.type === 'mehendi') ? r : null;
+  return r && (r.type === 'rangoli' || r.type === 'kolam' || r.type === 'naam' || r.type === 'mehendi' || r.type === 'pookalam' || r.type === 'bandhani') ? r : null;
 }
 
 export function validateRecipe(x: unknown): Recipe | null {
@@ -137,6 +167,27 @@ export function validateRecipe(x: unknown): Recipe | null {
       const st = strokes(d.strokes, 2);
       return st && st.length ? { ...base, type: 'mehendi', data: { strokes: st } } : null;
     }
+    case 'phuljhadi': {
+      const st = strokes(d.strokes, 8);
+      return st && st.length ? { ...base, type: 'phuljhadi', data: { strokes: st } } : null;
+    }
+    case 'kathputli': {
+      if (!int(d.p, 0, PUPPET_COUNT - 1) || !int(d.b, 0, PUPPET_BACKDROPS - 1) || typeof d.t !== 'string' || d.t.length > 6000) return null;
+      const t = decodePts(d.t);
+      if (!t || t.length % 3 || t.length < 3 * 15 || t.length > 3 * SHOW_MAX || t.some((v) => v < -1000 || v > 1000)) return null;
+      return { ...base, type: 'kathputli', data: { p: d.p as number, b: d.b as number, t: d.t } };
+    }
+    case 'patang': {
+      if (!int(d.a, 0, 7) || !int(d.b, 0, 7) || !int(d.p, 0, 3) || !int(d.t, 0, 2) || !int(d.k, 0, 99)) return null;
+      return { ...base, type: 'patang', data: { a: d.a as number, b: d.b as number, p: d.p as number, t: d.t as number, k: d.k as number, ...(d.n === 1 ? { n: 1 as const } : {}) } };
+    }
+    case 'warli': {
+      if (!int(d.d, 0, WARLI_DANCERS) || !int(d.s, 3, 20) || typeof d.i !== 'string' || d.i.length > 2000) return null;
+      const it = decodePts(d.i);
+      if (!it || it.length % 3 || it.length > 3 * WARLI_ITEMS || (!d.d && !it.length)) return null;
+      for (let k = 0; k < it.length; k += 3) if (!int(it[k], 0, WARLI_KINDS - 1) || Math.abs(it[k + 1]) > 1000 || Math.abs(it[k + 2]) > 1000) return null;
+      return { ...base, type: 'warli', data: { d: d.d as number, i: d.i, s: d.s as number, ...(d.n === 1 ? { n: 1 as const } : {}), ...(d.r === 1 ? { r: 1 as const } : {}) } };
+    }
     case 'kolam': {
       if (!Array.isArray(d.dots) || !d.dots.length || d.dots.length > 49 || typeof d.c !== 'string' || !HEX.test(d.c)) return null;
       const seen = new Set<string>();
@@ -146,32 +197,63 @@ export function validateRecipe(x: unknown): Recipe | null {
         seen.add(p.join());
         dots.push([p[0], p[1]]);
       }
-      return { ...base, type: 'kolam', data: { dots, c: d.c, d: d.d !== false } };
+      let m: [number, number, 0 | 1, 1 | 2][] | undefined;
+      if (d.m != null) {
+        if (!Array.isArray(d.m) || d.m.length > 84) return null;
+        const edges = new Set<string>();
+        m = [];
+        for (const e of d.m) {
+          if (!Array.isArray(e) || !int(e[2], 0, 1) || !int(e[3], 1, 2) || !int(e[0], 0, e[2] ? 6 : 5) || !int(e[1], 0, e[2] ? 5 : 6) || edges.has(`${e[0]},${e[1]},${e[2]}`)) return null;
+          edges.add(`${e[0]},${e[1]},${e[2]}`);
+          m.push([e[0], e[1], e[2], e[3]]);
+        }
+      }
+      return { ...base, type: 'kolam', data: { dots, c: d.c, d: d.d !== false, ...(m ? { m } : {}), ...(d.r === 1 ? { r: 1 as const } : {}) } };
     }
     case 'block': {
       if (!int(d.a, 200, 5000) || !Array.isArray(d.st) || !d.st.length || d.st.length > 600) return null;
       const st: Stamp[] = [];
       for (const s of d.st) {
-        if (!isObj(s) || !int(s.x, -200, 1200) || !int(s.y, -200, 5200) || !int(s.t, 0, 2) || typeof s.i !== 'string' || !HEX.test(s.i) || !int(s.z, 20, 800)) return null;
+        if (!isObj(s) || !int(s.x, -200, 1200) || !int(s.y, -200, 5200) || !int(s.t, 0, BLOCK_COUNT - 1) || typeof s.i !== 'string' || !HEX.test(s.i) || !int(s.z, 20, 800)) return null;
         st.push({ x: s.x as number, y: s.y as number, t: s.t as number, i: s.i, z: s.z as number, ...(s.r === 1 ? { r: 1 as const } : {}) });
       }
       return { ...base, type: 'block', data: { a: d.a as number, st } };
     }
     case 'poster': {
       const w = cleanText(d.w, 10).toUpperCase();
-      if (!w || !int(d.t, 0, 30) || !int(d.o, 0, 30) || !int(d.p, 0, 3)) return null;
-      return { ...base, type: 'poster', data: { w, t: d.t as number, o: d.o as number, p: d.p as number } };
+      if (!w || !int(d.t, 0, 30) || !int(d.o, 0, 30) || !int(d.p, 0, 7)) return null;
+      if ((d.l != null && !int(d.l, 0, 3)) || (d.b != null && !int(d.b, 0, 4))) return null;
+      return { ...base, type: 'poster', data: { w, t: d.t as number, o: d.o as number, p: d.p as number, ...(d.l ? { l: d.l as number } : {}), ...(d.b ? { b: d.b as number } : {}), ...(d.n === 1 ? { n: 1 as const } : {}) } };
     }
     case 'plate': {
       const n = cleanText(d.n, 22);
       if (!n || (d.f !== 'wallpaper' && d.f !== 'sticker')) return null;
-      return { ...base, type: 'plate', data: { n, f: d.f } };
+      if ((d.s != null && !int(d.s, 0, 7)) || (d.k != null && !int(d.k, 0, 3))) return null;
+      return { ...base, type: 'plate', data: { n, f: d.f, ...(d.s ? { s: d.s as number } : {}), ...(d.k ? { k: d.k as number } : {}) } };
     }
     case 'naam': {
       const n = cleanText(d.n, 24);
       if (!n) return null;
       const f = cleanText(d.for, 24);
       return { ...base, type: 'naam', data: { n, ...(f ? { for: f } : {}) } };
+    }
+    case 'pookalam': {
+      if (!int(d.l, 0, POOKALAM_LAYOUTS - 1) || typeof d.k !== 'string' || d.k.length > 400 || !/^[.a-l]+$/.test(d.k) || !/[a-l]/.test(d.k)) return null;
+      return { ...base, type: 'pookalam', data: { l: d.l as number, k: d.k } };
+    }
+    case 'bandhani': {
+      if (!int(d.z, 1, 3) || !Array.isArray(d.r) || !d.r.length || d.r.length > 3) return null;
+      const rounds: { c: string; p: string }[] = [];
+      let knots = 0;
+      for (const r of d.r) {
+        if (!isObj(r) || typeof r.c !== 'string' || !HEX.test(r.c) || typeof r.p !== 'string') return null;
+        const pts = decodePts(r.p);
+        if (!pts || pts.length % 2 || pts.some((v) => v < -1000 || v > 1000)) return null;
+        knots += pts.length / 2;
+        if (knots > 2000) return null;
+        rounds.push({ c: r.c, p: r.p });
+      }
+      return { ...base, type: 'bandhani', data: { z: d.z as number, r: rounds } };
     }
     case 'greeting': {
       const f = cleanText(d.f, 32);
@@ -197,8 +279,3 @@ export async function recipeId(r: Recipe): Promise<string> {
   return id;
 }
 export const ID_RE = /^[0-9A-Za-z]{8}$/;
-
-// What the "Make your own" button opens on the home page.
-export function toolFor(type: RecipeType): string {
-  return type === 'naam' ? 'naam' : type === 'greeting' ? 'greeting' : type;
-}

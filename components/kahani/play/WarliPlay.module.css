@@ -1,0 +1,16 @@
+/* Shapes become people: a red-earth wall, a dotted outline, three white shapes to drop on it. */
+.stage { background: #9A4224; }
+.svg { touch-action: none; }
+.ghost { fill: none; stroke: #F6EEDB; stroke-width: 2; stroke-dasharray: 5 6; opacity: .55; }
+.piece { fill: #F6EEDB; cursor: grab; transition: transform .35s var(--ease-pop); filter: drop-shadow(3px 3px 0 rgba(27, 20, 16, .45)); }
+.piece:active { cursor: grabbing; transition: none; }
+.placed { cursor: default; filter: none; }
+/* limbs paint on once the body is whole, then each joint glides to the next pose */
+.limbs { fill: none; stroke: #F6EEDB; stroke-width: 5; stroke-linecap: round; opacity: 0; }
+.limbs.on { opacity: 1; animation: wpPaint .5s ease-out both; }
+@keyframes wpPaint { from { opacity: 0 } }
+.joint { transition: transform .55s var(--ease-pop); }
+.prop { stroke-width: 3.5; }
+.bob { animation: wpPaint .5s ease-out both, wpBob .7s ease-in-out .5s infinite; }
+@keyframes wpBob { 50% { translate: 0 -5px } }
+.card { min-height: 128px; display: flex; flex-direction: column; gap: 8px; }

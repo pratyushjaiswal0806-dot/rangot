@@ -1,0 +1,87 @@
+.hero { position: relative; min-height: max(660px, 100svh); background: #D63A2A; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; }
+.layer { position: absolute; will-change: transform; }
+.bands { left: -5%; right: -5%; top: 0; bottom: 0; }
+.bands i { position: absolute; left: 0; right: 0; bottom: 0; }
+/* halftone print over the red, like the old screen-printed film posters */
+.bands::after { content: ''; position: absolute; inset: 0; background: var(--halftone); }
+.arch { left: -4%; top: -3%; width: 108%; height: 106%; }
+/* Diwali nights: the sky behind the arches turns to a starry night for the fireworks (HeroSky) */
+:where(html[data-theme='night']) .hero { background: #24102E; }
+:where(html[data-theme='night']) .bands i:nth-child(1) { background: #3A1440 !important; }
+:where(html[data-theme='night']) .bands i:nth-child(2) { background: #4A1440 !important; }
+:where(html[data-theme='night']) .bands i:nth-child(3) { background: #5A1238 !important; }
+:where(html[data-theme='night']) .bands::before {
+  content: ''; position: absolute; inset: 0 0 40% 0; pointer-events: none;
+  background-image: radial-gradient(1.6px 1.6px at 30px 40px, #FFE29A 50%, transparent 52%), radial-gradient(1.2px 1.2px at 140px 90px, #fff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 230px 30px, #FFC21A 50%, transparent 52%), radial-gradient(1px 1px at 90px 150px, #fff 50%, transparent 52%);
+  background-size: 260px 200px; animation: twinkle 3.4s ease-in-out infinite;
+}
+
+.lantern { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0; }
+.lantern .cord { width: 2px; background: #1B1410; }
+.lantern .cap { width: 14px; height: 8px; background: #1B1410; }
+.lantern .box { rotate: 45deg; border: 3px solid #1B1410; display: grid; place-items: center; }
+.lantern .box i { border: 2px solid #1B1410; }
+.lantern .tassel { display: flex; gap: 4px; }
+.lantern .tassel i { width: 3px; }
+
+.strand { display: flex; flex-direction: column; align-items: center; transform-origin: 50% 0; }
+.strand .cord { width: 2px; height: 58px; background: #1B1410; }
+.strand .bead { width: 17px; height: 17px; margin-top: -2px; border-radius: 50%; border: 2px solid #1B1410; }
+.strand .leaf { width: 14px; height: 30px; margin-top: 2px; background: #2F6B3B; border: 2px solid #1B1410; border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%; }
+
+.ledge { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; z-index: 2; background: #4A0A26; border-top: 4px solid #1B1410; display: flex; justify-content: space-evenly; align-items: flex-start; }
+.diya { position: relative; width: 34px; height: 34px; margin-top: -30px; }
+.diya .halo { position: absolute; left: 50%; top: -10px; width: 44px; height: 44px; margin-left: -22px; border-radius: 50%; background: rgba(255, 194, 26, .18); animation: glow 2.4s ease-in-out infinite; }
+.diya .flame { position: absolute; left: 11px; top: 0; width: 12px; height: 12px; background: #FFC21A; border: 1.5px solid #1B1410; border-radius: 50% 0 50% 50%; transform: rotate(-45deg); transform-origin: 50% 100%; animation: flicker 1.3s ease-in-out infinite; }
+.diya .bowl { position: absolute; left: 0; bottom: 0; width: 34px; height: 17px; background: #B4542A; border: 2px solid #1B1410; border-radius: 0 0 50% 50% / 0 0 100% 100%; }
+
+.toran { position: absolute; top: 0; left: 0; right: 0; z-index: 4; pointer-events: none; }
+.toran .rope { height: 5px; background: #1B1410; }
+.toran .row { display: flex; justify-content: space-around; overflow: hidden; padding: 0 30px; }
+.toran .hang { transform-origin: 50% 0; display: flex; flex-direction: column; align-items: center; flex: none; }
+.toran .mango { width: 18px; height: 46px; margin-top: -2px; border: 2px solid #1B1410; border-radius: 50% 50% 50% 50% / 28% 28% 72% 72%; }
+.toran .stem { width: 2px; height: 6px; background: #1B1410; }
+.toran .bud { border-radius: 50%; border: 2px solid #1B1410; }
+
+.content { position: relative; z-index: 3; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 84px 16px 92px; text-align: center; }
+.greet { display: flex; flex-direction: column; align-items: center; color: #FBF3E4; }
+.greetEn { font-size: clamp(26px, 7vw, 38px); --ext: #1B1410; justify-content: center; }
+.greetSub { font-size: 15px; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.ring { position: relative; width: min(92vw, 66vh, 600px); aspect-ratio: 1; display: grid; place-items: center; }
+.kolam { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: spin 160s linear infinite; }
+.kolam path { fill: none; stroke-width: .85; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.title {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%; white-space: nowrap; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+}
+.title h1 { font-size: clamp(46px, min(14.5vw, 15vh), 132px); --ext: #5A0B0E; }
+.title :global(.desi-gloss) { font-size: clamp(11px, 2.6vw, 14px); color: #FBF3E4; margin-right: .4em; }
+/* a big mandala behind the ring, turning the other way */
+.mandala { position: absolute; inset: 0; width: 100%; height: 100%; color: rgba(90, 8, 8, .3); animation: spin 300s linear infinite reverse; pointer-events: none; }
+.tagline { margin: 0; color: #FBF3E4; font-size: clamp(17px, 4.6vw, 20px); font-weight: 600; max-width: 30ch; text-wrap: pretty; }
+.club { margin: 0; display: flex; align-items: center; gap: 10px; color: #FBF3E4; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+.club b { width: 30px; height: 30px; border-radius: 50%; background: #1B1410; border: 2px solid #FFC21A; display: grid; place-items: center; font-family: Sarpanch, sans-serif; font-weight: 900; font-size: 15px; color: #FFC21A; letter-spacing: 0; }
+.ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 6px; }
+.cta {
+  min-height: 54px; padding: 0 22px 0 16px; display: inline-flex; align-items: center; gap: 10px; background: #FFC21A; color: #1B1410; border: 3px solid #1B1410; box-shadow: 5px 5px 0 #1B1410;
+  font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 17px; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: transform .15s, box-shadow .15s;
+}
+.cta:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 #1B1410; color: #1B1410; }
+.cta:active { transform: translate(5px, 5px); box-shadow: 0 0 0 #1B1410; }
+.alt { background: #FBF3E4; }
+.tilt { min-height: 44px; padding: 0 18px; border: 2px solid #1B1410; border-radius: 999px; background: #4A0A26; color: #FBF3E4; font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; box-shadow: 3px 3px 0 #1B1410; }
+
+/* the bunting under the hero */
+.bunting { position: relative; z-index: 1; margin-top: -2px; line-height: 0; }
+.naam { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 160s linear infinite; }
+.kolam { transition: opacity .6s; }
+.reading { min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #FBF3E4; font-size: 16px; font-weight: 600; max-width: 42ch; margin-top: -6px; animation: settleIn .6s cubic-bezier(.2, .8, .2, 1) both; }
+.reading:empty { display: none; }
+.reading a { color: #FFC21A; font-weight: 800; }
+.readingT { font-family: var(--display); font-weight: 700; font-size: clamp(22px, 5.6vw, 30px); line-height: 1.1; color: #FFC21A; text-shadow: 2px 2px 0 #1B1410; }
+.form { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; width: min(100%, 520px); }
+.formLabel { width: 100%; color: #FBF3E4; font-weight: 800; font-size: 15px; letter-spacing: .02em; }
+.input { flex: 1 1 200px; min-width: 0; height: 54px; padding: 0 16px; border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: inset 3px 3px 0 rgba(27, 20, 16, .14); font: 700 22px var(--display); }
+.ghostBtn { background: transparent; color: #FBF3E4; border-color: #FBF3E4; box-shadow: 5px 5px 0 #1B1410; }
+.ghostBtn:hover { color: #FFC21A; }
+.glow { animation: ctaGlow 1.6s ease-in-out infinite; }
+@keyframes ctaGlow { 50% { box-shadow: 5px 5px 0 #1B1410, 0 0 0 6px rgba(255, 194, 26, .55); } }

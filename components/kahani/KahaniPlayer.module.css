@@ -1,0 +1,100 @@
+/* The picture book: a full-screen dialog on the toy's floor colour, a bar with page pips, the
+   page (cover / picture + caption / your turn), and the controls. Phone first: the picture on
+   top and the caption under it; from 860px they sit side by side. Its own colours, so it reads
+   the same in the night theme. */
+.player {
+  position: fixed; inset: 0; z-index: 132; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; color: #1B1410;
+  background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, .08), transparent 60%), var(--halftone), var(--floor, #3B2117);
+  animation: kpOpen .35s var(--ease-out) both; overscroll-behavior: contain;
+}
+.player::before { content: ''; position: absolute; inset: 0; background: rgba(20, 10, 6, .45); pointer-events: none; }
+.player > * { position: relative; }
+@keyframes kpOpen { from { opacity: 0; scale: .96 } }
+
+.bar { display: flex; align-items: center; gap: 12px; padding: calc(10px + env(safe-area-inset-top)) 12px 10px 16px; }
+.brand { flex: none; font: 800 12px/1 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #FFC21A; }
+@media (max-width: 520px) { .brand { display: none; } }
+.pips { flex: 1; display: flex; justify-content: center; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.pips button {
+  width: 22px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center;
+}
+.pips button::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: rgba(251, 243, 228, .45); border: 2px solid #1B1410; transition: transform .3s var(--ease-pop), background-color .2s; }
+.pips button[aria-current]::before { background: #FFC21A; transform: scale(1.5); }
+.x {
+  flex: none; width: 44px; height: 44px; border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: 3px 3px 0 #1B1410; cursor: pointer;
+  font: 800 18px/1 Sarpanch, sans-serif; display: grid; place-items: center; transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop);
+}
+.x:active { transform: translate(3px, 3px); box-shadow: none; transition-duration: 0s; }
+
+.stage { min-height: 0; display: grid; padding: 4px 16px; overflow: hidden; touch-action: pan-y; }
+.page { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
+
+/* the cover and the last page */
+.cover { position: relative; isolation: isolate; width: min(100%, 720px); display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; padding: 12px 0; }
+.mandala { position: absolute; z-index: -1; left: 50%; top: 42%; width: min(110vw, 680px); translate: -50% -50%; color: rgba(255, 194, 26, .14); animation: spin 120s linear infinite; }
+.bigTitle { font-size: clamp(44px, 11vw, 96px); justify-content: center; }
+.lead { margin: 0; max-width: 32ch; color: #FBF3E4; font: 700 clamp(19px, 4.4vw, 26px)/1.35 var(--display); text-wrap: balance; }
+.hello { display: flex; align-items: flex-end; gap: 6px; }
+.antBig { width: clamp(72px, 18vw, 110px); filter: drop-shadow(0 0 4px rgba(255, 194, 26, .6)); }
+.speech {
+  margin-bottom: 30px; padding: 10px 14px; background: #FBF3E4; border: 3px solid #1B1410; border-radius: 16px 16px 16px 4px; box-shadow: 4px 4px 0 #1B1410;
+  font: 700 17px/1.3 var(--display); text-align: left; animation: stampIn .45s var(--ease-pop) 1s both;
+}
+.speech small { display: block; font: 600 13px/1.3 Mukta, sans-serif; opacity: .75; }
+.endBtns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.go, .alt {
+  min-height: 52px; padding: 0 18px; border: 3px solid #1B1410; box-shadow: 4px 4px 0 #1B1410; cursor: pointer; color: #1B1410;
+  font: 800 15px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop);
+}
+.go { background: #FFC21A; }
+.alt { background: #FBF3E4; }
+.go:active, .alt:active { transform: translate(3px, 3px); box-shadow: none; transition-duration: 0s; }
+
+/* a chapter: its picture, big and slowly drifting, and the caption */
+.spread { width: min(100%, 1040px); height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 14px; align-items: center; justify-items: center; }
+@media (min-width: 860px) { .spread { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 1fr; gap: 36px; } }
+/* a phone held sideways: picture and caption side by side too, both kept within the short screen */
+@media (max-width: 859px) and (orientation: landscape) and (max-height: 520px) {
+  .spread { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); grid-template-rows: 1fr; gap: 20px; }
+  .frame { width: min(100%, 58svh); }
+  .caption { padding: 12px 14px 14px; gap: 4px; }
+  .title { font-size: 22px; }
+  .body { font-size: 15px; max-height: 38svh; }
+  .ant { display: none; }
+  .bar { padding-top: calc(4px + env(safe-area-inset-top)); padding-bottom: 4px; }
+  .controls { padding-top: 4px; padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+  .toggles { flex-basis: auto; }
+}
+.frame {
+  width: min(100%, 52svh, 480px); aspect-ratio: 1; overflow: hidden; display: grid; place-items: center;
+  background: var(--halftone), #F6E7C8; border: 4px solid #1B1410; box-shadow: 8px 8px 0 #1B1410; rotate: -1.5deg;
+}
+.ken { width: 88%; height: 88%; animation: kpKen 12s ease-in-out infinite alternate; }
+@keyframes kpKen { from { transform: scale(1) translate(0, 0) } to { transform: scale(1.1) translate(-2%, -2%) } }
+.art { width: 100%; height: 100%; display: block; }
+.caption {
+  position: relative; width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 8px; padding: 18px 18px 20px 20px;
+  background: #FFF8EA; border: 3px solid #1B1410; box-shadow: 6px 6px 0 #1B1410; rotate: .6deg;
+}
+.ant { position: absolute; top: -58px; right: 12px; width: 58px; filter: drop-shadow(0 0 3px rgba(255, 194, 26, .6)); }
+.kicker { font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #B0246A; }
+.title { margin: 0; font: 700 clamp(24px, 5.6vw, 34px)/1.08 var(--display); text-wrap: balance; }
+.body { margin: 0; font-size: clamp(16px, 3.9vw, 19px); line-height: 1.55; text-wrap: pretty; max-height: 34svh; overflow-y: auto; }
+.on, .off { transition: opacity .5s ease, filter .5s ease; }
+.off { opacity: .22; filter: blur(.4px); }
+
+.controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); }
+/* Sangeet and Padh ke sunao: beside the page buttons, or on a row of their own on phones */
+.toggles { display: flex; justify-content: center; gap: 10px; }
+@media (max-width: 560px) { .toggles { flex-basis: 100%; } }
+.ctl, .voice {
+  height: 52px; border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: 3px 3px 0 #1B1410; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .3s var(--ease-pop), box-shadow .3s var(--ease-pop), background-color .2s, opacity .2s;
+}
+.ctl { width: 52px; }
+.main { width: 64px; background: #FFC21A; }
+.ctl:disabled { opacity: .4; cursor: default; }
+.voice { padding: 0 14px; font: 800 13px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.voice[aria-pressed='true'] { background: #1B1410; color: #FFC21A; }
+.ctl:active:enabled, .voice:active { transform: translate(3px, 3px); box-shadow: none; transition-duration: 0s; }
+@media (max-width: 400px) { .voice { padding: 0 10px; font-size: 11px; } }

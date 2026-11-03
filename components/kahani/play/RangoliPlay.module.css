@@ -1,0 +1,37 @@
+/* One art, many floors: place buttons, the floor the art draws itself on, and its card. */
+.play { display: flex; flex-direction: column; gap: 18px; }
+.places { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 8px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+@media (min-width: 760px) { .places { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; } }
+.place {
+  flex: none; scroll-snap-align: start; min-height: 52px; padding: 6px 14px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: 3px 3px 0 #120A07; cursor: pointer; text-align: left;
+}
+.place b { font: 700 17px/1 var(--display); }
+.place span { font: 700 11px/1 Sarpanch, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+.place[aria-pressed='true'] { background: #FFC21A; transform: translate(3px, 3px); box-shadow: 0 0 0 #120A07; }
+.body { display: grid; gap: 18px; align-items: start; }
+@media (min-width: 760px) { .body { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 28px; } }
+.floor { position: relative; overflow: hidden; aspect-ratio: 1; width: 100%; max-width: 420px; border: 4px solid #1B1410; box-shadow: 6px 6px 0 #120A07; display: grid; place-items: center; }
+.floor svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.fill { transform-box: fill-box; transform-origin: center; animation: pop .45s cubic-bezier(.3, 1.5, .5, 1) both; }
+/* the sweep: the art is wiped off left to right behind a passing broom */
+.sweeping { animation: rgSweep 1.1s ease-in both; }
+@keyframes rgSweep { to { clip-path: inset(0 0 0 100%); opacity: .4; } }
+.broom { position: absolute; top: 6%; left: -30%; width: 30%; height: 88%; pointer-events: none; rotate: -12deg; animation: rgBroom 1.1s ease-in both; }
+@keyframes rgBroom { to { left: 100%; } }
+.empty { margin: 0; padding: 24px; text-align: center; font: 700 18px/1.4 var(--display); color: rgba(251, 243, 228, .85); }
+.info { display: flex; flex-direction: column; gap: 10px; }
+.name { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.name b { font: 700 34px/1 var(--display); color: #FFC21A; }
+.name span { font-size: 26px; font-weight: 700; }
+.where { margin: 0; font: 800 12px/1.2 Sarpanch, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.facts { margin: 0; display: grid; gap: 8px; }
+.facts div { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 10px; }
+.facts dt { font: 800 12px/1.5 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #FFC21A; }
+.facts dd { margin: 0; font-size: 16px; line-height: 1.45; }
+.note { margin: 0; font-size: 17px; line-height: 1.55; }
+.sweep {
+  align-self: flex-start; min-height: 52px; padding: 0 18px; border: 3px solid #1B1410; background: #FFC21A; color: #1B1410; box-shadow: 3px 3px 0 #120A07;
+  font: 800 15px/1 Sarpanch, sans-serif; letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+}
+.sweep:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #120A07; }

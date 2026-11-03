@@ -8,7 +8,8 @@ const DAY = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function GET(req: Request) {
   const day = new URL(req.url).searchParams.get('day') ?? istDay();
-  if (!redis || !DAY.test(day)) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
+  if (!DAY.test(day)) return NextResponse.json({ error: 'bad day' }, { status: 400, headers: noStore });
+  if (!redis) return NextResponse.json({ error: 'unavailable' }, { status: 503, headers: noStore });
   try {
     const h = (await redis.hgetall<Record<string, number>>(k(day))) ?? {};
     const dist = Array.from({ length: 6 }, (_, i) => Number(h[String(i + 1)] ?? 0));

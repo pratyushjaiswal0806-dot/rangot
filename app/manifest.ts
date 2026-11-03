@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Rangotsav',
     short_name: 'Rangotsav',
-    description: 'Weave your name into a kolam, draw rangoli, send festival greetings and light a diya.',
+    description: 'Weave your name into a kolam, draw rangoli and light a diya.',
     start_url: '/',
     display: 'standalone',
     background_color: '#7A0E3A',
