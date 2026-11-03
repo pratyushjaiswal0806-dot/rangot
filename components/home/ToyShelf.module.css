@@ -5,12 +5,12 @@
 
 .tile {
   position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 10px 10px 14px; color: #1B1410; text-decoration: none;
-  background: #F6E7C8; border: 3px solid #1B1410; box-shadow: 6px 6px 0 #1B1410; outline: 2px dashed #1B1410; outline-offset: -8px;
+  background: linear-gradient(180deg, #FAEFD6, #F0DDB8); border: 3px solid #1B1410; box-shadow: 0 1px 0 #fff8 inset, 0 14px 24px -12px rgba(27, 20, 16, .55), 5px 5px 0 #1B1410; outline: 1px solid rgba(27, 20, 16, .35); outline-offset: -7px;
   transform: rotate(var(--tilt, 0deg)); transition: transform .35s cubic-bezier(.3, 1.5, .5, 1), box-shadow .35s;
   /* dealt onto the table when the shelf scrolls into view (backwards fill: afterwards the tile is just itself) */
   animation: dealIn .6s var(--ease-out) var(--deal, 0s) backwards; animation-play-state: var(--rv, running);
 }
-.tile:hover, .tile:focus-visible { transform: rotate(0deg) translate(-3px, -3px); box-shadow: 9px 9px 0 #1B1410; color: #1B1410; }
+.tile:hover, .tile:focus-visible { transform: rotate(0deg) translate(-3px, -3px); box-shadow: 0 22px 32px -12px rgba(27, 20, 16, .6), 8px 8px 0 #1B1410; color: #1B1410; }
 /* on hover the title's letters do a little Mexican wave (each letter's own --d delay, from Desi) */
 .tile:hover :global(.desi-l), .tile:hover :global(.desi-in) { animation: letterWave .7s var(--ease-out) var(--d, 0s); }
 /* the Koi bhi wheel's highlight */
@@ -23,7 +23,7 @@
 .banner .title { font-size: clamp(26px, 6vw, 40px); }
 .banner .blurb, .banner .names { display: block !important; }
 
-.art { position: relative; aspect-ratio: 1; border: 3px solid #1B1410; overflow: hidden; display: grid; place-items: center; }
+.art { position: relative; aspect-ratio: 1; border: 3px solid #1B1410; outline: 5px solid #FBF3E4; box-shadow: 0 0 0 6px #1B1410, inset 0 0 36px rgba(0, 0, 0, .35); margin: 5px 5px 8px; overflow: hidden; display: grid; place-items: center; }
 .cv { display: block; width: 100%; height: 100%; object-fit: cover; }
 .tag {
   position: absolute; top: 18px; left: 18px; max-width: calc(100% - 64px); padding: 3px 10px; border: 2px solid #1B1410; border-radius: 999px; background: #FBF3E4;

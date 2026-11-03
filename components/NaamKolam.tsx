@@ -9,7 +9,7 @@ import ToyShell, { ToolBtn } from './toys/ToyShell';
 import Morph from './toys/Morph';
 import CultureStrip from './toys/CultureStrip';
 import { BloomIcon } from './toys/icons';
-import { useElementSize } from '../hooks/useElementSize';
+import { useElementSize, fitSquare } from '../hooks/useElementSize';
 import { naamKolam, naamReading } from '../lib/art/naam';
 import { createPlayer } from '../lib/art/player';
 import { cleanText, type Recipe } from '../lib/recipe';
@@ -77,7 +77,7 @@ export default function NaamKolam({ initial, share }: { initial?: string; share:
     });
   };
 
-  const S = Math.max(200, Math.floor(Math.min(w - 28, h - 28 - 26)));
+  const S = fitSquare(w, h, 200);
 
   return (
     <ToyShell

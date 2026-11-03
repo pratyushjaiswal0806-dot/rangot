@@ -4,6 +4,10 @@
 // board; a win makes it glow, gets a cheer and Cheenti comes for breakfast; once today's puzzle
 // is over she naps until tomorrow's. The streak's flame grows with the streak.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ToyShell, { ToolBtn } from './toys/ToyShell';
+import { useElementSize } from '../hooks/useElementSize';
+import s from './toys/ToyShell.module.css';
+import p from './Pulli.module.css';
 import { C } from '../lib/art/palette';
 import { drawKolam, kolamSegs } from '../lib/art/kolam';
 import { istDay } from '../lib/festivals';
@@ -11,7 +15,7 @@ import { GRID, TRIES, evaluate, key, loadToday, msToNext, puzzleNumber, pulliSta
 import { copy, whatsapp } from '../lib/share';
 import { stamp } from '../lib/progress';
 import Cheenti from './site/Cheenti';
-import { say, tipFor } from '../lib/cheenti';
+import { say } from '../lib/cheenti';
 import { done as earned } from '../lib/challenges';
 import { cheer } from '../lib/toast';
 import { shake } from '../lib/motion';
@@ -50,6 +54,8 @@ export default function Pulli() {
   const [msg, setMsg] = useState('');
   const [left, setLeft] = useState('');
   const [glow, setGlow] = useState(false);
+  const stage = useRef<HTMLDivElement>(null);
+  const { w: sw, h: sh } = useElementSize(stage);
 
   useEffect(() => {
     const d = istDay();
@@ -62,8 +68,7 @@ export default function Pulli() {
     const tick = () => { const ms = msToNext(); setLeft(`${Math.floor(ms / 3600000)}h ${Math.floor((ms % 3600000) / 60000)}m`); };
     tick();
     const iv = setInterval(tick, 30000);
-    const tip = setTimeout(() => { if (!t.done) say(tipFor('pulli'), { once: 'tip:pulli', pose: 'point', ms: 6500 }); }, 2000);
-    return () => { clearInterval(iv); clearTimeout(tip); };
+    return () => { clearInterval(iv); };
   }, []);
 
   const tgt = useMemo(() => (day ? target(day) : []), [day]);
@@ -126,74 +131,73 @@ export default function Pulli() {
     }
   }, [day, over, dots, guesses, tgt]);
 
-  if (!day) return <div className="rg-page" id="toy" />;
-  const url = `${location.origin}/pulli`;
-  const text = shareText(day, guesses, !!over?.won, tgt, url);
+  // the frame renders at once (the stage must exist for the size hook); today's puzzle fills in after mount
+  const text = day ? shareText(day, guesses, !!over?.won, tgt, `${location.origin}/pulli`) : '';
+
+  // two boards in the stage: side by side when the stage is wide, stacked when it is tall
+  // (each board wears ~26px of frame: border, mat and its ring)
+  const aw = Math.max(160, sw - 24), ah = Math.max(200, sh - 28 - 26);
+  const side = Math.floor(Math.min((aw - 14 - 52) / 2, ah - 24 - 26));
+  const stack = Math.floor(Math.min(aw - 26, (ah - 14 - 100) / 2));
+  const stacked = stack > side;
+  const S = Math.max(120, stacked ? stack : side);
 
   return (
-    <div className="rg-page" id="toy">
-      <header className="rg-top">
-        <a href="/" className="rg-logo">Rangotsav</a>
-        <span className="rg-chip" style={{ pointerEvents: 'none' }}>Streak {stats.streak} <span aria-hidden="true" className="rg-flame" style={{ ['--k' as string]: Math.min(2, 1 + stats.streak * 0.12) }}>🔥</span></span>
-      </header>
-      <section className="rg-pulli">
-        <div className="rg-pulli__head">
-          <p className="rg-kicker">Daily puzzle #{puzzleNumber(day)}</p>
-          <h1 className="rg-title">Pulli</h1>
-          <p className="rg-p">Find the dots behind today&apos;s kolam. It has <b>{tgt.length} pulli</b>. Tap the grid to place dots, and the line weaves around them. You get {TRIES} checks.</p>
-          <p className="rg-small" style={{ color: 'var(--parch)' }}>After a check: <b style={{ color: '#7fd68f' }}>green</b> = right spot, <b style={{ color: '#ffcf5a' }}>gold</b> = a missing dot is right next to it, grey = not close.</p>
-        </div>
-        <div className="rg-pulli__boards">
+    <ToyShell
+      toy="pulli" label="Pulli, the daily kolam puzzle" title="Pulli Puzzle" sub={<span lang="hi">पुल्ली पहेली</span>} stageRef={stage}
+      caption={<span className={s.status}>Streak <b>{stats.streak}</b> 🔥 · puzzle #{day ? puzzleNumber(day) : ''}</span>}
+      stage={
+        <div className={p.boards} data-stacked={stacked ? '' : undefined}>
           <figure>
-            <figcaption className="rg-label" style={{ color: 'var(--marigold)' }}>Today&apos;s kolam</figcaption>
-            <canvas ref={tRef} className="rg-pulli__cv" role="img" aria-label={`Today's kolam line, made from ${tgt.length} dots`} />
+            <figcaption className={p.cap}>Today&apos;s kolam</figcaption>
+            <canvas ref={tRef} className={s.canvas} style={{ width: S, height: S }} role="img" aria-label={`Today's kolam line, made from ${tgt.length} dots`} />
           </figure>
           <figure>
-            <figcaption className="rg-label" style={{ color: 'var(--marigold)' }}>Your dots · {dots.length}/{tgt.length}</figcaption>
-            <canvas ref={bRef} className={`rg-pulli__cv${glow ? ' is-won' : ''}`} style={{ cursor: over ? 'default' : 'pointer', touchAction: 'manipulation' }} onPointerDown={tap} role="img" aria-label={`Your board, ${dots.length} dots placed. Tap a cell to add or remove a dot.`} />
+            <figcaption className={p.cap}>Your dots · {dots.length}/{tgt.length}</figcaption>
+            <canvas ref={bRef} className={`${s.canvas}${glow ? ' ' + p.won : ''}`} style={{ width: S, height: S, cursor: over ? 'default' : 'pointer' }} onPointerDown={tap} role="img" aria-label={`Your board, ${dots.length} dots placed. Tap a cell to add or remove a dot.`} />
           </figure>
         </div>
-        {!over ? (
-          <div className="rg-pulli__actions">
-            <button className="rg-btn rg-btn--primary" onClick={check} style={{ minWidth: 200 }}>Check ({TRIES - guesses.length} left)</button>
-            <button className="rg-btn" onClick={() => setBoard(new Map())}>Clear</button>
-            <p className="rg-status" role="status" aria-live="polite" style={{ color: 'var(--marigold)', width: '100%', textAlign: 'center' }}>{msg}</p>
+      }
+      actions={!over ? (
+        <>
+          <ToolBtn icon="✔" label={`Check · ${TRIES - guesses.length} left`} onClick={check} go />
+          <ToolBtn icon="⟲" label="Clear" onClick={() => setBoard(new Map())} disabled={!board.size} />
+        </>
+      ) : (
+        <>
+          <ToolBtn icon="📋" label="Copy result" onClick={async () => setMsg((await copy(text)) ? 'Copied! Paste it in your group chat.' : '')} go />
+          <ToolBtn icon="💬" label="WhatsApp" onClick={() => whatsapp(text)} />
+        </>
+      )}
+    >
+      <p className={p.help}>Find the dots behind today&apos;s kolam. It has <b>{tgt.length} pulli</b>. Tap the grid to place dots and the line weaves around them. After a check: <b className={p.hit}>green</b> = right spot, <b className={p.near}>gold</b> = a missing dot is right next to it, grey = not close.</p>
+      <p className={p.msg} role="status" aria-live="polite">{msg}</p>
+      {over && (
+        <div className={p.done}>
+          <b className={p.verdict}>{over.won ? `Shabaash! ${guesses.length}/${TRIES}` : 'So close! Tomorrow, then.'}</b>
+          <pre className={p.share} aria-label="Your result">{text.split('\n').slice(0, -1).join('\n')}</pre>
+          <div className={p.stats}>
+            <span><b>{stats.played}</b> played</span><span><b>{stats.played ? Math.round((stats.won / stats.played) * 100) : 0}%</b> won</span>
+            <span><b>{stats.streak}</b> streak</span><span><b>{stats.best}</b> best</span>
           </div>
-        ) : (
-          <div className="rg-pulli__done">
-            <h2 className="rg-h" style={{ color: 'var(--marigold)' }}>{over.won ? `Shabaash! ${guesses.length}/${TRIES}` : 'So close! Tomorrow, then.'}</h2>
-            <pre className="rg-pulli__share" aria-label="Your result">{text.split('\n').slice(0, -1).join('\n')}</pre>
-            <div className="rg-actions">
-              <button className="rg-btn rg-btn--primary" onClick={async () => setMsg((await copy(text)) ? 'Copied! Paste it in your group chat.' : '')}>Copy result</button>
-              <button className="rg-btn rg-btn--wa" onClick={() => whatsapp(text)}>WhatsApp</button>
-            </div>
-            <p className="rg-status" role="status" style={{ color: 'var(--marigold)' }}>{msg}</p>
-            <div className="rg-pulli__stats">
-              <span><b>{stats.played}</b> played</span><span><b>{stats.played ? Math.round((stats.won / stats.played) * 100) : 0}%</b> won</span>
-              <span><b>{stats.streak}</b> streak</span><span><b>{stats.best}</b> best</span>
-            </div>
-            {global && global.played > 0 && <p className="rg-p">{global.solved.toLocaleString('en-IN')} of {global.played.toLocaleString('en-IN')} players solved today&apos;s Pulli.</p>}
-            <div className="rg-pulli__nap">
-              <span className="rg-pulli__ant"><Cheenti pose="sleep" /></span>
-              <p className="rg-p">Kal milte hain! Next Pulli in <b>{left}</b>.</p>
-            </div>
-            <a className="rg-btn rg-btn--block" href="/kolam">Weave a kolam of your own →</a>
-          </div>
-        )}
-        {guesses.length > 0 && (
-          <ol className="rg-pulli__history" aria-label="Your checks">
-            {guesses.map((g, gi) => {
-              const ev = evaluate(g, tgt);
-              const m = new Map(g.map((d, i) => [key(d), ev.marks[i]]));
-              return (
-                <li key={gi} aria-label={`Check ${gi + 1}: ${ev.marks.filter((x) => x === 'hit').length} right`}>
-                  {Array.from({ length: GRID * GRID }, (_, k) => { const mk = m.get(`${k % GRID},${Math.floor(k / GRID)}`); return <i key={k} style={{ background: mk ? MARK[mk] : undefined }} />; })}
-                </li>
-              );
-            })}
-          </ol>
-        )}
-      </section>
-    </div>
+          {global && global.played > 0 && <span>{global.solved.toLocaleString('en-IN')} of {global.played.toLocaleString('en-IN')} players solved today&apos;s Pulli.</span>}
+          <div className={p.nap}><span className={p.ant}><Cheenti pose="sleep" /></span><span>Kal milte hain! Next Pulli in <b>{left}</b>.</span></div>
+          <a className={s.surprise} href="/kolam" style={{ display: 'grid', placeItems: 'center', textDecoration: 'none' }}>Weave a kolam of your own →</a>
+        </div>
+      )}
+      {guesses.length > 0 && (
+        <ol className={p.history} aria-label="Your checks">
+          {guesses.map((g, gi) => {
+            const ev = evaluate(g, tgt);
+            const m = new Map(g.map((d, i) => [key(d), ev.marks[i]]));
+            return (
+              <li key={gi} aria-label={`Check ${gi + 1}: ${ev.marks.filter((x) => x === 'hit').length} right`}>
+                {Array.from({ length: GRID * GRID }, (_, k) => { const mk = m.get(`${k % GRID},${Math.floor(k / GRID)}`); return <i key={k} style={{ background: mk ? MARK[mk] : undefined }} />; })}
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </ToyShell>
   );
 }

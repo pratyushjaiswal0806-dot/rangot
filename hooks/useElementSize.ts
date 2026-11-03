@@ -20,3 +20,8 @@ export function useElementSize(ref: RefObject<Element | null>, delay = 120): { w
   }, [ref, delay]);
   return size;
 }
+
+// The biggest square that fits a stage: leaves room for the frame (28px) and the caption (26px).
+export function fitSquare(w: number, h: number, min = 220): number {
+  return Math.max(min, Math.floor(Math.min(w - 28, h - 28 - 26)));
+}

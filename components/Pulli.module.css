@@ -1,0 +1,21 @@
+/* Pulli's own bits inside the shared toy frame: two boards in the stage, the result in the tray. */
+.boards { display: flex; gap: 14px; align-items: center; justify-content: center; }
+.boards[data-stacked] { flex-direction: column; gap: 10px; }
+.boards figure { margin: 0; display: grid; gap: 6px; justify-items: center; }
+.cap { font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #FFC21A; }
+.won { animation: pulliWin 1.2s ease-out 3; }
+@keyframes pulliWin { 50% { box-shadow: 0 0 0 4px #FFC21A, 0 0 28px 8px rgba(255, 194, 26, .7); } }
+.help { margin: 0; font: 500 15px/1.4 Mukta, sans-serif; color: #3A2A20; }
+.hit { color: #2F6B3B; } .near { color: #A66A00; }
+.msg { margin: 0; min-height: 1.4em; font: 700 14px/1.4 Mukta, sans-serif; color: #7A0E3A; }
+.msg:empty { display: none; }
+.done { display: grid; gap: 12px; justify-items: center; text-align: center; padding: 14px; border: 3px solid #1B1410; background: #FBF3E4; font: 600 14px/1.35 Mukta, sans-serif; }
+.verdict { font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; color: #7A0E3A; }
+.share { margin: 0; font: 400 22px/1.25 system-ui, sans-serif; letter-spacing: 2px; white-space: pre-wrap; }
+.stats { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; }
+.stats b { display: block; font: 700 28px/1 var(--display); color: #7A0E3A; }
+.nap { display: flex; align-items: flex-end; justify-content: center; gap: 8px; }
+.ant { width: 56px; flex: none; }
+.history { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.history li { display: grid; grid-template-columns: repeat(7, 10px); gap: 2px; padding: 6px; background: #2A1710; border: 2px solid #1B1410; }
+.history i { width: 10px; height: 10px; border-radius: 50%; background: rgba(251, 243, 228, .15); }

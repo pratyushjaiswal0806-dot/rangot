@@ -10,7 +10,7 @@ import Morph from './Morph';
 import CultureStrip from './CultureStrip';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon, SweepIcon, UndoIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, fitSquare } from '../../hooks/useElementSize';
 import { C, KCOLS } from '../../lib/art/palette';
 import { drawSikku, edgeKey, edgeList, edgeMap, islands, loopSamples, oneLine, SHAPES, shapeDots, SIKKU_GRID as G, surpriseSikku, weave, type Dot, type Pt, type Shape } from '../../lib/art/sikku';
 import type { Recipe } from '../../lib/recipe';
@@ -196,7 +196,7 @@ export default function KolamToy() {
   useEffect(() => {
     const el = cv.current;
     if (!el || !w || !h) return;
-    const S = Math.max(220, Math.floor(Math.min(w - 28, h - 28 - 26)));
+    const S = fitSquare(w, h, 220);
     if (Math.abs(S - side.current) < 8) return;
     const d = Math.min(2, window.devicePixelRatio || 1);
     el.width = el.height = Math.round(S * d);

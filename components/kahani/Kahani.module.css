@@ -3,7 +3,7 @@
    one column with 16px gutters; the timeline is a rail that scrolls inside itself. */
 .kahani {
   position: relative; scroll-margin-top: 0; color: #1B1410; background-color: #FBF3E4; view-timeline: --kahani block;
-  background-image: repeating-linear-gradient(0deg, rgba(27,20,16,.035) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(27,20,16,.028) 0 1px, transparent 1px 5px);
+  background-image: radial-gradient(ellipse at 50% 0, rgba(255, 194, 26, .16), transparent 55%), repeating-linear-gradient(0deg, rgba(27,20,16,.035) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(27,20,16,.028) 0 1px, transparent 1px 5px);
 }
 .kahani a { color: #1B1410; }
 .kahani a:hover { color: #B0246A; }
@@ -20,7 +20,7 @@
   }
 }
 @keyframes threadFill { from { transform: scaleX(0) } to { transform: scaleX(1) } }
-.edge { height: 18px; background: conic-gradient(from 135deg at 50% 0, #2A1710 90deg, transparent 0) 0 0 / 24px 18px repeat-x, #D63A2A; border-bottom: 3px solid #1B1410; }
+.edge { height: 18px; box-shadow: 0 -10px 24px rgba(0, 0, 0, .35); background: conic-gradient(from 135deg at 50% 0, #2A1710 90deg, transparent 0) 0 0 / 24px 18px repeat-x, #D63A2A; border-bottom: 3px solid #1B1410; }
 .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(32px, 7vw, 64px) 16px clamp(48px, 8vw, 88px); display: flex; flex-direction: column; gap: clamp(40px, 8vw, 72px); }
 
 .head { display: flex; flex-direction: column; gap: 22px; }
