@@ -9,7 +9,7 @@ import Morph from './Morph';
 import CultureStrip from './CultureStrip';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, framePad, captionH } from '../../hooks/useElementSize';
 import { drawPlate, PLATE_STYLES, SLOGANS } from '../../lib/art/truck';
 import { toDevanagari } from '../../lib/translit';
 import { readRemix } from '../../lib/remix';
@@ -116,7 +116,7 @@ export default function TruckToy() {
 
   // the plate fitted into the stage
   const ar = fmt === 'sticker' ? 1 : 1920 / 1080;
-  const aw = Math.max(160, w - 28), ah = Math.max(200, h - 28 - 26);
+  const aw = Math.max(160, w - framePad(w, h)), ah = Math.max(200, h - framePad(w, h) - captionH(w, h));
   const pw = Math.floor(Math.min(aw, ah / ar)), ph = Math.floor(pw * ar);
 
   return (

@@ -10,7 +10,7 @@ import Morph from './Morph';
 import CultureStrip from './CultureStrip';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, framePad, captionH } from '../../hooks/useElementSize';
 import { PALS } from '../../lib/art/palette';
 import { BACKDROPS, drawPoster, LAYOUTS } from '../../lib/art/poster';
 import { readRemix } from '../../lib/remix';
@@ -98,7 +98,7 @@ export default function PosterToy() {
   };
 
   // the 4:5 poster fitted into the stage
-  const aw = Math.max(160, sw - 28), ah = Math.max(200, sh - 28 - 26);
+  const aw = Math.max(160, sw - framePad(sw, sh)), ah = Math.max(200, sh - framePad(sw, sh) - captionH(sw, sh));
   const pw = Math.floor(Math.min(aw, (ah * 4) / 5)), ph = Math.floor((pw * 5) / 4);
 
   return (

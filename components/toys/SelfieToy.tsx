@@ -9,7 +9,7 @@ import ToyShell, { ToolBtn } from './ToyShell';
 import Morph from './Morph';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, framePad, captionH } from '../../hooks/useElementSize';
 import { FRAMES, H, STICKERS, STICKER_R, W, drawCover, drawFrame, drawSticker, type Frame, type FrameId, type Sticker, type StickerId } from '../../lib/art/selfie';
 import { savedName, saveName } from '../../lib/share';
 import { stamp } from '../../lib/progress';
@@ -179,7 +179,7 @@ export default function SelfieToy() {
   const up = () => { drag.current = null; };
 
   // preview size: the 4:5 canvas fitted into the stage
-  const avail = { w: Math.max(200, w - 28), h: Math.max(250, h - 28 - 26) };
+  const avail = { w: Math.max(200, w - framePad(w, h)), h: Math.max(250, h - framePad(w, h) - captionH(w, h)) };
   const pw = Math.floor(Math.min(avail.w, (avail.h * W) / H)), ph = Math.floor((pw * H) / W);
 
   return (

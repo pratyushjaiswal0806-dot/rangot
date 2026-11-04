@@ -1,10 +1,10 @@
-.nudge { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; padding: 16px; background: rgba(27, 20, 16, .72); backdrop-filter: blur(3px); animation: nudgeIn .35s var(--ease-out) both; }
-.card { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 22px 24px 20px; max-width: 280px; text-align: center; background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; border-radius: 6px; box-shadow: 0 18px 40px rgba(0, 0, 0, .45); }
-.phone { transform-origin: 50% 50%; animation: turn 2.4s ease-in-out infinite; }
-.head { font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 18px; letter-spacing: .1em; text-transform: uppercase; }
-.sub { font: 600 15px/1.35 Mukta, sans-serif; color: #3A2A20; }
-.btn { margin-top: 6px; min-height: 48px; padding: 0 22px; border: 3px solid #1B1410; background: #FFC21A; color: #1B1410; font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; box-shadow: 3px 3px 0 #1B1410; }
-.btn:active { transform: translate(3px, 3px); box-shadow: none; }
+/* a slim chip along the top of the stage: it never covers the work */
+.nudge { position: absolute; top: 6px; left: 8px; right: 8px; z-index: 5; display: flex; justify-content: center; pointer-events: none; animation: nudgeIn .35s var(--ease-out) both; }
+.card { pointer-events: auto; display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 10px; max-width: 100%; background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; border-radius: 6px; box-shadow: 3px 3px 0 #1B1410; }
+.phone { flex: none; transform-origin: 50% 50%; animation: turn 2.4s ease-in-out infinite; }
+.head { font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; line-height: 1.15; }
+.sub { display: none; }
+.btn { flex: none; width: 44px; height: 44px; border: 0; background: transparent; color: #1B1410; font: 800 18px/1 Sarpanch, sans-serif; cursor: pointer; }
 @keyframes turn { 0%, 15% { rotate: 0deg } 50%, 75% { rotate: -90deg } 100% { rotate: 0deg } }
 @keyframes nudgeIn { from { opacity: 0 } }
 @media (prefers-reduced-motion: reduce) { .phone { animation: none; rotate: -90deg; } }

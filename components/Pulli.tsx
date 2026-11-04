@@ -5,7 +5,7 @@
 // is over she naps until tomorrow's. The streak's flame grows with the streak.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ToyShell, { ToolBtn } from './toys/ToyShell';
-import { useElementSize } from '../hooks/useElementSize';
+import { useElementSize, framePad, captionH } from '../hooks/useElementSize';
 import s from './toys/ToyShell.module.css';
 import p from './Pulli.module.css';
 import { C } from '../lib/art/palette';
@@ -136,7 +136,7 @@ export default function Pulli() {
 
   // two boards in the stage: side by side when the stage is wide, stacked when it is tall
   // (each board wears ~26px of frame: border, mat and its ring)
-  const aw = Math.max(160, sw - 24), ah = Math.max(200, sh - 28 - 26);
+  const aw = Math.max(160, sw - framePad(sw, sh)), ah = Math.max(200, sh - framePad(sw, sh) - captionH(sw, sh));
   const side = Math.floor(Math.min((aw - 14 - 52) / 2, ah - 24 - 26));
   const stack = Math.floor(Math.min(aw - 26, (ah - 14 - 100) / 2));
   const stacked = stack > side;
