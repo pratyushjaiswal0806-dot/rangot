@@ -1,0 +1,10 @@
+/* a slim chip along the top of the stage: it never covers the work */
+.nudge { position: absolute; top: 6px; left: 8px; right: 8px; z-index: 5; display: flex; justify-content: center; pointer-events: none; animation: nudgeIn .35s var(--ease-out) both; }
+.card { pointer-events: auto; display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 10px; max-width: 100%; background: #FBF3E4; color: #1B1410; border: 3px solid #1B1410; border-radius: 6px; box-shadow: 3px 3px 0 #1B1410; }
+.phone { flex: none; transform-origin: 50% 50%; animation: turn 2.4s ease-in-out infinite; }
+.head { font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; line-height: 1.15; }
+.sub { display: none; }
+.btn { flex: none; width: 44px; height: 44px; border: 0; background: transparent; color: #1B1410; font: 800 18px/1 Sarpanch, sans-serif; cursor: pointer; }
+@keyframes turn { 0%, 15% { rotate: 0deg } 50%, 75% { rotate: -90deg } 100% { rotate: 0deg } }
+@keyframes nudgeIn { from { opacity: 0 } }
+@media (prefers-reduced-motion: reduce) { .phone { animation: none; rotate: -90deg; } }

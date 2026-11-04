@@ -11,7 +11,7 @@ import Morph from './Morph';
 import CultureStrip from './CultureStrip';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, fitSquare } from '../../hooks/useElementSize';
 import { drawKite, drawSky, drawString, KITE_COLOURS, ME, PATTERN_EN, PATTERNS, ROOF, stringPoints, TAILS, THEM, type Design } from '../../lib/art/patang';
 import type { Recipe } from '../../lib/recipe';
 import { queryParam, readRemix } from '../../lib/remix';
@@ -245,7 +245,7 @@ export default function PatangToy() {
   useEffect(() => {
     const el = cv.current;
     if (!el || !w || !h) return;
-    const S = Math.max(220, Math.floor(Math.min(w - 28, h - 28 - 26)));
+    const S = fitSquare(w, h, 220);
     if (Math.abs(S - side.current) < 8) return;
     const d = Math.min(2, window.devicePixelRatio || 1);
     el.width = el.height = Math.round(S * d);

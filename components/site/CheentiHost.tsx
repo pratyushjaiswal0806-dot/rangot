@@ -29,7 +29,13 @@ export default function CheentiHost() {
       setM({ ...say, n: ++n, left, bottom, maxW, dark: onStage || document.documentElement.dataset.theme === 'night' });
       timers.current.push(setTimeout(() => setOut(true), say.ms ?? 5200), setTimeout(() => setM(null), (say.ms ?? 5200) + 380));
     });
-    return () => { off(); clear(); };
+    // a touch on the stage means they're drawing or playing: she ducks away rather than cover the work
+    const onDown = (e: PointerEvent) => {
+      if (!(e.target instanceof Element) || !e.target.closest('[data-stage]')) return;
+      clear(); setOut(true); timers.current.push(setTimeout(() => setM(null), 380));
+    };
+    document.addEventListener('pointerdown', onDown, true);
+    return () => { off(); clear(); document.removeEventListener('pointerdown', onDown, true); };
   }, []);
 
   if (!m) return null;

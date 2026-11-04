@@ -4,12 +4,19 @@
    controls are all in reach without scrolling the tray; from 900px the tray becomes a side
    panel. Tray controls shared by every toy are here too, so toys import this module for them.
    The frame is exactly one screen tall (svh, so it doesn't resize as a phone's address bar hides)
-   and the toy's story (components/kahani) scrolls up from underneath it. */
+   and the toy's story (components/kahani) scrolls up from underneath it. The stage (touch-action: none)
+   is for drawing, so on a phone the tray and bar are where a swipe scrolls the page: the tray must
+   chain its scroll to the page, never trap it. */
 .shell {
-  --stage: min(100vw + 28px, 62svh);
-  position: relative; z-index: 1; height: 100svh; display: grid; background: #2A1710; color: #FBF3E4;
+  --stage: min(100vw + 22px, 62svh);
+  position: relative; z-index: 1; height: 100svh; display: grid; background: #2A1710; color: var(--ivory);
   grid-template-columns: minmax(0, 1fr); grid-template-rows: 60px minmax(var(--stage), 1fr) auto;
 }
+/* upright phones: the toys that aren't square (cloth, plate, poster, selfie) take a taller stage, so the work fills the screen */
+@media (max-width: 899px) and (orientation: portrait) {
+  .shell:is([data-craft='block'], [data-craft='truck'], [data-craft='poster'], [data-craft='selfie']) { --stage: min(135vw, 66svh); }
+}
+@media (max-width: 899px) { .canvas { outline-width: 2px; box-shadow: 0 0 0 3px var(--ink), var(--frame-shadow); } }
 @media (min-width: 900px) { .shell { grid-template-columns: minmax(0, 1fr) 400px; grid-template-rows: 60px minmax(0, 1fr); } }
 /* as the story scrolls up, the toy steps back a little (scroll-driven where the browser can) */
 @supports (animation-timeline: view()) {
@@ -19,44 +26,67 @@
 }
 @keyframes shellAway { to { scale: .95; opacity: .6 } }
 
-.bar { grid-column: 1 / -1; height: 60px; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 10px 0 16px; background: var(--halftone), var(--sindoor); border-bottom: 4px solid #1B1410; }
+.bar { grid-column: 1 / -1; height: 60px; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 max(10px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); background: var(--halftone), var(--sindoor); border-bottom: 4px solid var(--ink); }
 .titles { display: flex; align-items: baseline; gap: 10px; min-width: 0; overflow: hidden; white-space: nowrap; padding-right: 6px; } /* room for the lettering's tilt and shadow */
 .title { font-size: 26px; flex-wrap: nowrap; --ext: #5A0B0E; }
 .sub { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; }
 .barBtns { display: flex; gap: 8px; flex: none; }
-.sound { width: 48px; height: 48px; border: 3px solid #1B1410; background: #4A0A26; color: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; display: grid; place-items: center; cursor: pointer; }
+.sound { width: 48px; height: 48px; border: 3px solid var(--ink); background: #4A0A26; color: var(--ivory); box-shadow: 3px 3px 0 var(--ink); display: grid; place-items: center; cursor: pointer; }
 .sound[aria-pressed='false'] { color: #b89aa6; }
 /* "Kahani ↓": down to the toy's story; it bobs for a few seconds after the toy opens */
 .story {
-  height: 48px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 3px solid #1B1410; background: #FFC21A; color: #1B1410; box-shadow: 3px 3px 0 #1B1410;
+  height: 48px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 3px solid var(--ink); background: var(--marigold); color: var(--ink); box-shadow: 3px 3px 0 var(--ink);
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; cursor: pointer;
   animation: nudge 1.1s ease-in-out 1.2s 4;
 }
-.story:hover { color: #1B1410; }
-.story:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; }
+.story:hover { color: var(--ink); }
+.story:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
 .story svg { flex: none; }
 @media (max-width: 479px) { .story { width: 44px; padding: 0; justify-content: center; } .story span { display: none; } }
 .close {
-  width: 48px; height: 48px; flex: none; border: 3px solid #1B1410; background: #FBF3E4; color: #1B1410; box-shadow: 3px 3px 0 #1B1410;
+  width: 48px; height: 48px; flex: none; border: 3px solid var(--ink); background: var(--ivory); color: var(--ink); box-shadow: 3px 3px 0 var(--ink);
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 20px; cursor: pointer; display: grid; place-items: center;
 }
-.close:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; }
+.close:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
 
-.stage { min-height: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; touch-action: none; overflow: hidden; }
-.canvas { display: block; touch-action: none; border: 4px solid #1B1410; box-shadow: 8px 8px 0 #120A07; }
-.caption { font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #F6E7C8; text-align: center; padding: 0 12px; }
+.stage {
+  --floor: var(--floor-brown); --weave: rgba(255, 235, 200, .05);
+  min-height: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; touch-action: none; overflow: hidden;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; overscroll-behavior: none;
+  padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
+  background:
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0, 0, 0, .45) 100%),
+    repeating-linear-gradient(0deg, var(--weave) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(90deg, var(--weave) 0 1px, transparent 1px 5px),
+    radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--floor) 82%, #fff) 0%, var(--floor) 70%);
+}
+/* each craft hangs its work on a different wall */
+.shell[data-craft='naam'] .stage, .shell[data-craft='pulli'] .stage { --floor: #4A0A26; }
+.shell[data-craft='rangoli'] .stage, .shell[data-craft='kolam'] .stage { --floor: #3B2117; --weave: rgba(255, 220, 170, .045); }
+.shell[data-craft='pookalam'] .stage { --floor: #3A2A12; }
+.shell[data-craft='phuljhadi'] .stage { --floor: #120622; --weave: transparent; background-image: radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0, 0, 0, .55) 100%), radial-gradient(circle at 20% 25%, rgba(255, 255, 255, .5) 0 1px, transparent 1.5px), radial-gradient(circle at 75% 15%, rgba(255, 255, 255, .4) 0 1px, transparent 1.5px), radial-gradient(circle at 60% 70%, rgba(255, 255, 255, .35) 0 1px, transparent 1.5px), radial-gradient(ellipse at 50% 40%, #2A1048, #120622 70%); }
+.shell[data-craft='bandhani'] .stage { --floor: #7A1620; --weave: rgba(255, 255, 255, .06); }
+.shell[data-craft='block'] .stage { --floor: #D8C39B; --weave: rgba(90, 60, 20, .08); }
+.shell[data-craft='warli'] .stage { --floor: #6E2E18; --weave: rgba(255, 240, 220, .035); }
+.shell[data-craft='poster'] .stage { --floor: #7A1A4E; }
+.shell[data-craft='truck'] .stage, .shell[data-craft='selfie'] .stage { --floor: #17110D; }
+.shell[data-craft='kathputli'] .stage { --floor: #4A140E; --weave: rgba(255, 200, 120, .05); }
+.shell[data-craft='patang'] .stage { --floor: #274571; --weave: transparent; }
+/* a framed work: ink edge, then a soft lifted shadow in place of the hard block one */
+.canvas { display: block; touch-action: none; border: 3px solid var(--ink); border-radius: 2px; outline: 4px solid rgba(251, 243, 228, .92); box-shadow: 0 0 0 5px var(--ink), var(--frame-shadow); }
+.caption { font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--parch); text-align: center; padding: 0 12px; }
 
 .tray {
-  min-height: 0; background: #F6E7C8; color: #1B1410; border-top: 4px solid #1B1410; padding: 0 16px calc(14px + env(safe-area-inset-bottom));
-  display: flex; flex-direction: column; gap: 12px; max-height: calc(100svh - 60px - var(--stage)); overflow-y: auto; overscroll-behavior: contain;
+  min-height: 0; background: linear-gradient(180deg, var(--paper-a), var(--paper-b)); color: var(--ink); border-top: 4px solid var(--ink); padding: 0 16px calc(14px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; gap: 12px; max-height: calc(100svh - 60px - var(--stage)); overflow-y: auto; overscroll-behavior-x: contain;
   animation: trayUp .45s cubic-bezier(.2, .8, .2, 1) both;
 }
 @media (min-width: 900px) {
-  .tray { border-top: 0; border-left: 4px solid #1B1410; padding: 22px 24px calc(22px + env(safe-area-inset-bottom)); gap: 20px; max-height: none; animation-name: trayIn; }
+  .tray { border-top: 0; border-left: 4px solid var(--ink); padding: 22px 24px calc(22px + env(safe-area-inset-bottom)); gap: 20px; max-height: none; animation-name: trayIn; }
   .handle { display: none !important; }
 }
 .handle { align-self: center; width: 120px; height: 40px; flex: none; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; }
-.handle span { width: 56px; height: 6px; border-radius: 999px; background: #1B1410; }
+.handle span { width: 56px; height: 6px; border-radius: 999px; background: var(--ink); }
 .actions { display: flex; gap: 12px; }
 @media (max-width: 899px) { .shut .more { display: none; } }
 .more { display: flex; flex-direction: column; gap: inherit; }
@@ -68,7 +98,11 @@
   .sub { font-size: 14px; }
   .sound, .close { width: 44px; height: 44px; }
   .story { height: 44px; }
-  .tray { gap: 10px; max-height: calc(100svh - 56px - var(--stage)); }
+  /* portrait phones: at least one screen tall, and the tray takes the height it needs. It never scrolls
+     inside itself (that hid half the controls and swallowed swipes meant for the page): a swipe on it,
+     or on the bar, scrolls the page; the stage stays free for drawing. "Hide controls" gives back the one-screen frame. */
+  .shell { height: auto; min-height: 100svh; }
+  .tray { gap: 10px; max-height: none; overflow-y: visible; }
   .handle { height: 26px; position: relative; }
   /* the bar is thin, but its tap area reaches a little above and below it */
   .handle::after { content: ''; position: absolute; inset: -9px 0; }
@@ -81,29 +115,29 @@
 .field { display: flex; flex-direction: column; gap: 6px; }
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn {
-  min-height: 52px; border: 3px solid #1B1410; background: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; color: #1B1410;
+  min-height: 52px; border: 3px solid var(--ink); background: var(--ivory); box-shadow: 3px 3px 0 var(--ink); color: var(--ink);
   font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; transition: opacity .2s;
 }
-.btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; }
+.btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
 .btn:disabled { opacity: .4; cursor: default; }
 .grow { flex: 1; }
-.primary { flex: 1.4; background: #FFC21A; font-weight: 800; }
+.primary { flex: 1.4; background: var(--marigold); font-weight: 800; }
 .icon { flex: none; width: 52px; padding: 0; }
 .opt {
-  flex: 1; min-width: 52px; min-height: 48px; border: 3px solid #1B1410; background: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; color: #1B1410;
+  flex: 1; min-width: 52px; min-height: 48px; border: 3px solid var(--ink); background: var(--ivory); box-shadow: 3px 3px 0 var(--ink); color: var(--ink);
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; cursor: pointer;
   transition: transform .15s, box-shadow .15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px 8px;
 }
-.opt[aria-pressed='true'] { background: #FFC21A; box-shadow: 0 0 0 #1B1410; transform: translate(3px, 3px); }
-.toggle { min-height: 48px; padding: 0 14px; border: 3px solid #1B1410; background: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; color: #1B1410; font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-.toggle[aria-pressed='true'] { background: #FFC21A; }
+.opt[aria-pressed='true'] { background: var(--marigold); box-shadow: 0 0 0 var(--ink); transform: translate(3px, 3px); }
+.toggle { min-height: 48px; padding: 0 14px; border: 3px solid var(--ink); background: var(--ivory); box-shadow: 3px 3px 0 var(--ink); color: var(--ink); font-family: Sarpanch, sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.toggle[aria-pressed='true'] { background: var(--marigold); }
 .swatches { display: flex; flex-wrap: wrap; gap: 12px; }
 .swatch {
-  width: 46px; height: 46px; flex: none; border-radius: 50%; border: 3px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; cursor: pointer;
+  width: 46px; height: 46px; flex: none; border-radius: 50%; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); cursor: pointer;
   transition: transform .15s cubic-bezier(.3, 1.5, .5, 1), box-shadow .15s;
 }
-.swatch[aria-pressed='true'] { box-shadow: 0 0 0 3px #F6E7C8, 0 0 0 6px #1B1410; transform: translateY(-3px) scale(1.06); }
+.swatch[aria-pressed='true'] { box-shadow: 0 0 0 3px var(--parch), 0 0 0 6px var(--ink); transform: translateY(-3px) scale(1.06); }
 
 /* phones: rows of options and swatches scroll sideways in one line, bleeding to the tray edges */
 @media (max-width: 899px) {
@@ -117,16 +151,31 @@
   .label { font-size: 12px; }
   .field { gap: 4px; }
 }
-/* a phone turned sideways: wide but short, so stacking the tray under the stage would leave a
-   tiny stage and a sliver of controls. Use the side-panel layout instead, with a slimmer bar. */
-@media (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
-  .shell { grid-template-columns: minmax(0, 1fr) min(340px, 48vw); grid-template-rows: 48px minmax(0, 1fr); }
-  .bar { height: 48px; }
-  .sound, .close { width: 40px; height: 40px; }
-  .story { height: 40px; }
-  .tray { border-top: 0; border-left: 4px solid #1B1410; max-height: none; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)) 14px; }
+/* a phone (or small tablet) turned sideways: wide but short, so stacking the tray under the stage would
+   leave a tiny stage and a sliver of controls. Side panel instead: the work takes the left ~62%, the
+   tools sit beside it in a two-column grid, and the bar slims down. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1000px) {
+  /* the work gets the whole height: the bar moves over the tool column, so the canvas is as tall as the screen */
+  .shell { height: 100svh; grid-template-columns: minmax(0, 1fr) clamp(280px, 36vw, 380px); grid-template-rows: 44px minmax(0, 1fr); }
+  .stage { grid-column: 1; grid-row: 1 / 3; }
+  .bar { grid-column: 2; grid-row: 1; height: 44px; padding: 0 max(8px, env(safe-area-inset-right)) 0 12px; gap: 6px; }
+  .title { font-size: 18px; }
+  .sub { display: none; }
+  .barBtns { gap: 6px; }
+  .sound, .close { width: 36px; height: 36px; }
+  .story { height: 36px; width: 36px; padding: 0; justify-content: center; }
+  .story span { display: none; }
+  .tray { grid-column: 2; grid-row: 2; overflow-y: auto; border-top: 0; border-left: 4px solid var(--ink); max-height: none; padding: 10px max(14px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) 12px; }
   .handle { display: none !important; }
   .shut .more { display: flex; }
+  /* wrapped, not railed: every control is visible without sideways swiping */
+  .row, .swatches { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; mask-image: none; }
+  .chunauti { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+  .range { min-width: 0; }
+}
+/* a short wide stage has no spare height for the caption under the work: it floats over the stage corner */
+@media (orientation: landscape) and (max-height: 600px) {
+  .caption { position: absolute; left: 8px; bottom: 6px; max-width: calc(100% - 16px); padding: 3px 8px; text-align: left; pointer-events: none; background: rgba(27, 20, 16, .6); border-radius: 3px; font-size: 11px; letter-spacing: .1em; }
 }
 .range { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
 .range > span { display: flex; justify-content: space-between; }
@@ -136,47 +185,48 @@
 /* "Drag anywhere to draw" before the first stroke */
 .hint { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; line-height: 1.2; }
 .hint > div { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: nudge 1.8s ease-in-out infinite; }
-.hint i { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFC21A; background: rgba(255, 194, 26, .2); }
-.hint b { padding: 6px 12px; background: #FBF3E4; color: #1B1410; border: 2px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.hint i { width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--marigold); background: rgba(255, 194, 26, .2); }
+.hint b { padding: 6px 12px; background: var(--ivory); color: var(--ink); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
 
 /* ghost hand fingertip */
-.ghost { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFC21A; background: rgba(255, 194, 26, .28); box-shadow: 0 0 0 6px rgba(255, 194, 26, .12); pointer-events: none; opacity: 0; transition: opacity .3s; z-index: 2; }
-.ghost::after { content: '👆'; position: absolute; left: 18px; top: 16px; font-size: 30px; line-height: 1; filter: drop-shadow(2px 2px 0 #1B1410); }
+.ghost { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--marigold); background: rgba(255, 194, 26, .28); box-shadow: 0 0 0 6px rgba(255, 194, 26, .12); pointer-events: none; opacity: 0; transition: opacity .3s; z-index: 2; }
+.ghost::after { content: '👆'; position: absolute; left: 18px; top: 16px; font-size: 30px; line-height: 1; filter: drop-shadow(2px 2px 0 var(--ink)); }
 
 /* locked unlockables */
 .locked { position: relative; opacity: .78; filter: grayscale(.6); }
 .locked::after { content: '🔒'; position: absolute; right: -6px; bottom: -6px; font-size: 16px; line-height: 1; filter: none; }
-.surprise { min-height: 52px; width: 100%; flex: none; border: 3px dashed #1B1410; background: #FBF3E4; color: #7A0E3A; font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; box-shadow: 3px 3px 0 #1B1410; }
+.surprise { min-height: 52px; width: 100%; flex: none; border: 3px dashed var(--ink); background: var(--ivory); color: var(--ruby); font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); }
 .surprise:active { transform: translate(3px, 3px); box-shadow: none; }
 
 /* a two- or three-way switch (Dots / Twist, Tie / Dip …) */
-.seg { display: flex; border: 3px solid #1B1410; box-shadow: 3px 3px 0 #1B1410; background: #FBF3E4; }
+.seg { display: flex; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); background: var(--ivory); }
 .seg > button {
-  flex: 1; min-height: 46px; border: 0; background: transparent; color: #1B1410; cursor: pointer; padding: 0 10px;
+  flex: 1; min-height: 46px; border: 0; background: transparent; color: var(--ink); cursor: pointer; padding: 0 10px;
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.seg > button + button { border-left: 3px solid #1B1410; }
-.seg > button[aria-pressed='true'] { background: #1B1410; color: #FFC21A; }
+.seg > button + button { border-left: 3px solid var(--ink); }
+@media (max-width: 400px) { .seg > button { min-width: 0; padding: 0 4px; font-size: 13px; letter-spacing: .02em; gap: 4px; } }
+.seg > button[aria-pressed='true'] { background: var(--ink); color: var(--marigold); }
 
 /* a status pill in the caption under the stage ("3 loops · twist them into one") */
 .status {
-  display: inline-block; max-width: 100%; padding: 4px 12px; background: #1B1410; color: #FBF3E4; border: 2px solid #FFC21A; border-radius: 999px;
+  display: inline-block; max-width: 100%; padding: 4px 12px; background: var(--ink); color: var(--ivory); border: 2px solid var(--marigold); border-radius: 999px;
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle;
 }
-.status b { color: #FFC21A; }
-.status.win { background: #FFC21A; color: #1B1410; border-color: #1B1410; animation: pop .5s cubic-bezier(.3, 1.5, .5, 1); }
-.status.win b { color: #7A0E3A; }
+.status b { color: var(--marigold); }
+.status.win { background: var(--marigold); color: var(--ink); border-color: var(--ink); animation: pop .5s cubic-bezier(.3, 1.5, .5, 1); }
+.status.win b { color: var(--ruby); }
 
 /* the action toolbar: icon over a short label, equal widths, so four fit on a 320px phone */
 .tool {
   flex: 1 1 0; min-width: 0; min-height: 58px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 4px 2px;
-  border: 3px solid #1B1410; background: #FBF3E4; box-shadow: 3px 3px 0 #1B1410; color: #1B1410; cursor: pointer; white-space: nowrap;
+  border: 3px solid var(--ink); background: var(--ivory); box-shadow: 3px 3px 0 var(--ink); color: var(--ink); cursor: pointer; white-space: nowrap;
   font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; transition: opacity .2s;
 }
 .tool > i { display: grid; place-items: center; width: 26px; height: 26px; font-style: normal; font-size: 20px; line-height: 1; }
-.tool:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #1B1410; }
+.tool:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
 .tool:disabled { opacity: .4; cursor: default; }
-.tool.go { flex-grow: 1.3; background: #FFC21A; }
+.tool.go { flex-grow: 1.3; background: var(--marigold); }
 @media (min-width: 900px) { .tool { min-height: 64px; font-size: 12px; letter-spacing: .04em; white-space: normal; text-align: center; line-height: 1.15; } }
 /* narrow phones: the title shrinks to fit beside the buttons (the native-script name next to it would
    only show as a cut-off "कठपु…", so it goes), and two-word labels ("Weave again") wrap onto two lines */
@@ -187,12 +237,11 @@
   .tool { letter-spacing: .03em; white-space: normal; text-align: center; line-height: 1.1; padding: 4px 1px; }
 }
 @media (max-width: 359px) { .tool { font-size: 10px; } }
-/* a sideways phone's side panel is phone-narrow too, so its labels wrap the same way */
-@media (max-width: 899px) and (orientation: landscape) and (max-height: 520px) {
+/* a sideways phone's side panel is phone-narrow too, so its labels wrap the same way (after .tool, so it wins) */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1000px) {
   .actions { gap: 7px; }
-  .tool { letter-spacing: .03em; white-space: normal; text-align: center; line-height: 1.1; padding: 4px 1px; font-size: 10px; }
+  .tool { letter-spacing: 0; white-space: normal; text-align: center; line-height: 1.1; padding: 4px 1px; font-size: 10px; overflow-wrap: normal; }
 }
-
 /* Tie → Dip → Untie */
 .steps { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; counter-reset: st; flex: none; }
 .steps li {
@@ -200,8 +249,8 @@
   border: 2px dashed rgba(27, 20, 16, .45); color: #5E5046; font-family: Sarpanch, sans-serif; font-weight: 800; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
 }
 .steps li::before { content: counter(st); width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; background: rgba(27, 20, 16, .12); font-size: 12px; }
-.steps li[aria-current] { border-style: solid; border-color: #1B1410; color: #1B1410; background: #FFC21A; }
-.steps li[aria-current]::before { background: #1B1410; color: #FFC21A; }
+.steps li[aria-current] { border-style: solid; border-color: var(--ink); color: var(--ink); background: var(--marigold); }
+.steps li[aria-current]::before { background: var(--ink); color: var(--marigold); }
 
 /* ---- feel: controls press in instantly and spring back when let go; a choice pops as it's
    picked; a tool pops when it comes back to life (Undo after the first stroke) ---- */
@@ -219,12 +268,12 @@
 /* the toy's three Chunauti: a star for each one met */
 .chunauti { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .chunauti li {
-  display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 2px dashed rgba(27, 20, 16, .5); background: #FBF3E4;
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 2px dashed rgba(27, 20, 16, .5); background: var(--ivory);
   font: 700 13px/1.25 Mukta, sans-serif; color: #3A2A20;
 }
 .chunauti li span[aria-hidden] { font-size: 15px; color: #B0246A; }
-.chunauti .met { border-style: solid; border-color: #1B1410; background: #FFC21A; color: #1B1410; box-shadow: 2px 2px 0 #1B1410; animation: pressPop .4s var(--ease-pop); }
-.chunauti .met span[aria-hidden] { color: #7A0E3A; }
+.chunauti .met { border-style: solid; border-color: var(--ink); background: var(--marigold); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); animation: pressPop .4s var(--ease-pop); }
+.chunauti .met span[aria-hidden] { color: var(--ruby); }
 @media (max-width: 899px) {
   .chunauti { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: -4px -16px; padding: 6px 16px 8px; }
   .chunauti::-webkit-scrollbar { display: none; }
@@ -240,21 +289,21 @@
 @keyframes diyaFlicker { 0%, 100% { opacity: 1; scale: 1 } 40% { opacity: .7; scale: .9 } 70% { opacity: .95; scale: 1.08 } }
 
 /* a toolbar button that's switched on (Poster's Nachao) */
-.tool.toolOn { background: #1B1410; color: #FFC21A; }
+.tool.toolOn { background: var(--ink); color: var(--marigold); }
 .tool.toolOn > i { animation: toolBounce .5s ease-in-out infinite alternate; }
 @keyframes toolBounce { to { transform: translateY(-3px) rotate(8deg); } }
 
 /* Truck Art's ghungroo chain: little brass bells hanging under the plate, swinging when shaken */
 .ghungroo {
-  position: absolute; left: 12%; right: 12%; bottom: -14px; height: 24px; padding: 0; border: 0; border-top: 3px solid #1B1410; background: none; cursor: pointer;
+  position: absolute; left: 12%; right: 12%; bottom: -14px; height: 24px; padding: 0; border: 0; border-top: 3px solid var(--ink); background: none; cursor: pointer;
   display: flex; justify-content: space-between; align-items: flex-start;
 }
 .ghungroo i {
-  position: relative; width: 14px; height: 14px; margin-top: 2px; border-radius: 50% 50% 45% 45%; border: 2px solid #1B1410;
+  position: relative; width: 14px; height: 14px; margin-top: 2px; border-radius: 50% 50% 45% 45%; border: 2px solid var(--ink);
   background: radial-gradient(circle at 35% 30%, #FFF1B8, #E8A317 55%, #9C6B10); transform-origin: 50% -4px;
   animation: bellSwing .9s ease-out calc(var(--bi, 0) * 40ms) both;
 }
-.ghungroo i::after { content: ''; position: absolute; left: 50%; bottom: 1px; width: 6px; height: 3px; margin-left: -3px; border-radius: 3px; background: #1B1410; }
+.ghungroo i::after { content: ''; position: absolute; left: 50%; bottom: 1px; width: 6px; height: 3px; margin-left: -3px; border-radius: 3px; background: var(--ink); }
 @keyframes bellSwing { 0% { rotate: 0deg } 20% { rotate: 28deg } 45% { rotate: -20deg } 70% { rotate: 10deg } 100% { rotate: 0deg } }
 
 /* a card's contents flipping over to something new (Naam's reading) */

@@ -20,3 +20,15 @@ export function useElementSize(ref: RefObject<Element | null>, delay = 120): { w
   }, [ref, delay]);
   return size;
 }
+
+// Room a stage keeps around the work. Phones (and short, sideways screens) give the frame almost
+// nothing so the canvas runs edge to edge; the caption sits under the work, except on a short wide
+// stage (a phone turned sideways) where it floats over the stage instead (see .caption in ToyShell.module.css).
+export const framePad = (w: number, h: number) => (w < 520 || h < 520 ? 12 : 28);
+export const captionH = (w: number, h: number) => (h < 520 && w > h ? 0 : 26);
+
+// The biggest square that fits a stage.
+export function fitSquare(w: number, h: number, min = 220): number {
+  const p = framePad(w, h);
+  return Math.max(min, Math.floor(Math.min(w - p, h - p - captionH(w, h))));
+}

@@ -13,6 +13,7 @@ import Desi from '../site/Desi';
 import { TOYS, type ToyId } from '../../lib/toys';
 import { say, tipFor } from '../../lib/cheenti';
 import Challenges from './Challenges';
+import RotateNudge from './RotateNudge';
 import s from './ToyShell.module.css';
 
 // One button of the action toolbar: an icon over a short label. `go` marks the main action.
@@ -27,6 +28,33 @@ export function ToolBtn({ icon, label, onClick, disabled, go, title, className }
 export function useBack() {
   const router = useRouter();
   return () => { if (cameFromSite()) router.back(); else router.push('/'); };
+}
+
+// Fullscreen + sideways where the browser allows it (Android Chrome); iOS Safari has neither, so no button there.
+function FullscreenBtn({ className }: { className: string }) {
+  const [can, setCan] = useState(false);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    setCan(!!document.fullscreenEnabled && window.matchMedia('(pointer: coarse)').matches);
+    const f = () => setOn(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', f);
+    return () => document.removeEventListener('fullscreenchange', f);
+  }, []);
+  if (!can) return null;
+  const toggle = async () => {
+    try {
+      if (document.fullscreenElement) { await document.exitFullscreen(); (screen.orientation as ScreenOrientation & { unlock?: () => void }).unlock?.(); return; }
+      await document.documentElement.requestFullscreen();
+      await (screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> }).lock?.('landscape');
+    } catch { /* refused or unsupported: stay as we are */ }
+  };
+  return (
+    <button type="button" className={className} onClick={toggle} aria-pressed={on} aria-label={on ? 'Leave fullscreen' : 'Fullscreen'} title={on ? 'Leave fullscreen' : 'Fullscreen, sideways'}>
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        {on ? <path d="M7 3v4H3M13 3v4h4M7 17v-4H3M13 17v-4h4" /> : <path d="M3 7V3h4M17 7V3h-4M3 13v4h4M17 13v4h-4" />}
+      </svg>
+    </button>
+  );
 }
 
 export default function ToyShell({ toy, label, title, sub, stageRef, stage, caption, actions, children, onUndo }: {
@@ -70,7 +98,7 @@ export default function ToyShell({ toy, label, title, sub, stageRef, stage, capt
   }, [toy]);
 
   return (
-    <section ref={shellRef} id="toy" aria-label={label} className={s.shell} data-toy="">
+    <section ref={shellRef} id="toy" aria-label={label} className={s.shell} data-toy="" data-craft={toy}>
       <div className={s.bar}>
         <div className={s.titles}><Desi as="h1" className={s.title} rough={false} text={TOYS.find((x) => x.title === title)?.mix ?? title} label={title} />{sub && <span className={s.sub}>{sub}</span>}</div>
         <div className={s.barBtns}>
@@ -80,6 +108,7 @@ export default function ToyShell({ toy, label, title, sub, stageRef, stage, capt
               <span>Kahani</span>
             </a>
           )}
+          <FullscreenBtn className={s.sound} />
           <SoundToggle className={s.sound} />
           <button ref={closeRef} className={s.close} onClick={back} aria-label="Close">✕</button>
         </div>
@@ -87,6 +116,7 @@ export default function ToyShell({ toy, label, title, sub, stageRef, stage, capt
       <div ref={stageRef} className={s.stage} data-stage="">
         {stage}
         {caption && <span className={s.caption}>{caption}</span>}
+        <RotateNudge />
       </div>
       <div className={s.tray + (open ? '' : ' ' + s.shut)}>
         <button className={s.handle} onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label={open ? 'Hide controls' : 'Show controls'}><span aria-hidden="true" /></button>

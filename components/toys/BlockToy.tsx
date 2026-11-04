@@ -10,7 +10,7 @@ import Morph from './Morph';
 import CultureStrip from './CultureStrip';
 import ShareSheet, { type ShareRequest } from '../ShareSheet';
 import { BloomIcon, UndoIcon } from './icons';
-import { useElementSize } from '../../hooks/useElementSize';
+import { useElementSize, framePad, captionH } from '../../hooks/useElementSize';
 import { C, INK, INKS } from '../../lib/art/palette';
 import { BLOCK_TYPES, blockPress, drawBlock, drawGarment, makeStamp, paintFabric } from '../../lib/art/block';
 import type { Recipe, Stamp } from '../../lib/recipe';
@@ -120,7 +120,7 @@ export default function BlockToy() {
   useEffect(() => {
     const el = cv.current;
     if (!el || !w || !h) return;
-    const W = Math.max(200, Math.floor(w - 24)), H = Math.max(200, Math.floor(h - 60));
+    const pad = framePad(w, h), W = Math.max(200, Math.floor(w - pad)), H = Math.max(200, Math.floor(h - pad - captionH(w, h)));
     if (Math.abs(W - dim.current.w) < 8 && Math.abs(H - dim.current.h) < 8) return;
     const d = Math.min(2, window.devicePixelRatio || 1);
     el.width = Math.round(W * d); el.height = Math.round(H * d);
